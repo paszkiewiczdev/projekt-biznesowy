@@ -10,7 +10,7 @@
 
 
     <Grid Margin="4">
-        <DataGrid ItemsSource="{Binding ListaKontrahentow}"
+        <DataGrid ItemsSource="{Binding List}"
                   AutoGenerateColumns="False"
                   CanUserAddRows="False"
                   CanUserDeleteRows="False"

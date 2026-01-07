@@ -1,16 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MVVMFirma.Models;
+using MVVMFirma.ViewModels.Abstract;
 
 namespace MVVMFirma.ViewModels
 {
-    public class WszyscyKontrahenciViewModel : WorkspaceViewModel
+    public class WszyscyKontrahenciViewModel : WszystkieViewModel<Kontrahent>
     {
         public WszyscyKontrahenciViewModel()
         {
-            base.DisplayName = "Kontrahenci";
+            DisplayName = "Kontrahenci";
+        }
+
+        public override void load()
+        {
+            List = new ObservableCollection<Kontrahent>(
+                from k in fakturyEntities.Kontrahent
+                select k
+            );
         }
     }
 }
