@@ -1,0 +1,280 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:vm="clr-namespace:MVVMFirma.ViewModels"
+                    xmlns:vw="clr-namespace:MVVMFirma.Views">
+
+
+    <SolidColorBrush x:Key="KassBackgroundBrush" Color="#F3E4D4" />
+    <SolidColorBrush x:Key="KassPrimaryBrush" Color="#8B5A2B" />
+    <SolidColorBrush x:Key="KassPrimaryDarkBrush" Color="#5A3A1A" />
+    <SolidColorBrush x:Key="KassAccentBrush" Color="#C58A4B" />
+    <SolidColorBrush x:Key="KassLightTextBrush" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="KassDarkTextBrush" Color="#202020" />
+
+
+
+    <DataTemplate DataType="{x:Type vm:WszystkieTowaryViewModel}">
+        <vw:WszystkieTowaryView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:NowyTowarViewModel}">
+        <vw:NowyTowarView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:NowaFakturaViewModel}">
+        <vw:NowaFakturaView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:WszystkieFakturyViewModel}">
+        <vw:WszystkieFakturyView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:NowyKontrahentViewModel}">
+        <vw:NowyKontrahentView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:WszyscyKontrahenciViewModel}">
+        <vw:WszyscyKontrahenciView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:WszystkieAdresyKontrahentowViewModel}">
+        <vw:WszystkieAdresyKontrahentowView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:WszystkieSposobyPlatnosciViewModel}">
+        <vw:WszystkieSposobyPlatnosciView />
+    </DataTemplate>
+
+
+    <DataTemplate DataType="{x:Type vm:NowySposobPlatnosciViewModel}">
+        <vw:NowySposobPlatnosciView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:WszystkieWalutyViewModel}">
+        <vw:WszystkieWalutyView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:WszystkieStawkiVatViewModel}">
+        <vw:WszystkieStawkiVatView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:WszystkieJednostkiMiaryViewModel}">
+        <vw:WszystkieJednostkiMiaryView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:WszystkieKategorieTowaruViewModel}">
+        <vw:WszystkieKategorieTowaruView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:WszystkieStatusyFakturViewModel}">
+        <vw:WszystkieStatusyFakturView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:WszystkieStatusyZamowienViewModel}">
+        <vw:WszystkieStatusyZamowienView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:WszystkieTypyDokumentuMagazynowegoViewModel}">
+        <vw:WszystkieTypyDokumentuMagazynowegoView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:WszystkieMagazynyViewModel}">
+        <vw:WszystkieMagazynyView />
+    </DataTemplate>
+
+
+    <DataTemplate DataType="{x:Type vm:WszystkieStanyMagazynoweViewModel}">
+        <vw:WszystkieStanyMagazynoweView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:WszystkieTypyKontrahentowViewModel}">
+        <vw:WszystkieTypyKontrahentowView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:WszystkieZamowieniaViewModel}">
+        <vw:WszystkieZamowieniaView />
+    </DataTemplate>
+
+
+    <DataTemplate DataType="{x:Type vm:WszystkieDokumentyMagazynoweViewModel}">
+        <vw:WszystkieDokumentyMagazynoweView />
+    </DataTemplate>
+
+
+    <DataTemplate DataType="{x:Type vm:WszystkiePozycjeDokumentuMagazynowegoViewModel}">
+        <vw:WszystkiePozycjeDokumentuMagazynowegoView />
+    </DataTemplate>
+
+
+    <DataTemplate DataType="{x:Type vm:WszystkiePozycjeFakturySprzedazyViewModel}">
+        <vw:WszystkiePozycjeFakturySprzedazyView />
+    </DataTemplate>
+
+
+    <DataTemplate DataType="{x:Type vm:WszystkiePozycjeZamowieniaViewModel}">
+        <vw:WszystkiePozycjeZamowieniaView />
+    </DataTemplate>
+
+
+
+    <Style x:Key="MainHCCStyle" TargetType="{x:Type HeaderedContentControl}">
+        <Setter Property="HeaderTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Border Background="{StaticResource KassPrimaryBrush}"
+                            BorderBrush="{StaticResource KassPrimaryDarkBrush}"
+                            BorderThickness="1"
+                            CornerRadius="4"
+                            Margin="4"
+                            Padding="4"
+                            SnapsToDevicePixels="True">
+                        <TextBlock FontSize="14"
+                                   FontWeight="Bold"
+                                   Foreground="{StaticResource KassLightTextBrush}"
+                                   HorizontalAlignment="Center"
+                                   Text="{Binding}" />
+                    </Border>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type HeaderedContentControl}">
+                    <DockPanel>
+                        <ContentPresenter DockPanel.Dock="Top"
+                                          ContentSource="Header"
+                                          ContentTemplate="{TemplateBinding HeaderTemplate}" />
+                        <ContentPresenter ContentSource="Content"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}" />
+                    </DockPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="MainBorderStyle" TargetType="{x:Type Border}">
+        <Setter Property="Background" Value="{StaticResource KassBackgroundBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource KassPrimaryDarkBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="6" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+    </Style>
+
+
+
+    <Style TargetType="MenuItem">
+        <Setter Property="Foreground" Value="{StaticResource KassLightTextBrush}" />
+        <Setter Property="Background" Value="{StaticResource KassPrimaryDarkBrush}" />
+
+        <Style.Triggers>
+            <Trigger Property="MenuItem.Role" Value="SubmenuItem">
+                <Setter Property="Foreground" Value="{StaticResource KassDarkTextBrush}" />
+                <Setter Property="Background" Value="{StaticResource KassBackgroundBrush}" />
+            </Trigger>
+
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsHighlighted" Value="True" />
+                    <Condition Property="MenuItem.Role" Value="SubmenuItem" />
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="{StaticResource KassAccentBrush}" />
+                <Setter Property="Foreground" Value="{StaticResource KassLightTextBrush}" />
+            </MultiTrigger>
+
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsHighlighted" Value="True" />
+                    <Condition Property="MenuItem.Role" Value="TopLevelHeader" />
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="{StaticResource KassAccentBrush}" />
+            </MultiTrigger>
+        </Style.Triggers>
+    </Style>
+
+
+
+    <Style x:Key="IconToggleButtonStyle" TargetType="ToggleButton">
+        <Setter Property="Width" Value="28"/>
+        <Setter Property="Height" Value="28"/>
+        <Setter Property="Margin" Value="4,4,0,4"/>
+        <Setter Property="Background" Value="{StaticResource KassPrimaryBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource KassPrimaryDarkBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="4">
+                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{StaticResource KassAccentBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Background" Value="{StaticResource KassPrimaryDarkBrush}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+
+    <DataTemplate x:Key="CommandsTemplate">
+        <ItemsControl IsTabStop="False"
+                      ItemsSource="{Binding}"
+                      Margin="6,2">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Margin="2,4"
+                               Foreground="{StaticResource KassDarkTextBrush}">
+                        <Hyperlink Command="{Binding Path=Command}">
+                            <TextBlock Text="{Binding Path=DisplayName}" />
+                        </Hyperlink>
+                    </TextBlock>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </DataTemplate>
+
+
+
+    <DataTemplate x:Key="ClosableTabItemTemplate">
+        <DockPanel Width="140">
+            <Button Command="{Binding Path=CloseCommand}"
+                    Content="X"
+                    Cursor="Hand"
+                    DockPanel.Dock="Right"
+                    Focusable="False"
+                    FontFamily="Courier New"
+                    FontSize="9"
+                    FontWeight="Bold"
+                    Margin="4,2,0,0"
+                    Padding="0"
+                    VerticalContentAlignment="Center"
+                    Width="16"
+                    Height="16"
+                    Background="{StaticResource KassPrimaryBrush}"
+                    Foreground="{StaticResource KassLightTextBrush}" />
+            <ContentPresenter Content="{Binding Path=DisplayName}"
+                              VerticalAlignment="Center"
+                              Margin="4,0,0,0" />
+        </DockPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="WorkspacesTemplate">
+        <TabControl IsSynchronizedWithCurrentItem="True"
+                    ItemsSource="{Binding}"
+                    ItemTemplate="{StaticResource ClosableTabItemTemplate}"
+                    Margin="4"
+                    Background="{StaticResource KassBackgroundBrush}" />
+    </DataTemplate>
+
+</ResourceDictionary>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="19f5f048c60d4f0ca692e7a91d78c7fd" Name="Diagram1" ZoomLevel="81">
+        <EntityTypeShape EntityType="FakturyModel.Kontrahent" Width="1.5" PointX="0.5" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="FakturyModel.SposobPlatnosci" Width="1.5" PointX="0.5" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="FakturyModel.Towar" Width="1.5" PointX="7.125" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="FakturyModel.AdresKontrahenta" Width="1.5" PointX="6.25" PointY="7.5" />
+        <EntityTypeShape EntityType="FakturyModel.DokumentMagazynowy" Width="1.5" PointX="13.5" PointY="3.25" />
+        <EntityTypeShape EntityType="FakturyModel.FakturaSprzedazy" Width="1.5" PointX="11" PointY="0.5" />
+        <EntityTypeShape EntityType="FakturyModel.JednostkaMiary" Width="1.5" PointX="2.5" PointY="8" />
+        <EntityTypeShape EntityType="FakturyModel.KategoriaTowaru" Width="1.5" PointX="0.5" PointY="8" />
+        <EntityTypeShape EntityType="FakturyModel.Magazyn" Width="1.5" PointX="10.125" PointY="8" />
+        <EntityTypeShape EntityType="FakturyModel.PozycjaDokumentuMagazynowego" Width="1.5" PointX="12.875" PointY="0.75" />
+        <EntityTypeShape EntityType="FakturyModel.PozycjaFakturySprzedazy" Width="1.5" PointX="9.125" PointY="0.5" />
+        <EntityTypeShape EntityType="FakturyModel.PozycjaZamowieniaSprzedazy" Width="1.5" PointX="5" PointY="0.5" />
+        <EntityTypeShape EntityType="FakturyModel.StanMagazynowy" Width="1.5" PointX="11.875" PointY="8.125" />
+        <EntityTypeShape EntityType="FakturyModel.StatusFaktury" Width="1.5" PointX="4.375" PointY="8" />
+        <EntityTypeShape EntityType="FakturyModel.StatusZamowienia" Width="1.5" PointX="13.75" PointY="6.5" />
+        <EntityTypeShape EntityType="FakturyModel.StawkaVat" Width="1.5" PointX="2.375" PointY="5.125" />
+        <EntityTypeShape EntityType="FakturyModel.TypDokumentuMagazynowego" Width="1.5" PointX="11.75" PointY="5.875" />
+        <EntityTypeShape EntityType="FakturyModel.TypKontrahenta" Width="1.5" PointX="4.125" PointY="5.125" />
+        <EntityTypeShape EntityType="FakturyModel.Waluta" Width="1.5" PointX="8.25" PointY="8" />
+        <EntityTypeShape EntityType="FakturyModel.ZamowienieSprzedazy" Width="1.5" PointX="2.75" PointY="0.5" />
+        <AssociationConnector Association="FakturyModel.FK_AdresKontrahenta_Kontrahent" />
+        <AssociationConnector Association="FakturyModel.FK_DokumentMagazynowy_Magazyn" />
+        <AssociationConnector Association="FakturyModel.FK_DokumentMagazynowy_TypDokumentuMagazynowego" />
+        <AssociationConnector Association="FakturyModel.FK_PozycjaDokumentuMagazynowego_DokumentMagazynowy" />
+        <AssociationConnector Association="FakturyModel.FK_FakturaSprzedazy_Kontrahent" />
+        <AssociationConnector Association="FakturyModel.FK_FakturaSprzedazy_SposobPlatnosci" />
+        <AssociationConnector Association="FakturyModel.FK_FakturaSprzedazy_StatusFaktury" />
+        <AssociationConnector Association="FakturyModel.FK_FakturaSprzedazy_Waluta" />
+        <AssociationConnector Association="FakturyModel.FK_PozycjaFakturySprzedazy_FakturaSprzedazy" />
+        <AssociationConnector Association="FakturyModel.FK_Towar_JednostkaMiary" />
+        <AssociationConnector Association="FakturyModel.FK_Towar_KategoriaTowaru" />
+        <AssociationConnector Association="FakturyModel.FK_Kontrahent_TypKontrahenta" />
+        <AssociationConnector Association="FakturyModel.FK_ZamowienieSprzedazy_Kontrahent" />
+        <AssociationConnector Association="FakturyModel.FK_StanMagazynowy_Magazyn" />
+        <AssociationConnector Association="FakturyModel.FK_PozycjaDokumentuMagazynowego_Towar" />
+        <AssociationConnector Association="FakturyModel.FK_PozycjaFakturySprzedazy_StawkaVat" />
+        <AssociationConnector Association="FakturyModel.FK_PozycjaFakturySprzedazy_Towar" />
+        <AssociationConnector Association="FakturyModel.FK_PozycjaZamowieniaSprzedazy_Towar" />
+        <AssociationConnector Association="FakturyModel.FK_PozycjaZamowieniaSprzedazy_ZamowienieSprzedazy" />
+        <AssociationConnector Association="FakturyModel.FK_StanMagazynowy_Towar" />
+        <AssociationConnector Association="FakturyModel.FK_ZamowienieSprzedazy_StatusZamowienia" />
+        <AssociationConnector Association="FakturyModel.FK_Towar_StawkaVatSprzedazy" />
+        <AssociationConnector Association="FakturyModel.FK_Towar_StawkaVatZakupu" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

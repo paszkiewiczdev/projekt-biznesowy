@@ -1,0 +1,47 @@
+﻿<local:WszystkieViewBase x:Class="MVVMFirma.Views.WszystkieFakturyView"
+                         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                         xmlns:local="clr-namespace:MVVMFirma.Views"
+                         mc:Ignorable="d"
+                         d:DesignHeight="450" d:DesignWidth="1000">
+
+    <Grid Background="White">
+        <DataGrid AutoGenerateColumns="False"
+                  ItemsSource="{Binding List}">
+            <DataGrid.Columns>
+
+                <DataGridTextColumn Header="ID"
+                                    Binding="{Binding IdFakturySprzedazy}" />
+
+                <DataGridTextColumn Header="Numer"
+                                    Binding="{Binding Numer}" />
+
+                <DataGridTextColumn Header="Data wyst."
+                                    Binding="{Binding DataWystawienia}" />
+
+                <DataGridTextColumn Header="Kontrahent"
+                                    Binding="{Binding Kontrahent.NazwaPelna}" />
+
+                <DataGridTextColumn Header="Status"
+                                    Binding="{Binding StatusFaktury.Nazwa}" />
+
+                <DataGridTextColumn Header="Waluta"
+                                    Binding="{Binding Waluta.Kod}" />
+
+                <DataGridTextColumn Header="Razem netto"
+                                    Binding="{Binding RazemNetto}" />
+
+                <DataGridTextColumn Header="Razem VAT"
+                                    Binding="{Binding RazemVat}" />
+
+                <DataGridTextColumn Header="Razem brutto"
+                                    Binding="{Binding RazemBrutto}" />
+
+                <DataGridCheckBoxColumn Header="Aktywny"
+                                        Binding="{Binding CzyAktywny}" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</local:WszystkieViewBase>
