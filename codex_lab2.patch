@@ -1,0 +1,271 @@
+ (cd "$(git rev-parse --show-toplevel)" && git apply --3way <<'EOF' 
+diff --git a/MVVMFirma/MVVMFirma.csproj b/MVVMFirma/MVVMFirma.csproj
+index 113635d93441fae4ccdac15ed439fa8339bb0594..5288a39a90ceebe37cd7e2dbd2e3d4f5a183a507 100644
+--- a/MVVMFirma/MVVMFirma.csproj
++++ b/MVVMFirma/MVVMFirma.csproj
+@@ -131,94 +131,130 @@
+     </Compile>
+     <Compile Include="Models\StatusZamowienia.cs">
+       <DependentUpon>ModelFaktury.tt</DependentUpon>
+     </Compile>
+     <Compile Include="Models\StawkaVat.cs">
+       <DependentUpon>ModelFaktury.tt</DependentUpon>
+     </Compile>
+     <Compile Include="Models\Towar.cs">
+       <DependentUpon>ModelFaktury.tt</DependentUpon>
+     </Compile>
+     <Compile Include="Models\TypDokumentuMagazynowego.cs">
+       <DependentUpon>ModelFaktury.tt</DependentUpon>
+     </Compile>
+     <Compile Include="Models\TypKontrahenta.cs">
+       <DependentUpon>ModelFaktury.tt</DependentUpon>
+     </Compile>
+     <Compile Include="Models\Waluta.cs">
+       <DependentUpon>ModelFaktury.tt</DependentUpon>
+     </Compile>
+     <Compile Include="Models\ZamowienieSprzedazy.cs">
+       <DependentUpon>ModelFaktury.tt</DependentUpon>
+     </Compile>
+     <Compile Include="ViewModels\Abstract\JedenViewModel.cs" />
+     <Compile Include="ViewModels\Abstract\WszystkieViewModel.cs" />
+     <Compile Include="ViewModels\BaseViewModel.cs" />
++    <Compile Include="ViewModels\NowaJednostkaMiaryViewModel.cs" />
++    <Compile Include="ViewModels\NowaKategoriaTowaruViewModel.cs" />
++    <Compile Include="ViewModels\NowaStawkaVatViewModel.cs" />
++    <Compile Include="ViewModels\NowaWalutaViewModel.cs" />
++    <Compile Include="ViewModels\NowyMagazynViewModel.cs" />
+     <Compile Include="ViewModels\NowySposobPlatnosciViewModel.cs" />
++    <Compile Include="ViewModels\NowyStatusFakturyViewModel.cs" />
++    <Compile Include="ViewModels\NowyStatusZamowieniaViewModel.cs" />
++    <Compile Include="ViewModels\NowyTypDokumentuMagazynowegoViewModel.cs" />
++    <Compile Include="ViewModels\NowyTypKontrahentaViewModel.cs" />
+     <Compile Include="ViewModels\WszystkieAdresyKontrahentowViewModel.cs" />
+     <Compile Include="ViewModels\WszystkieDokumentyMagazynoweViewModel.cs" />
+     <Compile Include="ViewModels\WszystkiePozycjeDokumentuMagazynowegoViewModel.cs" />
+     <Compile Include="ViewModels\WszystkiePozycjeFakturySprzedazyViewModel.cs" />
+     <Compile Include="ViewModels\WszystkiePozycjeZamowieniaViewModel.cs" />
+     <Compile Include="ViewModels\WszystkieStanyMagazynoweViewModel.cs" />
+     <Compile Include="ViewModels\WszystkieZamowieniaViewModel.cs" />
+     <Compile Include="ViewModels\WszystkieJednostkiMiaryViewModel.cs" />
+     <Compile Include="ViewModels\WszystkieKategorieTowaruViewModel.cs" />
+     <Compile Include="ViewModels\WszystkieMagazynyViewModel.cs" />
+     <Compile Include="ViewModels\WszystkieSposobyPlatnosciViewModel.cs.cs" />
+     <Compile Include="ViewModels\CommandViewModel.cs" />
+     <Compile Include="ViewModels\DataBaseViewModel.cs" />
+     <Compile Include="ViewModels\MainWindowViewModel.cs" />
+     <Compile Include="ViewModels\NowaFakturaViewModel.cs" />
+     <Compile Include="ViewModels\NowyKontrahentViewModel.cs" />
+     <Compile Include="ViewModels\NowyTowarViewModel.cs" />
+     <Compile Include="ViewModels\WorkspaceViewModel.cs" />
+     <Compile Include="ViewModels\WszyscyKontrahenciViewModel.cs" />
+     <Compile Include="ViewModels\WszystkieFakturyViewModel.cs" />
+     <Compile Include="ViewModels\WszystkieStatusyFakturViewModel.cs" />
+     <Compile Include="ViewModels\WszystkieStatusyZamowienViewModel.cs" />
+     <Compile Include="ViewModels\WszystkieStawkiVatViewModel.cs" />
+     <Compile Include="ViewModels\WszystkieTowaryViewModel.cs" />
+     <Compile Include="ViewModels\WszystkieTypyDokumentuMagazynowegoViewModel.cs" />
+     <Compile Include="ViewModels\WszystkieTypyKontrahentowViewModel.cs" />
+     <Compile Include="ViewModels\WszystkieWalutyViewModel.cs" />
+     <Compile Include="Views\JedenViewBase.cs" />
+     <Compile Include="Views\MainWindow.xaml.cs">
+       <DependentUpon>MainWindow.xaml</DependentUpon>
+     </Compile>
++    <Compile Include="Views\NowaJednostkaMiaryView.xaml.cs">
++      <DependentUpon>NowaJednostkaMiaryView.xaml</DependentUpon>
++    </Compile>
++    <Compile Include="Views\NowaKategoriaTowaruView.xaml.cs">
++      <DependentUpon>NowaKategoriaTowaruView.xaml</DependentUpon>
++    </Compile>
++    <Compile Include="Views\NowaStawkaVatView.xaml.cs">
++      <DependentUpon>NowaStawkaVatView.xaml</DependentUpon>
++    </Compile>
++    <Compile Include="Views\NowaWalutaView.xaml.cs">
++      <DependentUpon>NowaWalutaView.xaml</DependentUpon>
++    </Compile>
+     <Compile Include="Views\NowaFakturaView.xaml.cs">
+       <DependentUpon>NowaFakturaView.xaml</DependentUpon>
+     </Compile>
+     <Compile Include="Views\NowyKontrahentView.xaml.cs">
+       <DependentUpon>NowyKontrahentView.xaml</DependentUpon>
+     </Compile>
++    <Compile Include="Views\NowyMagazynView.xaml.cs">
++      <DependentUpon>NowyMagazynView.xaml</DependentUpon>
++    </Compile>
+     <Compile Include="Views\NowySposobPlatnosciView.xaml.cs">
+       <DependentUpon>NowySposobPlatnosciView.xaml</DependentUpon>
+     </Compile>
++    <Compile Include="Views\NowyStatusFakturyView.xaml.cs">
++      <DependentUpon>NowyStatusFakturyView.xaml</DependentUpon>
++    </Compile>
++    <Compile Include="Views\NowyStatusZamowieniaView.xaml.cs">
++      <DependentUpon>NowyStatusZamowieniaView.xaml</DependentUpon>
++    </Compile>
+     <Compile Include="Views\NowyTowarView.xaml.cs">
+       <DependentUpon>NowyTowarView.xaml</DependentUpon>
+     </Compile>
++    <Compile Include="Views\NowyTypDokumentuMagazynowegoView.xaml.cs">
++      <DependentUpon>NowyTypDokumentuMagazynowegoView.xaml</DependentUpon>
++    </Compile>
++    <Compile Include="Views\NowyTypKontrahentaView.xaml.cs">
++      <DependentUpon>NowyTypKontrahentaView.xaml</DependentUpon>
++    </Compile>
+     <Compile Include="Views\WszyscyKontrahenciView.xaml.cs">
+       <DependentUpon>WszyscyKontrahenciView.xaml</DependentUpon>
+     </Compile>
+     <Compile Include="Views\WszystkieAdresyKontrahentowView.xaml.cs">
+       <DependentUpon>WszystkieAdresyKontrahentowView.xaml</DependentUpon>
+     </Compile>
+     <Compile Include="Views\WszystkieDokumentyMagazynoweView.xaml.cs">
+       <DependentUpon>WszystkieDokumentyMagazynoweView.xaml</DependentUpon>
+     </Compile>
+     <Compile Include="Views\WszystkieFakturyView.xaml.cs">
+       <DependentUpon>WszystkieFakturyView.xaml</DependentUpon>
+     </Compile>
+     <Compile Include="Views\WszystkieJednostkiMiaryView.xaml.cs">
+       <DependentUpon>WszystkieJednostkiMiaryView.xaml</DependentUpon>
+     </Compile>
+     <Compile Include="Views\WszystkieKategorieTowaruView.xaml.cs">
+       <DependentUpon>WszystkieKategorieTowaruView.xaml</DependentUpon>
+     </Compile>
+     <Compile Include="Views\WszystkieMagazynyView.xaml.cs">
+       <DependentUpon>WszystkieMagazynyView.xaml</DependentUpon>
+     </Compile>
+     <Compile Include="Views\WszystkiePozycjeDokumentuMagazynowegoView.xaml.cs">
+       <DependentUpon>WszystkiePozycjeDokumentuMagazynowegoView.xaml</DependentUpon>
+     </Compile>
+     <Compile Include="Views\WszystkiePozycjeFakturySprzedazyView.xaml.cs">
+@@ -283,66 +319,102 @@
+       <LastGenOutput>ModelFaktury.Designer.cs</LastGenOutput>
+     </EntityDeploy>
+     <None Include="Models\ModelFaktury.edmx.diagram">
+       <DependentUpon>ModelFaktury.edmx</DependentUpon>
+     </None>
+     <None Include="packages.config" />
+     <None Include="Properties\Settings.settings">
+       <Generator>SettingsSingleFileGenerator</Generator>
+       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+     </None>
+     <AppDesigner Include="Properties\" />
+   </ItemGroup>
+   <ItemGroup>
+     <Page Include="Themes\Generic.xaml">
+       <Generator>MSBuild:Compile</Generator>
+       <SubType>Designer</SubType>
+     </Page>
+     <Page Include="Views\MainWindow.xaml">
+       <SubType>Designer</SubType>
+       <Generator>MSBuild:Compile</Generator>
+     </Page>
+     <Page Include="Views\MainWindowResources.xaml">
+       <SubType>Designer</SubType>
+       <Generator>MSBuild:Compile</Generator>
+     </Page>
++    <Page Include="Views\NowaJednostkaMiaryView.xaml">
++      <SubType>Designer</SubType>
++      <Generator>MSBuild:Compile</Generator>
++    </Page>
++    <Page Include="Views\NowaKategoriaTowaruView.xaml">
++      <SubType>Designer</SubType>
++      <Generator>MSBuild:Compile</Generator>
++    </Page>
++    <Page Include="Views\NowaStawkaVatView.xaml">
++      <SubType>Designer</SubType>
++      <Generator>MSBuild:Compile</Generator>
++    </Page>
++    <Page Include="Views\NowaWalutaView.xaml">
++      <SubType>Designer</SubType>
++      <Generator>MSBuild:Compile</Generator>
++    </Page>
+     <Page Include="Views\NowaFakturaView.xaml">
+       <SubType>Designer</SubType>
+       <Generator>MSBuild:Compile</Generator>
+     </Page>
+     <Page Include="Views\NowyKontrahentView.xaml">
+       <SubType>Designer</SubType>
+       <Generator>MSBuild:Compile</Generator>
+     </Page>
++    <Page Include="Views\NowyMagazynView.xaml">
++      <SubType>Designer</SubType>
++      <Generator>MSBuild:Compile</Generator>
++    </Page>
+     <Page Include="Views\NowySposobPlatnosciView.xaml">
+       <SubType>Designer</SubType>
+       <Generator>MSBuild:Compile</Generator>
+     </Page>
++    <Page Include="Views\NowyStatusFakturyView.xaml">
++      <SubType>Designer</SubType>
++      <Generator>MSBuild:Compile</Generator>
++    </Page>
++    <Page Include="Views\NowyStatusZamowieniaView.xaml">
++      <SubType>Designer</SubType>
++      <Generator>MSBuild:Compile</Generator>
++    </Page>
+     <Page Include="Views\NowyTowarView.xaml">
+       <SubType>Designer</SubType>
+       <Generator>MSBuild:Compile</Generator>
+     </Page>
++    <Page Include="Views\NowyTypDokumentuMagazynowegoView.xaml">
++      <SubType>Designer</SubType>
++      <Generator>MSBuild:Compile</Generator>
++    </Page>
++    <Page Include="Views\NowyTypKontrahentaView.xaml">
++      <SubType>Designer</SubType>
++      <Generator>MSBuild:Compile</Generator>
++    </Page>
+     <Page Include="Views\WszyscyKontrahenciView.xaml">
+       <SubType>Designer</SubType>
+       <Generator>MSBuild:Compile</Generator>
+     </Page>
+     <Page Include="Views\WszystkieAdresyKontrahentowView.xaml">
+       <SubType>Designer</SubType>
+       <Generator>MSBuild:Compile</Generator>
+     </Page>
+     <Page Include="Views\WszystkieDokumentyMagazynoweView.xaml">
+       <SubType>Designer</SubType>
+       <Generator>MSBuild:Compile</Generator>
+     </Page>
+     <Page Include="Views\WszystkieFakturyView.xaml">
+       <SubType>Designer</SubType>
+       <Generator>MSBuild:Compile</Generator>
+     </Page>
+     <Page Include="Views\WszystkieJednostkiMiaryView.xaml">
+       <SubType>Designer</SubType>
+       <Generator>MSBuild:Compile</Generator>
+     </Page>
+     <Page Include="Views\WszystkieKategorieTowaruView.xaml">
+       <SubType>Designer</SubType>
+       <Generator>MSBuild:Compile</Generator>
+     </Page>
+     <Page Include="Views\WszystkieMagazynyView.xaml">
+@@ -412,26 +484,26 @@
+     <Content Include="Models\ModelFaktury.tt">
+       <Generator>TextTemplatingFileGenerator</Generator>
+       <DependentUpon>ModelFaktury.edmx</DependentUpon>
+       <LastGenOutput>ModelFaktury.cs</LastGenOutput>
+     </Content>
+   </ItemGroup>
+   <ItemGroup>
+     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+   </ItemGroup>
+   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+     <PropertyGroup>
+       <ErrorText>Ten projekt zawiera odwołania do pakietów NuGet, których nie ma na tym komputerze. Użyj przywracania pakietów NuGet, aby je pobrać. Aby uzyskać więcej informacji, zobacz http://go.microsoft.com/fwlink/?LinkID=322105. Brakujący plik: {0}.</ErrorText>
+     </PropertyGroup>
+     <Error Condition="!Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.5.1\build\EntityFramework.props'))" />
+     <Error Condition="!Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.5.1\build\EntityFramework.targets'))" />
+   </Target>
+   <Import Project="..\packages\EntityFramework.6.5.1\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.targets')" />
+   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+        Other similar extension points exist, see Microsoft.Common.targets.
+   <Target Name="BeforeBuild">
+   </Target>
+   <Target Name="AfterBuild">
+   </Target>
+   -->
+-</Project>
+\ No newline at end of file
++</Project>
+ 
+EOF
+)
