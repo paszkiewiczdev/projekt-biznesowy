@@ -36,7 +36,6 @@ namespace MVVMFirma.ViewModels
         {
             return new List<CommandViewModel>
             {
-                
                 new CommandViewModel(
                     "Towar",
                     new BaseCommand(() => this.CreateView(new NowyTowarViewModel()))),
@@ -49,12 +48,10 @@ namespace MVVMFirma.ViewModels
                     "Kontrahent",
                     new BaseCommand(() => this.CreateView(new NowyKontrahentViewModel()))),
 
-                
                 new CommandViewModel(
                     "Sposób płatności",
                     new BaseCommand(() => this.CreateView(new NowySposobPlatnosciViewModel()))),
 
-                
                 new CommandViewModel(
                     "Towary",
                     new BaseCommand(() => this.ShowAllTowar())),
@@ -63,32 +60,26 @@ namespace MVVMFirma.ViewModels
                     "Faktury",
                     new BaseCommand(() => this.ShowAllFaktury())),
 
-                // Pozycje faktur sprzedaży
                 new CommandViewModel(
                     "Pozycje faktur",
                     new BaseCommand(() => this.ShowAllPozycjeFakturySprzedazy())),
 
-                // Zamówienia sprzedaży
                 new CommandViewModel(
                     "Zamówienia sprzedaży",
                     new BaseCommand(() => this.ShowAllZamowienia())),
 
-                // Pozycje zamówień sprzedaży
                 new CommandViewModel(
                     "Pozycje zamówień",
                     new BaseCommand(() => this.ShowAllPozycjeZamowienia())),
 
-                // Dokumenty magazynowe
                 new CommandViewModel(
                     "Dokumenty magazynowe",
                     new BaseCommand(() => this.ShowAllDokumentyMagazynowe())),
 
-                // Pozycje dokumentów magazynowych
                 new CommandViewModel(
                     "Pozycje dok. magazynowych",
                     new BaseCommand(() => this.ShowAllPozycjeDokumentuMagazynowego())),
 
-                // Kontrahenci + adresy
                 new CommandViewModel(
                     "Kontrahenci",
                     new BaseCommand(() => this.ShowAllKontrahenci())),
@@ -97,12 +88,10 @@ namespace MVVMFirma.ViewModels
                     "Adresy kontrahentów",
                     new BaseCommand(() => this.ShowAllAdresyKontrahentow())),
 
-                // Stany magazynowe
                 new CommandViewModel(
                     "Stany magazynowe",
                     new BaseCommand(() => this.ShowAllStanyMagazynowe())),
 
-                // słowniki bez kluczy obcych
                 new CommandViewModel(
                     "Sposoby płatności",
                     new BaseCommand(() => this.ShowAllSposobyPlatnosci())),
@@ -141,7 +130,21 @@ namespace MVVMFirma.ViewModels
 
                 new CommandViewModel(
                     "Typy kontrahentów",
-                    new BaseCommand(() => this.ShowAllTypyKontrahentow()))
+                    new BaseCommand(() => this.ShowAllTypyKontrahentow())),
+
+                // ===== RAPORTY – LOGIKA BIZNESOWA =====
+
+                new CommandViewModel(
+                    "Raport: Sprzedaż miesięczna",
+                    new BaseCommand(() => this.ShowAllRaportSprzedazMiesieczna())),
+
+                new CommandViewModel(
+                    "Raport: Top towary",
+                    new BaseCommand(() => this.ShowAllRaportTopTowary())),
+
+                new CommandViewModel(
+                    "Raport: Stan magazynowy",
+                    new BaseCommand(() => this.ShowAllRaportStanMagazynowy()))
             };
         }
         #endregion
@@ -162,11 +165,11 @@ namespace MVVMFirma.ViewModels
 
         private void OnWorkspacesChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (e.NewItems != null && e.NewItems.Count != 0)
+            if (e.NewItems != null)
                 foreach (WorkspaceViewModel workspace in e.NewItems)
                     workspace.RequestClose += this.OnWorkspaceRequestClose;
 
-            if (e.OldItems != null && e.OldItems.Count != 0)
+            if (e.OldItems != null)
                 foreach (WorkspaceViewModel workspace in e.OldItems)
                     workspace.RequestClose -= this.OnWorkspaceRequestClose;
         }
@@ -176,330 +179,57 @@ namespace MVVMFirma.ViewModels
             WorkspaceViewModel workspace = sender as WorkspaceViewModel;
             this.Workspaces.Remove(workspace);
         }
-        #endregion 
+        #endregion
 
-        #region Private Helpers
-
+        #region Helpers – standardowe widoki
         private void CreateView(WorkspaceViewModel workspace)
         {
             this.Workspaces.Add(workspace);
             this.SetActiveWorkspace(workspace);
         }
 
-        // faktury
-        private void ShowAllFaktury()
-        {
-            WszystkieFakturyViewModel workspace =
-                this.Workspaces.FirstOrDefault(vm => vm is WszystkieFakturyViewModel)
-                as WszystkieFakturyViewModel;
+        private void ShowAllFaktury() => Open<WszystkieFakturyViewModel>();
+        private void ShowAllPozycjeFakturySprzedazy() => Open<WszystkiePozycjeFakturySprzedazyViewModel>();
+        private void ShowAllKontrahenci() => Open<WszyscyKontrahenciViewModel>();
+        private void ShowAllAdresyKontrahentow() => Open<WszystkieAdresyKontrahentowViewModel>();
+        private void ShowAllTowar() => Open<WszystkieTowaryViewModel>();
+        private void ShowAllZamowienia() => Open<WszystkieZamowieniaViewModel>();
+        private void ShowAllPozycjeZamowienia() => Open<WszystkiePozycjeZamowieniaViewModel>();
+        private void ShowAllDokumentyMagazynowe() => Open<WszystkieDokumentyMagazynoweViewModel>();
+        private void ShowAllPozycjeDokumentuMagazynowego() => Open<WszystkiePozycjeDokumentuMagazynowegoViewModel>();
+        private void ShowAllStanyMagazynowe() => Open<WszystkieStanyMagazynoweViewModel>();
+        private void ShowAllSposobyPlatnosci() => Open<WszystkieSposobyPlatnosciViewModel>();
+        private void ShowAllWaluty() => Open<WszystkieWalutyViewModel>();
+        private void ShowAllStawkiVat() => Open<WszystkieStawkiVatViewModel>();
+        private void ShowAllJednostkiMiary() => Open<WszystkieJednostkiMiaryViewModel>();
+        private void ShowAllKategorieTowaru() => Open<WszystkieKategorieTowaruViewModel>();
+        private void ShowAllStatusyFaktur() => Open<WszystkieStatusyFakturViewModel>();
+        private void ShowAllStatusyZamowien() => Open<WszystkieStatusyZamowienViewModel>();
+        private void ShowAllTypyDokumentowMagazynowych() => Open<WszystkieTypyDokumentuMagazynowegoViewModel>();
+        private void ShowAllMagazyny() => Open<WszystkieMagazynyViewModel>();
+        private void ShowAllTypyKontrahentow() => Open<WszystkieTypyKontrahentowViewModel>();
 
+        // ===== RAPORTY =====
+        private void ShowAllRaportSprzedazMiesieczna() => Open<WszystkieRaportSprzedazMiesiecznaViewModel>();
+        private void ShowAllRaportTopTowary() => Open<WszystkieRaportTopTowaryViewModel>();
+        private void ShowAllRaportStanMagazynowy() => Open<WszystkieRaportStanMagazynowyViewModel>();
+
+        private void Open<T>() where T : WorkspaceViewModel, new()
+        {
+            var workspace = this.Workspaces.FirstOrDefault(vm => vm is T) as T;
             if (workspace == null)
             {
-                workspace = new WszystkieFakturyViewModel();
+                workspace = new T();
                 this.Workspaces.Add(workspace);
             }
-
-            this.SetActiveWorkspace(workspace);
-        }
-
-        private void ShowAllPozycjeFakturySprzedazy()
-        {
-            WszystkiePozycjeFakturySprzedazyViewModel workspace =
-                this.Workspaces.FirstOrDefault(vm => vm is WszystkiePozycjeFakturySprzedazyViewModel)
-                as WszystkiePozycjeFakturySprzedazyViewModel;
-
-            if (workspace == null)
-            {
-                workspace = new WszystkiePozycjeFakturySprzedazyViewModel();
-                this.Workspaces.Add(workspace);
-            }
-
-            this.SetActiveWorkspace(workspace);
-        }
-
-        // kontrahenci
-        private void ShowAllKontrahenci()
-        {
-            WszyscyKontrahenciViewModel workspace =
-                this.Workspaces.FirstOrDefault(vm => vm is WszyscyKontrahenciViewModel)
-                as WszyscyKontrahenciViewModel;
-
-            if (workspace == null)
-            {
-                workspace = new WszyscyKontrahenciViewModel();
-                this.Workspaces.Add(workspace);
-            }
-
-            this.SetActiveWorkspace(workspace);
-        }
-
-        private void ShowAllAdresyKontrahentow()
-        {
-            WszystkieAdresyKontrahentowViewModel workspace =
-                this.Workspaces.FirstOrDefault(vm => vm is WszystkieAdresyKontrahentowViewModel)
-                as WszystkieAdresyKontrahentowViewModel;
-
-            if (workspace == null)
-            {
-                workspace = new WszystkieAdresyKontrahentowViewModel();
-                this.Workspaces.Add(workspace);
-            }
-
-            this.SetActiveWorkspace(workspace);
-        }
-
-        // towary
-        private void ShowAllTowar()
-        {
-            WszystkieTowaryViewModel workspace =
-                this.Workspaces.FirstOrDefault(vm => vm is WszystkieTowaryViewModel)
-                as WszystkieTowaryViewModel;
-
-            if (workspace == null)
-            {
-                workspace = new WszystkieTowaryViewModel();
-                this.Workspaces.Add(workspace);
-            }
-
-            this.SetActiveWorkspace(workspace);
-        }
-
-        // zamowienia
-        private void ShowAllZamowienia()
-        {
-            WszystkieZamowieniaViewModel workspace =
-                this.Workspaces.FirstOrDefault(vm => vm is WszystkieZamowieniaViewModel)
-                as WszystkieZamowieniaViewModel;
-
-            if (workspace == null)
-            {
-                workspace = new WszystkieZamowieniaViewModel();
-                this.Workspaces.Add(workspace);
-            }
-
-            this.SetActiveWorkspace(workspace);
-        }
-
-        private void ShowAllPozycjeZamowienia()
-        {
-            WszystkiePozycjeZamowieniaViewModel workspace =
-                this.Workspaces.FirstOrDefault(vm => vm is WszystkiePozycjeZamowieniaViewModel)
-                as WszystkiePozycjeZamowieniaViewModel;
-
-            if (workspace == null)
-            {
-                workspace = new WszystkiePozycjeZamowieniaViewModel();
-                this.Workspaces.Add(workspace);
-            }
-
-            this.SetActiveWorkspace(workspace);
-        }
-
-        // dok. magazynowe
-        private void ShowAllDokumentyMagazynowe()
-        {
-            WszystkieDokumentyMagazynoweViewModel workspace =
-                this.Workspaces.FirstOrDefault(vm => vm is WszystkieDokumentyMagazynoweViewModel)
-                as WszystkieDokumentyMagazynoweViewModel;
-
-            if (workspace == null)
-            {
-                workspace = new WszystkieDokumentyMagazynoweViewModel();
-                this.Workspaces.Add(workspace);
-            }
-
-            this.SetActiveWorkspace(workspace);
-        }
-
-        private void ShowAllPozycjeDokumentuMagazynowego()
-        {
-            WszystkiePozycjeDokumentuMagazynowegoViewModel workspace =
-                this.Workspaces.FirstOrDefault(vm => vm is WszystkiePozycjeDokumentuMagazynowegoViewModel)
-                as WszystkiePozycjeDokumentuMagazynowegoViewModel;
-
-            if (workspace == null)
-            {
-                workspace = new WszystkiePozycjeDokumentuMagazynowegoViewModel();
-                this.Workspaces.Add(workspace);
-            }
-
-            this.SetActiveWorkspace(workspace);
-        }
-
-        // stany magazynowe
-        private void ShowAllStanyMagazynowe()
-        {
-            WszystkieStanyMagazynoweViewModel workspace =
-                this.Workspaces.FirstOrDefault(vm => vm is WszystkieStanyMagazynoweViewModel)
-                as WszystkieStanyMagazynoweViewModel;
-
-            if (workspace == null)
-            {
-                workspace = new WszystkieStanyMagazynoweViewModel();
-                this.Workspaces.Add(workspace);
-            }
-
-            this.SetActiveWorkspace(workspace);
-        }
-
-        // tabele bez kl. obcych
-        private void ShowAllSposobyPlatnosci()
-        {
-            WszystkieSposobyPlatnosciViewModel workspace =
-                this.Workspaces.FirstOrDefault(vm => vm is WszystkieSposobyPlatnosciViewModel)
-                as WszystkieSposobyPlatnosciViewModel;
-
-            if (workspace == null)
-            {
-                workspace = new WszystkieSposobyPlatnosciViewModel();
-                this.Workspaces.Add(workspace);
-            }
-
-            this.SetActiveWorkspace(workspace);
-        }
-
-        private void ShowAllWaluty()
-        {
-            WszystkieWalutyViewModel workspace =
-                this.Workspaces.FirstOrDefault(vm => vm is WszystkieWalutyViewModel)
-                as WszystkieWalutyViewModel;
-
-            if (workspace == null)
-            {
-                workspace = new WszystkieWalutyViewModel();
-                this.Workspaces.Add(workspace);
-            }
-
-            this.SetActiveWorkspace(workspace);
-        }
-
-        private void ShowAllStawkiVat()
-        {
-            WszystkieStawkiVatViewModel workspace =
-                this.Workspaces.FirstOrDefault(vm => vm is WszystkieStawkiVatViewModel)
-                as WszystkieStawkiVatViewModel;
-
-            if (workspace == null)
-            {
-                workspace = new WszystkieStawkiVatViewModel();
-                this.Workspaces.Add(workspace);
-            }
-
-            this.SetActiveWorkspace(workspace);
-        }
-
-        private void ShowAllJednostkiMiary()
-        {
-            WszystkieJednostkiMiaryViewModel workspace =
-                this.Workspaces.FirstOrDefault(vm => vm is WszystkieJednostkiMiaryViewModel)
-                as WszystkieJednostkiMiaryViewModel;
-
-            if (workspace == null)
-            {
-                workspace = new WszystkieJednostkiMiaryViewModel();
-                this.Workspaces.Add(workspace);
-            }
-
-            this.SetActiveWorkspace(workspace);
-        }
-
-        private void ShowAllKategorieTowaru()
-        {
-            WszystkieKategorieTowaruViewModel workspace =
-                this.Workspaces.FirstOrDefault(vm => vm is WszystkieKategorieTowaruViewModel)
-                as WszystkieKategorieTowaruViewModel;
-
-            if (workspace == null)
-            {
-                workspace = new WszystkieKategorieTowaruViewModel();
-                this.Workspaces.Add(workspace);
-            }
-
-            this.SetActiveWorkspace(workspace);
-        }
-
-        private void ShowAllStatusyFaktur()
-        {
-            WszystkieStatusyFakturViewModel workspace =
-                this.Workspaces.FirstOrDefault(vm => vm is WszystkieStatusyFakturViewModel)
-                as WszystkieStatusyFakturViewModel;
-
-            if (workspace == null)
-            {
-                workspace = new WszystkieStatusyFakturViewModel();
-                this.Workspaces.Add(workspace);
-            }
-
-            this.SetActiveWorkspace(workspace);
-        }
-
-        private void ShowAllStatusyZamowien()
-        {
-            WszystkieStatusyZamowienViewModel workspace =
-                this.Workspaces.FirstOrDefault(vm => vm is WszystkieStatusyZamowienViewModel)
-                as WszystkieStatusyZamowienViewModel;
-
-            if (workspace == null)
-            {
-                workspace = new WszystkieStatusyZamowienViewModel();
-                this.Workspaces.Add(workspace);
-            }
-
-            this.SetActiveWorkspace(workspace);
-        }
-
-        private void ShowAllTypyDokumentowMagazynowych()
-        {
-            WszystkieTypyDokumentuMagazynowegoViewModel workspace =
-                this.Workspaces.FirstOrDefault(vm => vm is WszystkieTypyDokumentuMagazynowegoViewModel)
-                as WszystkieTypyDokumentuMagazynowegoViewModel;
-
-            if (workspace == null)
-            {
-                workspace = new WszystkieTypyDokumentuMagazynowegoViewModel();
-                this.Workspaces.Add(workspace);
-            }
-
-            this.SetActiveWorkspace(workspace);
-        }
-
-        private void ShowAllMagazyny()
-        {
-            WszystkieMagazynyViewModel workspace =
-                this.Workspaces.FirstOrDefault(vm => vm is WszystkieMagazynyViewModel)
-                as WszystkieMagazynyViewModel;
-
-            if (workspace == null)
-            {
-                workspace = new WszystkieMagazynyViewModel();
-                this.Workspaces.Add(workspace);
-            }
-
-            this.SetActiveWorkspace(workspace);
-        }
-
-        private void ShowAllTypyKontrahentow()
-        {
-            WszystkieTypyKontrahentowViewModel workspace =
-                this.Workspaces.FirstOrDefault(vm => vm is WszystkieTypyKontrahentowViewModel)
-                as WszystkieTypyKontrahentowViewModel;
-
-            if (workspace == null)
-            {
-                workspace = new WszystkieTypyKontrahentowViewModel();
-                this.Workspaces.Add(workspace);
-            }
-
             this.SetActiveWorkspace(workspace);
         }
 
         private void SetActiveWorkspace(WorkspaceViewModel workspace)
         {
             Debug.Assert(this.Workspaces.Contains(workspace));
-
             ICollectionView collectionView = CollectionViewSource.GetDefaultView(this.Workspaces);
-            if (collectionView != null)
-                collectionView.MoveCurrentTo(workspace);
+            collectionView?.MoveCurrentTo(workspace);
         }
         #endregion
     }

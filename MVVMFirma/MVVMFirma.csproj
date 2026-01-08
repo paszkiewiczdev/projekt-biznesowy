@@ -78,6 +78,9 @@
     <Compile Include="Models\AdresKontrahenta.cs">
       <DependentUpon>ModelFaktury.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\BusinessViews\RaportSprzedazMiesiecznaDto.cs" />
+    <Compile Include="Models\BusinessViews\RaportStanMagazynowyDto.cs" />
+    <Compile Include="Models\BusinessViews\RaportTopTowaryDto.cs" />
     <Compile Include="Models\DokumentMagazynowy.cs">
       <DependentUpon>ModelFaktury.tt</DependentUpon>
     </Compile>
@@ -159,6 +162,9 @@
     <Compile Include="ViewModels\WszystkiePozycjeDokumentuMagazynowegoViewModel.cs" />
     <Compile Include="ViewModels\WszystkiePozycjeFakturySprzedazyViewModel.cs" />
     <Compile Include="ViewModels\WszystkiePozycjeZamowieniaViewModel.cs" />
+    <Compile Include="ViewModels\WszystkieRaportSprzedazMiesiecznaViewModel.cs" />
+    <Compile Include="ViewModels\WszystkieRaportStanMagazynowyViewModel.cs" />
+    <Compile Include="ViewModels\WszystkieRaportTopTowaryViewModel.cs" />
     <Compile Include="ViewModels\WszystkieStanyMagazynoweViewModel.cs" />
     <Compile Include="ViewModels\WszystkieZamowieniaViewModel.cs" />
     <Compile Include="ViewModels\WszystkieJednostkiMiaryViewModel.cs" />
@@ -226,6 +232,15 @@
     </Compile>
     <Compile Include="Views\WszystkiePozycjeZamowieniaView.xaml.cs">
       <DependentUpon>WszystkiePozycjeZamowieniaView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WszystkieRaportSprzedazMiesiecznaView.xaml.cs">
+      <DependentUpon>WszystkieRaportSprzedazMiesiecznaView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WszystkieRaportStanMagazynowyView.xaml.cs">
+      <DependentUpon>WszystkieRaportStanMagazynowyView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WszystkieRaportTopTowaryView.xaml.cs">
+      <DependentUpon>WszystkieRaportTopTowaryView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\WszystkieSposobyPlatnosciView.xaml.cs">
       <DependentUpon>WszystkieSposobyPlatnosciView.xaml</DependentUpon>
@@ -358,6 +373,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\WszystkiePozycjeZamowieniaView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WszystkieRaportSprzedazMiesiecznaView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WszystkieRaportStanMagazynowyView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WszystkieRaportTopTowaryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

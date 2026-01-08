@@ -10,7 +10,12 @@
 
     <!-- słownik ze stylami i powiązaniami -->
     <Window.Resources>
-        <ResourceDictionary Source="MainWindowResources.xaml" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- MainWindowResources.xaml w folderze Views -->
+                <ResourceDictionary Source="/MVVMFirma;component/Views/MainWindowResources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Window.Resources>
 
     <!-- główny layout -->
