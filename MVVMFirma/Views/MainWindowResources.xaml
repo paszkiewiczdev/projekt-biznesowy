@@ -121,7 +121,93 @@
         <vw:WszystkieRaportStanMagazynowyView />
     </DataTemplate>
 
-    <!-- STYLE I SZABLONY (bez zmian) -->
+    <!-- ===== BRAKUJĄCE ZASOBY DLA MAINWINDOW.XAML ===== -->
+
+    <Style x:Key="IconToggleButtonStyle" TargetType="ToggleButton">
+        <Setter Property="Width" Value="32" />
+        <Setter Property="Height" Value="24" />
+        <Setter Property="Margin" Value="4,2" />
+        <Setter Property="Background" Value="{StaticResource KassAccentBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource KassLightTextBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource KassPrimaryDarkBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="4">
+                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{StaticResource KassPrimaryBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Background" Value="{StaticResource KassPrimaryDarkBrush}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="MainBorderStyle" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource KassPrimaryBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource KassPrimaryDarkBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="6" />
+        <Setter Property="Padding" Value="6" />
+    </Style>
+
+    <DataTemplate x:Key="CommandsTemplate">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button Content="{Binding DisplayName}"
+                                Command="{Binding Command}"
+                                Margin="4"
+                                Padding="8,4"
+                                Background="{StaticResource KassAccentBrush}"
+                                Foreground="{StaticResource KassLightTextBrush}"
+                                BorderBrush="{StaticResource KassPrimaryDarkBrush}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </DataTemplate>
+
+    <DataTemplate x:Key="WorkspacesTemplate">
+        <TabControl ItemsSource="{Binding}"
+                    IsSynchronizedWithCurrentItem="True">
+            <TabControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding DisplayName}" Margin="0,0,6,0" />
+                        <Button Content="×"
+                                Command="{Binding CloseCommand}"
+                                Width="18"
+                                Height="18"
+                                Padding="0"
+                                VerticalAlignment="Center"
+                                Background="{StaticResource KassAccentBrush}"
+                                Foreground="{StaticResource KassLightTextBrush}"
+                                BorderBrush="{StaticResource KassPrimaryDarkBrush}" />
+                    </StackPanel>
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+            <TabControl.ContentTemplate>
+                <DataTemplate>
+                    <ContentPresenter Content="{Binding}" />
+                </DataTemplate>
+            </TabControl.ContentTemplate>
+        </TabControl>
+    </DataTemplate>
+
+    <!-- STYLE NAGŁÓWKÓW -->
     <Style x:Key="MainHCCStyle" TargetType="{x:Type HeaderedContentControl}">
         <Setter Property="HeaderTemplate">
             <Setter.Value>
