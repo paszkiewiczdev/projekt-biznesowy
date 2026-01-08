@@ -1,29 +1,54 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq;
 using MVVMFirma.Models;
 using MVVMFirma.ViewModels.Abstract;
 
 namespace MVVMFirma.ViewModels
 {
-    public class WszystkieAdresyKontrahentowViewModel : WorkspaceViewModel
+    public class WszystkieAdresyKontrahentowViewModel : WszystkieViewModel<AdresKontrahenta>
     {
-        private readonly FakturyEntities db;
-
-        public ObservableCollection<AdresKontrahenta> AdresyKontrahentow { get; set; }
-
         public WszystkieAdresyKontrahentowViewModel()
         {
-            base.DisplayName = "Adresy kontrahentów";
-            db = new FakturyEntities();
-            Load();
+            DisplayName = "Adresy kontrahentów";
+            SetSortOptions(new[] { "Id", "Kontrahent", "Miasto" });
         }
 
-        private void Load()
+        protected override IEnumerable<AdresKontrahenta> LoadData()
         {
-            AdresyKontrahentow = new ObservableCollection<AdresKontrahenta>(
-                db.AdresKontrahenta
-                  .Include(a => a.Kontrahent)
-            );
+            return fakturyEntities.AdresKontrahenta
+                .Include(a => a.Kontrahent)
+                .ToList();
+        }
+
+        protected override bool MatchesFilter(AdresKontrahenta item, string filterText)
+        {
+            var text = filterText.ToLowerInvariant();
+
+            return item.IdAdresuKontrahenta.ToString().Contains(text)
+                   || (item.Kontrahent != null
+                       && item.Kontrahent.NazwaPelna != null
+                       && item.Kontrahent.NazwaPelna.ToLowerInvariant().Contains(text))
+                   || (item.Miasto != null && item.Miasto.ToLowerInvariant().Contains(text))
+                   || (item.Ulica != null && item.Ulica.ToLowerInvariant().Contains(text));
+        }
+
+        protected override IOrderedEnumerable<AdresKontrahenta> ApplySort(IEnumerable<AdresKontrahenta> query, string sortField, bool descending)
+        {
+            return sortField switch
+            {
+                "Kontrahent" => descending
+                    ? query.OrderByDescending(a => a.Kontrahent != null ? a.Kontrahent.NazwaPelna : null)
+                    : query.OrderBy(a => a.Kontrahent != null ? a.Kontrahent.NazwaPelna : null),
+
+                "Miasto" => descending
+                    ? query.OrderByDescending(a => a.Miasto)
+                    : query.OrderBy(a => a.Miasto),
+
+                _ => descending
+                    ? query.OrderByDescending(a => a.IdAdresuKontrahenta)
+                    : query.OrderBy(a => a.IdAdresuKontrahenta)
+            };
         }
     }
 }

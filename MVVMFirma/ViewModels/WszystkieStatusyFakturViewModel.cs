@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using MVVMFirma.Helper;
@@ -16,11 +16,10 @@ namespace MVVMFirma.ViewModels
         public WszystkieStatusyFakturViewModel()
             : base()
         {
-            base.DisplayName = "Statusy faktur";
+            DisplayName = "Statusy faktur";
+            SetSortOptions(new[] { "Id", "Nazwa" });
             AddCommand = new BaseCommand(Dodaj, CanDodaj);
         }
-
-        #region Właściwości bindowane
 
         public string Nazwa
         {
@@ -61,20 +60,37 @@ namespace MVVMFirma.ViewModels
             }
         }
 
-        #endregion
-
-        #region Komendy
-
         public ICommand AddCommand { get; }
 
-        #endregion
-
-        public override void load()
+        protected override IEnumerable<StatusFaktury> LoadData()
         {
-            List = new ObservableCollection<StatusFaktury>(
-                from s in fakturyEntities.StatusFaktury
-                select s
-            );
+            return fakturyEntities.StatusFaktury.ToList();
+        }
+
+        protected override bool MatchesFilter(StatusFaktury item, string filterText)
+        {
+            var text = filterText.ToLowerInvariant();
+
+            return item.IdStatusuFaktury.ToString().Contains(text)
+                   || (item.Nazwa != null && item.Nazwa.ToLowerInvariant().Contains(text))
+                   || (item.Opis != null && item.Opis.ToLowerInvariant().Contains(text));
+        }
+
+        protected override IOrderedEnumerable<StatusFaktury> ApplySort(
+            IEnumerable<StatusFaktury> query,
+            string sortField,
+            bool descending)
+        {
+            return sortField switch
+            {
+                "Nazwa" => descending
+                    ? query.OrderByDescending(s => s.Nazwa)
+                    : query.OrderBy(s => s.Nazwa),
+
+                _ => descending
+                    ? query.OrderByDescending(s => s.IdStatusuFaktury)
+                    : query.OrderBy(s => s.IdStatusuFaktury)
+            };
         }
 
         private void Dodaj()

@@ -8,51 +8,99 @@
                          d:DesignHeight="450"
                          d:DesignWidth="800">
 
-
     <Grid Margin="4">
-        <DataGrid ItemsSource="{Binding List}"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- PANEL FILTRÓW -->
+        <StackPanel Grid.Row="0"
+                    Orientation="Horizontal"
+                    Margin="0,0,0,6">
+
+            <TextBlock Text="Szukaj:"
+                       VerticalAlignment="Center"
+                       Margin="0,0,6,0"/>
+
+            <TextBox Width="200"
+                     Margin="0,0,12,0"
+                     Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <TextBlock Text="Sortuj wg:"
+                       VerticalAlignment="Center"
+                       Margin="0,0,6,0"/>
+
+            <ComboBox Width="180"
+                      Margin="0,0,12,0"
+                      ItemsSource="{Binding SortOptions}"
+                      SelectedItem="{Binding SelectedSortField}"/>
+
+            <CheckBox Content="Malejąco"
+                      VerticalAlignment="Center"
+                      Margin="0,0,12,0"
+                      IsChecked="{Binding SortDescending}"/>
+
+            <Button Content="Zastosuj"
+                    Command="{Binding ApplyFilterCommand}"
+                    Padding="8,4"
+                    Margin="0,0,6,0"
+                    Background="{StaticResource KassAccentBrush}"
+                    Foreground="{StaticResource KassLightTextBrush}"
+                    BorderBrush="{StaticResource KassPrimaryDarkBrush}"/>
+
+            <Button Content="Wyczyść"
+                    Command="{Binding ClearFilterCommand}"
+                    Padding="8,4"
+                    Background="{StaticResource KassAccentBrush}"
+                    Foreground="{StaticResource KassLightTextBrush}"
+                    BorderBrush="{StaticResource KassPrimaryDarkBrush}"/>
+        </StackPanel>
+
+        <!-- LISTA TOWARÓW -->
+        <DataGrid Grid.Row="1"
+                  ItemsSource="{Binding List}"
                   AutoGenerateColumns="False"
                   CanUserAddRows="False"
                   CanUserDeleteRows="False"
                   IsReadOnly="True"
                   HorizontalAlignment="Stretch"
                   VerticalAlignment="Stretch"
-                  Margin="0"
                   HeadersVisibility="Column">
 
             <DataGrid.Columns>
 
                 <DataGridTextColumn Header="ID"
                                     Width="60"
-                                    Binding="{Binding IdTowaru}" />
+                                    Binding="{Binding IdTowaru}"/>
 
                 <DataGridTextColumn Header="Kod"
                                     Width="100"
-                                    Binding="{Binding Kod}" />
+                                    Binding="{Binding Kod}"/>
 
                 <DataGridTextColumn Header="Nazwa"
                                     Width="200"
-                                    Binding="{Binding Nazwa}" />
+                                    Binding="{Binding Nazwa}"/>
 
                 <DataGridTextColumn Header="Cena"
                                     Width="100"
-                                    Binding="{Binding Cena}" />
+                                    Binding="{Binding Cena}"/>
 
                 <DataGridTextColumn Header="Marża"
                                     Width="80"
-                                    Binding="{Binding Marza}" />
+                                    Binding="{Binding Marza}"/>
 
                 <DataGridTextColumn Header="VAT sprz."
                                     Width="90"
-                                    Binding="{Binding StawkaVatSprzedazy}" />
+                                    Binding="{Binding StawkaVatSprzedazy}"/>
 
                 <DataGridTextColumn Header="VAT zak."
                                     Width="90"
-                                    Binding="{Binding StawkaVatZakupu}" />
+                                    Binding="{Binding StawkaVatZakupu}"/>
 
                 <DataGridCheckBoxColumn Header="Aktywny"
                                         Width="80"
-                                        Binding="{Binding CzyAktywny}" />
+                                        Binding="{Binding CzyAktywny}"/>
 
             </DataGrid.Columns>
         </DataGrid>

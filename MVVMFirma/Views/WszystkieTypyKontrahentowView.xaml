@@ -8,10 +8,10 @@
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Formularz dodawania -->
         <Border Grid.Row="0"
                 Margin="0,0,0,10"
                 Padding="8"
@@ -53,8 +53,42 @@
             </Grid>
         </Border>
 
-        <!-- Lista -->
-        <DataGrid Grid.Row="1"
+        <StackPanel Grid.Row="1"
+                    Orientation="Horizontal"
+                    Margin="0,0,0,6">
+            <TextBlock Text="Szukaj:"
+                       VerticalAlignment="Center"
+                       Margin="0,0,6,0"/>
+            <TextBox Width="200"
+                     Margin="0,0,12,0"
+                     Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBlock Text="Sortuj wg:"
+                       VerticalAlignment="Center"
+                       Margin="0,0,6,0"/>
+            <ComboBox Width="180"
+                      Margin="0,0,12,0"
+                      ItemsSource="{Binding SortOptions}"
+                      SelectedItem="{Binding SelectedSortField}"/>
+            <CheckBox Content="Malejąco"
+                      VerticalAlignment="Center"
+                      Margin="0,0,12,0"
+                      IsChecked="{Binding SortDescending}"/>
+            <Button Content="Zastosuj"
+                    Command="{Binding ApplyFilterCommand}"
+                    Padding="8,4"
+                    Margin="0,0,6,0"
+                    Background="{StaticResource KassAccentBrush}"
+                    Foreground="{StaticResource KassLightTextBrush}"
+                    BorderBrush="{StaticResource KassPrimaryDarkBrush}"/>
+            <Button Content="Wyczyść"
+                    Command="{Binding ClearFilterCommand}"
+                    Padding="8,4"
+                    Background="{StaticResource KassAccentBrush}"
+                    Foreground="{StaticResource KassLightTextBrush}"
+                    BorderBrush="{StaticResource KassPrimaryDarkBrush}"/>
+        </StackPanel>
+
+        <DataGrid Grid.Row="2"
                   ItemsSource="{Binding List}"
                   AutoGenerateColumns="False"
                   IsReadOnly="True"
@@ -62,13 +96,13 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID"
                                     Binding="{Binding IdTypuKontrahenta}"
-                                    Width="80" />
+                                    Width="80"/>
                 <DataGridTextColumn Header="Nazwa"
                                     Binding="{Binding Nazwa}"
-                                    Width="*" />
+                                    Width="*"/>
                 <DataGridCheckBoxColumn Header="Aktywny"
                                         Binding="{Binding CzyAktywny}"
-                                        Width="90" />
+                                        Width="90"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

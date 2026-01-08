@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using MVVMFirma.Helper;
@@ -15,11 +15,10 @@ namespace MVVMFirma.ViewModels
         public WszystkieStatusyZamowienViewModel()
             : base()
         {
-            base.DisplayName = "Statusy zamówień";
+            DisplayName = "Statusy zamówień";
+            SetSortOptions(new[] { "Id", "Nazwa" });
             AddCommand = new BaseCommand(Dodaj, CanDodaj);
         }
-
-        #region Właściwości bindowane
 
         public string Nazwa
         {
@@ -47,20 +46,37 @@ namespace MVVMFirma.ViewModels
             }
         }
 
-        #endregion
-
-        #region Komendy
-
         public ICommand AddCommand { get; }
 
-        #endregion
-
-        public override void load()
+        protected override IEnumerable<StatusZamowienia> LoadData()
         {
-            List = new ObservableCollection<StatusZamowienia>(
-                from s in fakturyEntities.StatusZamowienia
-                select s
-            );
+            return fakturyEntities.StatusZamowienia.ToList();
+        }
+
+        protected override bool MatchesFilter(StatusZamowienia item, string filterText)
+        {
+            var text = filterText.ToLowerInvariant();
+
+            return item.IdStatusuZamowienia.ToString().Contains(text)
+                   || (item.Nazwa != null && item.Nazwa.ToLowerInvariant().Contains(text))
+                   || (item.Opis != null && item.Opis.ToLowerInvariant().Contains(text));
+        }
+
+        protected override IOrderedEnumerable<StatusZamowienia> ApplySort(
+            IEnumerable<StatusZamowienia> query,
+            string sortField,
+            bool descending)
+        {
+            return sortField switch
+            {
+                "Nazwa" => descending
+                    ? query.OrderByDescending(s => s.Nazwa)
+                    : query.OrderBy(s => s.Nazwa),
+
+                _ => descending
+                    ? query.OrderByDescending(s => s.IdStatusuZamowienia)
+                    : query.OrderBy(s => s.IdStatusuZamowienia)
+            };
         }
 
         private void Dodaj()

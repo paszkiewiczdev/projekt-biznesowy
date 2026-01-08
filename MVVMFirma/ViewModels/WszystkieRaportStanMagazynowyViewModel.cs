@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using System.Linq;
 using MVVMFirma.Models.BusinessViews;
 using MVVMFirma.ViewModels.Abstract;
@@ -10,16 +10,49 @@ namespace MVVMFirma.ViewModels
         public WszystkieRaportStanMagazynowyViewModel()
             : base()
         {
-            base.DisplayName = "Raport: Stan magazynowy";
+            DisplayName = "Raport: Stan magazynowy";
+            SetSortOptions(new[] { "Id", "Magazyn", "Towar", "Ilość" });
         }
 
-        public override void load()
+        protected override IEnumerable<RaportStanMagazynowyDto> LoadData()
         {
-            List = new ObservableCollection<RaportStanMagazynowyDto>(
-                fakturyEntities.Database.SqlQuery<RaportStanMagazynowyDto>(
-                    "SELECT MagazynKod, MagazynNazwa, IdTowaru, TowarNazwa, Ilosc FROM dbo.v_RaportStanMagazynowy"
-                ).ToList()
-            );
+            return fakturyEntities.Database.SqlQuery<RaportStanMagazynowyDto>(
+                "SELECT MagazynKod, MagazynNazwa, IdTowaru, TowarNazwa, Ilosc FROM dbo.v_RaportStanMagazynowy"
+            ).ToList();
+        }
+
+        protected override bool MatchesFilter(RaportStanMagazynowyDto item, string filterText)
+        {
+            var text = filterText.ToLowerInvariant();
+
+            return item.IdTowaru.ToString().Contains(text)
+                   || (item.MagazynNazwa != null && item.MagazynNazwa.ToLowerInvariant().Contains(text))
+                   || (item.TowarNazwa != null && item.TowarNazwa.ToLowerInvariant().Contains(text));
+        }
+
+        protected override IOrderedEnumerable<RaportStanMagazynowyDto> ApplySort(
+            IEnumerable<RaportStanMagazynowyDto> query,
+            string sortField,
+            bool descending)
+        {
+            return sortField switch
+            {
+                "Magazyn" => descending
+                    ? query.OrderByDescending(r => r.MagazynNazwa)
+                    : query.OrderBy(r => r.MagazynNazwa),
+
+                "Towar" => descending
+                    ? query.OrderByDescending(r => r.TowarNazwa)
+                    : query.OrderBy(r => r.TowarNazwa),
+
+                "Ilość" => descending
+                    ? query.OrderByDescending(r => r.Ilosc)
+                    : query.OrderBy(r => r.Ilosc),
+
+                _ => descending
+                    ? query.OrderByDescending(r => r.IdTowaru)
+                    : query.OrderBy(r => r.IdTowaru)
+            };
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Input;
@@ -19,11 +19,10 @@ namespace MVVMFirma.ViewModels
         public WszystkieWalutyViewModel()
             : base()
         {
-            base.DisplayName = "Waluty";
+            DisplayName = "Waluty";
+            SetSortOptions(new[] { "Id", "Kod", "Nazwa" });
             AddCommand = new BaseCommand(Dodaj, CanDodaj);
         }
-
-        #region Właściwości bindowane
 
         public string Kod
         {
@@ -90,20 +89,41 @@ namespace MVVMFirma.ViewModels
             }
         }
 
-        #endregion
-
-        #region Komendy
-
         public ICommand AddCommand { get; }
 
-        #endregion
-
-        public override void load()
+        protected override IEnumerable<Waluta> LoadData()
         {
-            List = new ObservableCollection<Waluta>(
-                from w in fakturyEntities.Waluta
-                select w
-            );
+            return fakturyEntities.Waluta.ToList();
+        }
+
+        protected override bool MatchesFilter(Waluta item, string filterText)
+        {
+            var text = filterText.ToLowerInvariant();
+
+            return item.IdWaluty.ToString().Contains(text)
+                   || (item.Kod != null && item.Kod.ToLowerInvariant().Contains(text))
+                   || (item.Nazwa != null && item.Nazwa.ToLowerInvariant().Contains(text));
+        }
+
+        protected override IOrderedEnumerable<Waluta> ApplySort(
+            IEnumerable<Waluta> query,
+            string sortField,
+            bool descending)
+        {
+            return sortField switch
+            {
+                "Kod" => descending
+                    ? query.OrderByDescending(w => w.Kod)
+                    : query.OrderBy(w => w.Kod),
+
+                "Nazwa" => descending
+                    ? query.OrderByDescending(w => w.Nazwa)
+                    : query.OrderBy(w => w.Nazwa),
+
+                _ => descending
+                    ? query.OrderByDescending(w => w.IdWaluty)
+                    : query.OrderBy(w => w.IdWaluty)
+            };
         }
 
         private void Dodaj()
@@ -132,16 +152,14 @@ namespace MVVMFirma.ViewModels
         private bool CanDodaj()
         {
             return !string.IsNullOrWhiteSpace(Kod)
-                && !string.IsNullOrWhiteSpace(Nazwa)
-                && TryParseKurs(out _);
+                   && !string.IsNullOrWhiteSpace(Nazwa)
+                   && TryParseKurs(out _);
         }
 
         private decimal? ParseKurs()
         {
             if (TryParseKurs(out var kurs))
-            {
                 return kurs;
-            }
 
             return null;
         }

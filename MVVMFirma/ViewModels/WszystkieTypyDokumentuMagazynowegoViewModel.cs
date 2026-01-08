@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using MVVMFirma.Helper;
@@ -17,11 +17,10 @@ namespace MVVMFirma.ViewModels
         public WszystkieTypyDokumentuMagazynowegoViewModel()
             : base()
         {
-            base.DisplayName = "Typy dokumentów magazynowych";
+            DisplayName = "Typy dokumentów magazynowych";
+            SetSortOptions(new[] { "Id", "Kod", "Nazwa" });
             AddCommand = new BaseCommand(Dodaj, CanDodaj);
         }
-
-        #region Właściwości bindowane
 
         public string Kod
         {
@@ -62,20 +61,41 @@ namespace MVVMFirma.ViewModels
             }
         }
 
-        #endregion
-
-        #region Komendy
-
         public ICommand AddCommand { get; }
 
-        #endregion
-
-        public override void load()
+        protected override IEnumerable<TypDokumentuMagazynowego> LoadData()
         {
-            List = new ObservableCollection<TypDokumentuMagazynowego>(
-                from t in fakturyEntities.TypDokumentuMagazynowego
-                select t
-            );
+            return fakturyEntities.TypDokumentuMagazynowego.ToList();
+        }
+
+        protected override bool MatchesFilter(TypDokumentuMagazynowego item, string filterText)
+        {
+            var text = filterText.ToLowerInvariant();
+
+            return item.IdTypuDokumentuMagazynowego.ToString().Contains(text)
+                   || (item.Kod != null && item.Kod.ToLowerInvariant().Contains(text))
+                   || (item.Nazwa != null && item.Nazwa.ToLowerInvariant().Contains(text));
+        }
+
+        protected override IOrderedEnumerable<TypDokumentuMagazynowego> ApplySort(
+            IEnumerable<TypDokumentuMagazynowego> query,
+            string sortField,
+            bool descending)
+        {
+            return sortField switch
+            {
+                "Kod" => descending
+                    ? query.OrderByDescending(t => t.Kod)
+                    : query.OrderBy(t => t.Kod),
+
+                "Nazwa" => descending
+                    ? query.OrderByDescending(t => t.Nazwa)
+                    : query.OrderBy(t => t.Nazwa),
+
+                _ => descending
+                    ? query.OrderByDescending(t => t.IdTypuDokumentuMagazynowego)
+                    : query.OrderBy(t => t.IdTypuDokumentuMagazynowego)
+            };
         }
 
         private void Dodaj()
@@ -99,7 +119,7 @@ namespace MVVMFirma.ViewModels
         private bool CanDodaj()
         {
             return !string.IsNullOrWhiteSpace(Kod)
-                && !string.IsNullOrWhiteSpace(Nazwa);
+                   && !string.IsNullOrWhiteSpace(Nazwa);
         }
     }
 }

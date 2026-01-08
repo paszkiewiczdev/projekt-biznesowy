@@ -3,7 +3,48 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Grid Margin="10">
-        <DataGrid ItemsSource="{Binding PozycjeDokumentuMagazynowego}"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0"
+                    Orientation="Horizontal"
+                    Margin="0,0,0,6">
+            <TextBlock Text="Szukaj:"
+                       VerticalAlignment="Center"
+                       Margin="0,0,6,0" />
+            <TextBox Width="200"
+                     Margin="0,0,12,0"
+                     Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBlock Text="Sortuj wg:"
+                       VerticalAlignment="Center"
+                       Margin="0,0,6,0" />
+            <ComboBox Width="180"
+                      Margin="0,0,12,0"
+                      ItemsSource="{Binding SortOptions}"
+                      SelectedItem="{Binding SelectedSortField}" />
+            <CheckBox Content="Malejąco"
+                      VerticalAlignment="Center"
+                      Margin="0,0,12,0"
+                      IsChecked="{Binding SortDescending}" />
+            <Button Content="Zastosuj"
+                    Command="{Binding ApplyFilterCommand}"
+                    Padding="8,4"
+                    Margin="0,0,6,0"
+                    Background="{StaticResource KassAccentBrush}"
+                    Foreground="{StaticResource KassLightTextBrush}"
+                    BorderBrush="{StaticResource KassPrimaryDarkBrush}" />
+            <Button Content="Wyczyść"
+                    Command="{Binding ClearFilterCommand}"
+                    Padding="8,4"
+                    Background="{StaticResource KassAccentBrush}"
+                    Foreground="{StaticResource KassLightTextBrush}"
+                    BorderBrush="{StaticResource KassPrimaryDarkBrush}" />
+        </StackPanel>
+
+        <DataGrid Grid.Row="1"
+                  ItemsSource="{Binding List}"
                   AutoGenerateColumns="False"
                   IsReadOnly="True"
                   CanUserAddRows="False"
@@ -12,14 +53,13 @@
             <DataGrid.Columns>
 
                 <DataGridTextColumn Header="Nr dokumentu"
-                                    Binding="{Binding DokumentMagazynowy.NrDokumentu}" />
+                                    Binding="{Binding DokumentMagazynowy.Numer}" />
 
                 <DataGridTextColumn Header="Data dokumentu"
                                     Binding="{Binding DokumentMagazynowy.DataDokumentu}" />
 
                 <DataGridTextColumn Header="Magazyn"
                                     Binding="{Binding DokumentMagazynowy.Magazyn.Nazwa}" />
-
 
                 <DataGridTextColumn Header="Towar"
                                     Binding="{Binding Towar.Nazwa}" />

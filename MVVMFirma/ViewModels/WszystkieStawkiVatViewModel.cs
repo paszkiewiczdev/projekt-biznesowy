@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Input;
@@ -17,12 +17,10 @@ namespace MVVMFirma.ViewModels
         public WszystkieStawkiVatViewModel()
             : base()
         {
-            // tytuł zakładki
-            base.DisplayName = "Stawki VAT";
+            DisplayName = "Stawki VAT";
+            SetSortOptions(new[] { "Id", "Nazwa", "Wartość" });
             AddCommand = new BaseCommand(Dodaj, CanDodaj);
         }
-
-        #region Właściwości bindowane
 
         public string Nazwa
         {
@@ -63,28 +61,47 @@ namespace MVVMFirma.ViewModels
             }
         }
 
-        #endregion
-
-        #region Komendy
-
         public ICommand AddCommand { get; }
 
-        #endregion
-
-        public override void load()
+        protected override IEnumerable<StawkaVat> LoadData()
         {
-            List = new ObservableCollection<StawkaVat>(
-                from s in fakturyEntities.StawkaVat
-                select s
-            );
+            return fakturyEntities.StawkaVat.ToList();
+        }
+
+        protected override bool MatchesFilter(StawkaVat item, string filterText)
+        {
+            var text = filterText.ToLowerInvariant();
+
+            return item.IdStawkiVat.ToString().Contains(text)
+                   || (item.Nazwa != null && item.Nazwa.ToLowerInvariant().Contains(text))
+                   || item.Wartosc.ToString(CultureInfo.CurrentCulture).ToLowerInvariant().Contains(text);
+        }
+
+        protected override IOrderedEnumerable<StawkaVat> ApplySort(
+            IEnumerable<StawkaVat> query,
+            string sortField,
+            bool descending)
+        {
+            return sortField switch
+            {
+                "Nazwa" => descending
+                    ? query.OrderByDescending(s => s.Nazwa)
+                    : query.OrderBy(s => s.Nazwa),
+
+                "Wartość" => descending
+                    ? query.OrderByDescending(s => s.Wartosc)
+                    : query.OrderBy(s => s.Wartosc),
+
+                _ => descending
+                    ? query.OrderByDescending(s => s.IdStawkiVat)
+                    : query.OrderBy(s => s.IdStawkiVat)
+            };
         }
 
         private void Dodaj()
         {
             if (!TryParseWartosc(out var wartosc))
-            {
                 return;
-            }
 
             var nowa = new StawkaVat
             {
@@ -105,7 +122,7 @@ namespace MVVMFirma.ViewModels
         private bool CanDodaj()
         {
             return !string.IsNullOrWhiteSpace(Nazwa)
-                && TryParseWartosc(out _);
+                   && TryParseWartosc(out _);
         }
 
         private bool TryParseWartosc(out decimal wartosc)

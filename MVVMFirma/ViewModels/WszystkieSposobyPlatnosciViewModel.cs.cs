@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using MVVMFirma.Helper;
@@ -17,10 +17,9 @@ namespace MVVMFirma.ViewModels
             : base()
         {
             DisplayName = "Sposoby płatności";
+            SetSortOptions(new[] { "Id", "Nazwa" });
             AddCommand = new BaseCommand(Dodaj, CanDodaj);
         }
-
-        #region Właściwości formularza
 
         public string Nazwa
         {
@@ -61,20 +60,37 @@ namespace MVVMFirma.ViewModels
             }
         }
 
-        #endregion
-
-        #region Komendy
-
         public ICommand AddCommand { get; }
 
-        #endregion
-
-        public override void load()
+        protected override IEnumerable<SposobPlatnosci> LoadData()
         {
-            List = new ObservableCollection<SposobPlatnosci>(
-                from s in fakturyEntities.SposobPlatnosci
-                select s
-            );
+            return fakturyEntities.SposobPlatnosci.ToList();
+        }
+
+        protected override bool MatchesFilter(SposobPlatnosci item, string filterText)
+        {
+            var text = filterText.ToLowerInvariant();
+
+            return item.IdSposobuPlatnosci.ToString().Contains(text)
+                   || (item.Nazwa != null && item.Nazwa.ToLowerInvariant().Contains(text))
+                   || (item.Opis != null && item.Opis.ToLowerInvariant().Contains(text));
+        }
+
+        protected override IOrderedEnumerable<SposobPlatnosci> ApplySort(
+            IEnumerable<SposobPlatnosci> query,
+            string sortField,
+            bool descending)
+        {
+            return sortField switch
+            {
+                "Nazwa" => descending
+                    ? query.OrderByDescending(s => s.Nazwa)
+                    : query.OrderBy(s => s.Nazwa),
+
+                _ => descending
+                    ? query.OrderByDescending(s => s.IdSposobuPlatnosci)
+                    : query.OrderBy(s => s.IdSposobuPlatnosci)
+            };
         }
 
         private void Dodaj()
@@ -89,9 +105,8 @@ namespace MVVMFirma.ViewModels
             fakturyEntities.SposobPlatnosci.Add(nowy);
             fakturyEntities.SaveChanges();
 
-            load(); // odświeżenie DataGrid
+            load();
 
-            // czyszczenie formularza
             Nazwa = string.Empty;
             Opis = string.Empty;
             CzyAktywny = true;

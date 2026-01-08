@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using MVVMFirma.Helper;
@@ -17,10 +17,9 @@ namespace MVVMFirma.ViewModels
             : base()
         {
             DisplayName = "Kategorie towaru";
+            SetSortOptions(new[] { "Id", "Nazwa" });
             AddCommand = new BaseCommand(Dodaj, CanDodaj);
         }
-
-        #region Właściwości formularza
 
         public string Nazwa
         {
@@ -61,20 +60,37 @@ namespace MVVMFirma.ViewModels
             }
         }
 
-        #endregion
-
-        #region Komendy
-
         public ICommand AddCommand { get; }
 
-        #endregion
-
-        public override void load()
+        protected override IEnumerable<KategoriaTowaru> LoadData()
         {
-            List = new ObservableCollection<KategoriaTowaru>(
-                from k in fakturyEntities.KategoriaTowaru
-                select k
-            );
+            return fakturyEntities.KategoriaTowaru.ToList();
+        }
+
+        protected override bool MatchesFilter(KategoriaTowaru item, string filterText)
+        {
+            var text = filterText.ToLowerInvariant();
+
+            return item.IdKategoriiTowaru.ToString().Contains(text)
+                   || (item.Nazwa != null && item.Nazwa.ToLowerInvariant().Contains(text))
+                   || (item.Opis != null && item.Opis.ToLowerInvariant().Contains(text));
+        }
+
+        protected override IOrderedEnumerable<KategoriaTowaru> ApplySort(
+            IEnumerable<KategoriaTowaru> query,
+            string sortField,
+            bool descending)
+        {
+            return sortField switch
+            {
+                "Nazwa" => descending
+                    ? query.OrderByDescending(k => k.Nazwa)
+                    : query.OrderBy(k => k.Nazwa),
+
+                _ => descending
+                    ? query.OrderByDescending(k => k.IdKategoriiTowaru)
+                    : query.OrderBy(k => k.IdKategoriiTowaru)
+            };
         }
 
         private void Dodaj()

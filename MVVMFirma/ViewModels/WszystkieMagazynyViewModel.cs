@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using MVVMFirma.Helper;
@@ -17,11 +17,10 @@ namespace MVVMFirma.ViewModels
         public WszystkieMagazynyViewModel()
             : base()
         {
-            base.DisplayName = "Magazyny";
+            DisplayName = "Magazyny";
+            SetSortOptions(new[] { "Id", "Kod", "Nazwa" });
             AddCommand = new BaseCommand(Dodaj, CanDodaj);
         }
-
-        #region Właściwości bindowane
 
         public string Kod
         {
@@ -75,20 +74,38 @@ namespace MVVMFirma.ViewModels
             }
         }
 
-        #endregion
-
-        #region Komendy
-
         public ICommand AddCommand { get; }
 
-        #endregion
-
-        public override void load()
+        protected override IEnumerable<Magazyn> LoadData()
         {
-            List = new ObservableCollection<Magazyn>(
-                from m in fakturyEntities.Magazyn
-                select m
-            );
+            return fakturyEntities.Magazyn.ToList();
+        }
+
+        protected override bool MatchesFilter(Magazyn item, string filterText)
+        {
+            var text = filterText.ToLowerInvariant();
+
+            return item.IdMagazynu.ToString().Contains(text)
+                   || (item.Kod != null && item.Kod.ToLowerInvariant().Contains(text))
+                   || (item.Nazwa != null && item.Nazwa.ToLowerInvariant().Contains(text));
+        }
+
+        protected override IOrderedEnumerable<Magazyn> ApplySort(IEnumerable<Magazyn> query, string sortField, bool descending)
+        {
+            return sortField switch
+            {
+                "Kod" => descending
+                    ? query.OrderByDescending(m => m.Kod)
+                    : query.OrderBy(m => m.Kod),
+
+                "Nazwa" => descending
+                    ? query.OrderByDescending(m => m.Nazwa)
+                    : query.OrderBy(m => m.Nazwa),
+
+                _ => descending
+                    ? query.OrderByDescending(m => m.IdMagazynu)
+                    : query.OrderBy(m => m.IdMagazynu)
+            };
         }
 
         private void Dodaj()
@@ -103,6 +120,7 @@ namespace MVVMFirma.ViewModels
 
             fakturyEntities.Magazyn.Add(nowy);
             fakturyEntities.SaveChanges();
+
             load();
 
             Kod = string.Empty;

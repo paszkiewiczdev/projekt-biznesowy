@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using MVVMFirma.Helper;
@@ -15,11 +15,10 @@ namespace MVVMFirma.ViewModels
         public WszystkieTypyKontrahentowViewModel()
             : base()
         {
-            base.DisplayName = "Typy kontrahentów";
+            DisplayName = "Typy kontrahentów";
+            SetSortOptions(new[] { "Id", "Nazwa" });
             AddCommand = new BaseCommand(Dodaj, CanDodaj);
         }
-
-        #region Właściwości bindowane
 
         public string Nazwa
         {
@@ -47,20 +46,36 @@ namespace MVVMFirma.ViewModels
             }
         }
 
-        #endregion
-
-        #region Komendy
-
         public ICommand AddCommand { get; }
 
-        #endregion
-
-        public override void load()
+        protected override IEnumerable<TypKontrahenta> LoadData()
         {
-            List = new ObservableCollection<TypKontrahenta>(
-                from t in fakturyEntities.TypKontrahenta
-                select t
-            );
+            return fakturyEntities.TypKontrahenta.ToList();
+        }
+
+        protected override bool MatchesFilter(TypKontrahenta item, string filterText)
+        {
+            var text = filterText.ToLowerInvariant();
+
+            return item.IdTypuKontrahenta.ToString().Contains(text)
+                   || (item.Nazwa != null && item.Nazwa.ToLowerInvariant().Contains(text));
+        }
+
+        protected override IOrderedEnumerable<TypKontrahenta> ApplySort(
+            IEnumerable<TypKontrahenta> query,
+            string sortField,
+            bool descending)
+        {
+            return sortField switch
+            {
+                "Nazwa" => descending
+                    ? query.OrderByDescending(t => t.Nazwa)
+                    : query.OrderBy(t => t.Nazwa),
+
+                _ => descending
+                    ? query.OrderByDescending(t => t.IdTypuKontrahenta)
+                    : query.OrderBy(t => t.IdTypuKontrahenta)
+            };
         }
 
         private void Dodaj()
