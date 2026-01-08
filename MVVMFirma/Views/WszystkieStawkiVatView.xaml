@@ -6,23 +6,81 @@
              mc:Ignorable="d">
 
     <Grid Margin="10">
-        <DataGrid ItemsSource="{Binding List}"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Formularz dodawania -->
+        <Border Grid.Row="0"
+                Margin="0,0,0,10"
+                Padding="8"
+                BorderThickness="1"
+                BorderBrush="Gray">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0"
+                           Margin="0,0,8,6"
+                           VerticalAlignment="Center"
+                           Text="Nazwa:"/>
+                <TextBox Grid.Row="0" Grid.Column="1"
+                         Margin="0,0,8,6"
+                         Text="{Binding Nazwa, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBlock Grid.Row="1" Grid.Column="0"
+                           Margin="0,0,8,6"
+                           VerticalAlignment="Center"
+                           Text="Wartość:"/>
+                <TextBox Grid.Row="1" Grid.Column="1"
+                         Margin="0,0,8,6"
+                         Text="{Binding WartoscText, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <CheckBox Grid.Row="2" Grid.Column="0"
+                          Margin="0,0,8,0"
+                          VerticalAlignment="Center"
+                          Content="Aktywna"
+                          IsChecked="{Binding CzyAktywna}"/>
+
+                <Button Grid.Row="0" Grid.Column="2"
+                        Grid.RowSpan="3"
+                        Width="100"
+                        Height="30"
+                        VerticalAlignment="Center"
+                        Content="Dodaj"
+                        Command="{Binding AddCommand}"/>
+            </Grid>
+        </Border>
+
+        <!-- Lista -->
+        <DataGrid Grid.Row="1"
+                  ItemsSource="{Binding List}"
                   AutoGenerateColumns="False"
                   IsReadOnly="True"
                   CanUserAddRows="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" 
-                                    Binding="{Binding IdStawkiVat}" 
+                <DataGridTextColumn Header="ID"
+                                    Binding="{Binding IdStawkiVat}"
                                     Width="80" />
-                <DataGridTextColumn Header="Nazwa" 
-                                    Binding="{Binding Nazwa}" 
+                <DataGridTextColumn Header="Nazwa"
+                                    Binding="{Binding Nazwa}"
                                     Width="*" />
-                <DataGridTextColumn Header="Wartość" 
-                                    Binding="{Binding Wartosc}" 
+                <DataGridTextColumn Header="Wartość"
+                                    Binding="{Binding Wartosc}"
                                     Width="120" />
-                <DataGridCheckBoxColumn Header="Aktywna" 
-                                        Binding="{Binding CzyAktywna}" 
-                                        Width="80" />
+                <DataGridCheckBoxColumn Header="Aktywna"
+                                        Binding="{Binding CzyAktywna}"
+                                        Width="90" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
