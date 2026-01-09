@@ -72,7 +72,7 @@ namespace MVVMFirma.ViewModels
         {
             var text = filterText.ToLowerInvariant();
 
-            return item.IdTypuDokumentuMagazynowego.ToString().Contains(text)
+            return item.IdTypuDokumentu.ToString().Contains(text)
                    || (item.Kod != null && item.Kod.ToLowerInvariant().Contains(text))
                    || (item.Nazwa != null && item.Nazwa.ToLowerInvariant().Contains(text));
         }
@@ -82,20 +82,23 @@ namespace MVVMFirma.ViewModels
             string sortField,
             bool descending)
         {
-            return sortField switch
+            if (sortField == "Kod")
             {
-                "Kod" => descending
+                return descending
                     ? query.OrderByDescending(t => t.Kod)
-                    : query.OrderBy(t => t.Kod),
+                    : query.OrderBy(t => t.Kod);
+            }
 
-                "Nazwa" => descending
+            if (sortField == "Nazwa")
+            {
+                return descending
                     ? query.OrderByDescending(t => t.Nazwa)
-                    : query.OrderBy(t => t.Nazwa),
+                    : query.OrderBy(t => t.Nazwa);
+            }
 
-                _ => descending
-                    ? query.OrderByDescending(t => t.IdTypuDokumentuMagazynowego)
-                    : query.OrderBy(t => t.IdTypuDokumentuMagazynowego)
-            };
+            return descending
+                ? query.OrderByDescending(t => t.IdTypuDokumentu)
+                : query.OrderBy(t => t.IdTypuDokumentu);
         }
 
         private void Dodaj()

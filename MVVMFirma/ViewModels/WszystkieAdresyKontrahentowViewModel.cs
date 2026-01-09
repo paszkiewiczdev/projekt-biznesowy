@@ -25,7 +25,7 @@ namespace MVVMFirma.ViewModels
         {
             var text = filterText.ToLowerInvariant();
 
-            return item.IdAdresuKontrahenta.ToString().Contains(text)
+            return item.IdAdresu.ToString().Contains(text)
                    || (item.Kontrahent != null
                        && item.Kontrahent.NazwaPelna != null
                        && item.Kontrahent.NazwaPelna.ToLowerInvariant().Contains(text))
@@ -35,20 +35,23 @@ namespace MVVMFirma.ViewModels
 
         protected override IOrderedEnumerable<AdresKontrahenta> ApplySort(IEnumerable<AdresKontrahenta> query, string sortField, bool descending)
         {
-            return sortField switch
+            if (sortField == "Kontrahent")
             {
-                "Kontrahent" => descending
+                return descending
                     ? query.OrderByDescending(a => a.Kontrahent != null ? a.Kontrahent.NazwaPelna : null)
-                    : query.OrderBy(a => a.Kontrahent != null ? a.Kontrahent.NazwaPelna : null),
+                    : query.OrderBy(a => a.Kontrahent != null ? a.Kontrahent.NazwaPelna : null);
+            }
 
-                "Miasto" => descending
+            if (sortField == "Miasto")
+            {
+                return descending
                     ? query.OrderByDescending(a => a.Miasto)
-                    : query.OrderBy(a => a.Miasto),
+                    : query.OrderBy(a => a.Miasto);
+            }
 
-                _ => descending
-                    ? query.OrderByDescending(a => a.IdAdresuKontrahenta)
-                    : query.OrderBy(a => a.IdAdresuKontrahenta)
-            };
+            return descending
+                ? query.OrderByDescending(a => a.IdAdresu)
+                : query.OrderBy(a => a.IdAdresu);
         }
     }
 }
