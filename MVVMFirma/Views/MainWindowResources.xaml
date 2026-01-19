@@ -3,7 +3,7 @@
                     xmlns:vm="clr-namespace:MVVMFirma.ViewModels"
                     xmlns:vw="clr-namespace:MVVMFirma.Views">
 
-    <!-- Kolory -->
+
     <SolidColorBrush x:Key="KassBackgroundBrush" Color="#F3E4D4" />
     <SolidColorBrush x:Key="KassPrimaryBrush" Color="#8B5A2B" />
     <SolidColorBrush x:Key="KassPrimaryDarkBrush" Color="#5A3A1A" />
@@ -11,7 +11,7 @@
     <SolidColorBrush x:Key="KassLightTextBrush" Color="#FFFFFF" />
     <SolidColorBrush x:Key="KassDarkTextBrush" Color="#202020" />
 
-    <!-- STANDARDOWE WIDOKI -->
+
     <DataTemplate DataType="{x:Type vm:WszystkieTowaryViewModel}">
         <vw:WszystkieTowaryView />
     </DataTemplate>
@@ -108,7 +108,7 @@
         <vw:WszystkiePozycjeZamowieniaView />
     </DataTemplate>
 
-    <!-- 🔥 RAPORTY – LOGIKA BIZNESOWA (LAB 3) 🔥 -->
+
     <DataTemplate DataType="{x:Type vm:WszystkieRaportSprzedazMiesiecznaViewModel}">
         <vw:WszystkieRaportSprzedazMiesiecznaView />
     </DataTemplate>
@@ -121,7 +121,7 @@
         <vw:WszystkieRaportStanMagazynowyView />
     </DataTemplate>
 
-    <!-- ===== BRAKUJĄCE ZASOBY DLA MAINWINDOW.XAML ===== -->
+
 
     <Style x:Key="IconToggleButtonStyle" TargetType="ToggleButton">
         <Setter Property="Width" Value="32" />
@@ -207,7 +207,7 @@
         </TabControl>
     </DataTemplate>
 
-    <!-- STYLE NAGŁÓWKÓW -->
+
     <Style x:Key="MainHCCStyle" TargetType="{x:Type HeaderedContentControl}">
         <Setter Property="HeaderTemplate">
             <Setter.Value>

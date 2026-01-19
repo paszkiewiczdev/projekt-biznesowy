@@ -132,7 +132,7 @@ namespace MVVMFirma.ViewModels
                     "Typy kontrahentów",
                     new BaseCommand(() => this.ShowAllTypyKontrahentow())),
 
-                // ===== RAPORTY – LOGIKA BIZNESOWA =====
+
 
                 new CommandViewModel(
                     "Raport: Sprzedaż miesięczna",
@@ -209,7 +209,7 @@ namespace MVVMFirma.ViewModels
         private void ShowAllMagazyny() => Open<WszystkieMagazynyViewModel>();
         private void ShowAllTypyKontrahentow() => Open<WszystkieTypyKontrahentowViewModel>();
 
-        // ===== RAPORTY =====
+
         private void ShowAllRaportSprzedazMiesieczna() => Open<WszystkieRaportSprzedazMiesiecznaViewModel>();
         private void ShowAllRaportTopTowary() => Open<WszystkieRaportTopTowaryViewModel>();
         private void ShowAllRaportStanMagazynowy() => Open<WszystkieRaportStanMagazynowyViewModel>();

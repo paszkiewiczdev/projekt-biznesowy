@@ -2,6 +2,12 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+
+            <SolidColorBrush x:Key="KassAccentBrush" Color="#FF2D89EF"/>
+            <SolidColorBrush x:Key="KassLightTextBrush" Color="White"/>
+            <SolidColorBrush x:Key="KassPrimaryDarkBrush" Color="#FF1E1E1E"/>
+
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -58,8 +58,7 @@ namespace MVVMFirma.ViewModels
             var text = filterText.ToLowerInvariant();
 
             return item.IdStatusuZamowienia.ToString().Contains(text)
-                   || (item.Nazwa != null && item.Nazwa.ToLowerInvariant().Contains(text))
-                   || (item.Opis != null && item.Opis.ToLowerInvariant().Contains(text));
+                   || (item.Nazwa != null && item.Nazwa.ToLowerInvariant().Contains(text));
         }
 
         protected override IOrderedEnumerable<StatusZamowienia> ApplySort(
@@ -67,16 +66,16 @@ namespace MVVMFirma.ViewModels
             string sortField,
             bool descending)
         {
-            return sortField switch
+            if (sortField == "Nazwa")
             {
-                "Nazwa" => descending
+                return descending
                     ? query.OrderByDescending(s => s.Nazwa)
-                    : query.OrderBy(s => s.Nazwa),
+                    : query.OrderBy(s => s.Nazwa);
+            }
 
-                _ => descending
-                    ? query.OrderByDescending(s => s.IdStatusuZamowienia)
-                    : query.OrderBy(s => s.IdStatusuZamowienia)
-            };
+            return descending
+                ? query.OrderByDescending(s => s.IdStatusuZamowienia)
+                : query.OrderBy(s => s.IdStatusuZamowienia);
         }
 
         private void Dodaj()
