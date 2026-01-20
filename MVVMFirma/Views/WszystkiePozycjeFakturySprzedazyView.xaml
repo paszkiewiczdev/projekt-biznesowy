@@ -67,7 +67,7 @@
                     Foreground="{StaticResource KassLightTextBrush}"
                     BorderBrush="{StaticResource KassPrimaryDarkBrush}"/>
 
-            <TextBlock Text="Numer do usunięcia:"
+            <TextBlock Text="Id do usunięcia:"
                        VerticalAlignment="Center"
                        Margin="12,0,6,0"/>
 
@@ -98,6 +98,8 @@
                   CanUserAddRows="False"
                   CanUserDeleteRows="False">
             <DataGrid.Columns>
+                <DataGridTextColumn Header="Id"
+                                    Binding="{Binding IdPozycjiFakturySprzedazy}"/>
                 <DataGridTextColumn Header="Nr faktury"
                                     Binding="{Binding FakturaSprzedazy.Numer}"/>
                 <DataGridTextColumn Header="Data sprzedaży"
