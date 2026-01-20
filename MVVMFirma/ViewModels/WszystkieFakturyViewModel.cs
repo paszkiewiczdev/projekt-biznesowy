@@ -96,10 +96,10 @@ namespace MVVMFirma.ViewModels
                 return;
             }
 
-            var number = DeleteNumber.Trim().ToLowerInvariant();
+            var number = DeleteNumber.Trim().ToLower();
             var faktura = fakturyEntities.FakturaSprzedazy.FirstOrDefault(item =>
                 item.Numer != null
-                && item.Numer.Trim().ToLowerInvariant() == number);
+                && item.Numer.Trim().ToLower() == number);
 
             if (faktura == null)
             {

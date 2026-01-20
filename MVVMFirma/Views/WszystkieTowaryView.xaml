@@ -92,22 +92,6 @@
                     Foreground="{StaticResource KassLightTextBrush}"
                     BorderBrush="{StaticResource KassPrimaryDarkBrush}"/>
 
-            <TextBlock Text="Kod do usunięcia:"
-                       VerticalAlignment="Center"
-                       Margin="12,0,6,0"/>
-
-            <TextBox Width="140"
-                     Margin="0,0,6,0"
-                     Text="{Binding DeleteCode, UpdateSourceTrigger=PropertyChanged}"/>
-
-            <Button Content="Usuń"
-                    Command="{Binding DeleteByCodeCommand}"
-                    Padding="8,4"
-                    Margin="0,0,6,0"
-                    Background="{StaticResource KassAccentBrush}"
-                    Foreground="{StaticResource KassLightTextBrush}"
-                    BorderBrush="{StaticResource KassPrimaryDarkBrush}"/>
-
             <Button Content="Dodaj"
                     Command="{Binding AddCommand}"
                     Padding="8,4"
