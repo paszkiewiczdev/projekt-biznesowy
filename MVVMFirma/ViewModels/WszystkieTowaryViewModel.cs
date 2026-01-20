@@ -11,6 +11,8 @@ namespace MVVMFirma.ViewModels
 {
     public class WszystkieTowaryViewModel : WszystkieViewModel<Towar>
     {
+        private string _DeleteCode;
+
         public WszystkieTowaryViewModel()
             : base()
         {
@@ -18,11 +20,24 @@ namespace MVVMFirma.ViewModels
             SetSortOptions(new[] { "Id", "Kod", "Nazwa", "Cena" });
             AddCommand = new BaseCommand(OpenAddDialog);
             RefreshCommand = new BaseCommand(load);
+            DeleteByCodeCommand = new BaseCommand(DeleteByCode);
         }
 
         public ICommand AddCommand { get; }
 
         public ICommand RefreshCommand { get; }
+
+        public ICommand DeleteByCodeCommand { get; }
+
+        public string DeleteCode
+        {
+            get => _DeleteCode;
+            set
+            {
+                _DeleteCode = value;
+                OnPropertyChanged(() => DeleteCode);
+            }
+        }
 
         protected override IEnumerable<Towar> LoadData()
         {
@@ -74,6 +89,27 @@ namespace MVVMFirma.ViewModels
 
             if (dialog.ShowDialog() == true)
                 load();
+        }
+
+        private void DeleteByCode()
+        {
+            if (string.IsNullOrWhiteSpace(DeleteCode))
+            {
+                ShowMessageBox("Podaj kod towaru do usunięcia.");
+                return;
+            }
+
+            var code = DeleteCode.Trim();
+            var towar = fakturyEntities.Towar.FirstOrDefault(item => item.Kod == code);
+
+            if (towar == null)
+            {
+                ShowMessageBox("Nie znaleziono towaru o podanym kodzie.");
+                return;
+            }
+
+            fakturyEntities.Towar.Remove(towar);
+            fakturyEntities.SaveChanges();
         }
     }
 }
