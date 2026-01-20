@@ -1,7 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
+using System.Windows.Input;
+using MVVMFirma.Helper;
 using MVVMFirma.Models;
 using MVVMFirma.ViewModels.Abstract;
+using MVVMFirma.Views;
 
 namespace MVVMFirma.ViewModels
 {
@@ -12,7 +16,13 @@ namespace MVVMFirma.ViewModels
         {
             DisplayName = "Towary";
             SetSortOptions(new[] { "Id", "Kod", "Nazwa", "Cena" });
+            AddCommand = new BaseCommand(OpenAddDialog);
+            RefreshCommand = new BaseCommand(load);
         }
+
+        public ICommand AddCommand { get; }
+
+        public ICommand RefreshCommand { get; }
 
         protected override IEnumerable<Towar> LoadData()
         {
@@ -51,6 +61,19 @@ namespace MVVMFirma.ViewModels
                     ? query.OrderByDescending(t => t.IdTowaru)
                     : query.OrderBy(t => t.IdTowaru)
             };
+        }
+
+        private void OpenAddDialog()
+        {
+            var viewModel = new NowyTowarViewModel();
+            var dialog = new NowyTowarDialog
+            {
+                DataContext = viewModel,
+                Owner = Application.Current?.MainWindow
+            };
+
+            if (dialog.ShowDialog() == true)
+                load();
         }
     }
 }

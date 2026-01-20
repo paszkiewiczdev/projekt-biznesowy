@@ -1,41 +1,92 @@
 ﻿<local:JedenViewBase x:Class="MVVMFirma.Views.NowyTowarView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:MVVMFirma.Views"
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid Background="White">
+                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:local="clr-namespace:MVVMFirma.Views"
+                     mc:Ignorable="d"
+                     d:DesignHeight="520"
+                     d:DesignWidth="520">
+    <local:JedenViewBase.Resources>
+        <Style TargetType="TextBox">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip"
+                            Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="ComboBox">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip"
+                            Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </local:JedenViewBase.Resources>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="150"/>
-            <ColumnDefinition Width="200"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
-        </Grid.RowDefinitions>
-        <Label Grid.Column="0" Grid.Row="0" Content="Kod" Margin="0,8,0,8"/>
-        <TextBox Grid.Column="1" Grid.Row="0" Margin="0,8,0,8" Text="{Binding Path=Kod,UpdateSourceTrigger=PropertyChanged}"/>
-        
-        <Label Grid.Column="0" Grid.Row="1" Content="Nazwa" Margin="0,8,0,8"/>
-        <TextBox Grid.Column="1" Grid.Row="1" Margin="0,8,0,8" Text="{Binding Path=Nazwa,UpdateSourceTrigger=PropertyChanged}"/>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Margin="12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="180"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <Label Grid.Column="0" Grid.Row="2" Content="Stawka Vat Sprzedazy" Margin="0,8,0,8"/>
-        <TextBox Grid.Column="1" Grid.Row="2" Margin="0,8,0,8" Text="{Binding Path=StawkaVatSprzedazy,UpdateSourceTrigger=PropertyChanged}"/>
+            <Label Grid.Column="0" Grid.Row="0" Content="Kod" Margin="0,6,8,6"/>
+            <TextBox Grid.Column="1" Grid.Row="0" Margin="0,6,0,6"
+                     Text="{Binding Kod, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
 
-        <Label Grid.Column="0" Grid.Row="3" Content="Stawka Vat Zakupu" Margin="0,8,0,8"/>
-        <TextBox Grid.Column="1" Grid.Row="3" Margin="0,8,0,8" Text="{Binding Path=StawkaVatZakupu,UpdateSourceTrigger=PropertyChanged}"/>
+            <Label Grid.Column="0" Grid.Row="1" Content="Nazwa" Margin="0,6,8,6"/>
+            <TextBox Grid.Column="1" Grid.Row="1" Margin="0,6,0,6"
+                     Text="{Binding Nazwa, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
 
-        <Label Grid.Column="0" Grid.Row="4" Content="Cena" Margin="0,8,0,8"/>
-        <TextBox Grid.Column="1" Grid.Row="4" Margin="0,8,0,8" Text="{Binding Path=Cena,UpdateSourceTrigger=PropertyChanged}"/>
+            <Label Grid.Column="0" Grid.Row="2" Content="Cena" Margin="0,6,8,6"/>
+            <TextBox Grid.Column="1" Grid.Row="2" Margin="0,6,0,6"
+                     Text="{Binding CenaText, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
 
-        <Label Grid.Column="0" Grid.Row="5" Content="Marza" Margin="0,8,0,8"/>
-        <TextBox Grid.Column="1" Grid.Row="5" Margin="0,8,0,8" Text="{Binding Path=Marza,UpdateSourceTrigger=PropertyChanged}"/>
-    </Grid>
+            <Label Grid.Column="0" Grid.Row="3" Content="Marża (%)" Margin="0,6,8,6"/>
+            <TextBox Grid.Column="1" Grid.Row="3" Margin="0,6,0,6"
+                     Text="{Binding MarzaText, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+
+            <Label Grid.Column="0" Grid.Row="4" Content="Kategoria towaru" Margin="0,6,8,6"/>
+            <ComboBox Grid.Column="1" Grid.Row="4" Margin="0,6,0,6"
+                      ItemsSource="{Binding KategorieTowaru}"
+                      DisplayMemberPath="Nazwa"
+                      SelectedItem="{Binding SelectedKategoriaTowaru, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+
+            <Label Grid.Column="0" Grid.Row="5" Content="Jednostka miary" Margin="0,6,8,6"/>
+            <ComboBox Grid.Column="1" Grid.Row="5" Margin="0,6,0,6"
+                      ItemsSource="{Binding JednostkiMiary}"
+                      DisplayMemberPath="Nazwa"
+                      SelectedItem="{Binding SelectedJednostkaMiary, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+
+            <Label Grid.Column="0" Grid.Row="6" Content="VAT sprzedaży" Margin="0,6,8,6"/>
+            <ComboBox Grid.Column="1" Grid.Row="6" Margin="0,6,0,6"
+                      ItemsSource="{Binding StawkiVat}"
+                      DisplayMemberPath="Nazwa"
+                      SelectedItem="{Binding SelectedStawkaVatSprzedazy, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+
+            <Label Grid.Column="0" Grid.Row="7" Content="VAT zakupu" Margin="0,6,8,6"/>
+            <ComboBox Grid.Column="1" Grid.Row="7" Margin="0,6,0,6"
+                      ItemsSource="{Binding StawkiVat}"
+                      DisplayMemberPath="Nazwa"
+                      SelectedItem="{Binding SelectedStawkaVatZakupu, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+
+            <CheckBox Grid.Column="1" Grid.Row="8" Margin="0,6,0,6"
+                      Content="Aktywny"
+                      IsChecked="{Binding CzyAktywny}"/>
+        </Grid>
+    </ScrollViewer>
 </local:JedenViewBase>
