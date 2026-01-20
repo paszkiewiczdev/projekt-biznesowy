@@ -1,16 +1,41 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
+using System.Windows.Input;
+using MVVMFirma.Helper;
 using MVVMFirma.Models;
 using MVVMFirma.ViewModels.Abstract;
+using MVVMFirma.Views;
 
 namespace MVVMFirma.ViewModels
 {
     public class WszystkieFakturyViewModel : WszystkieViewModel<FakturaSprzedazy>
     {
+        private string _DeleteNumber;
+
         public WszystkieFakturyViewModel()
         {
             DisplayName = "Faktury";
             SetSortOptions(new[] { "Id", "Numer", "Data wystawienia" });
+            AddCommand = new BaseCommand(OpenAddDialog);
+            RefreshCommand = new BaseCommand(load);
+            DeleteByNumberCommand = new BaseCommand(DeleteByNumber);
+        }
+
+        public ICommand AddCommand { get; }
+
+        public ICommand RefreshCommand { get; }
+
+        public ICommand DeleteByNumberCommand { get; }
+
+        public string DeleteNumber
+        {
+            get => _DeleteNumber;
+            set
+            {
+                _DeleteNumber = value;
+                OnPropertyChanged(() => DeleteNumber);
+            }
         }
 
         protected override IEnumerable<FakturaSprzedazy> LoadData()
@@ -48,6 +73,42 @@ namespace MVVMFirma.ViewModels
                     ? query.OrderByDescending(f => f.IdFakturySprzedazy)
                     : query.OrderBy(f => f.IdFakturySprzedazy)
             };
+        }
+
+        private void OpenAddDialog()
+        {
+            var viewModel = new NowaFakturaViewModel();
+            var dialog = new NowaFakturaDialog
+            {
+                DataContext = viewModel,
+                Owner = Application.Current?.MainWindow
+            };
+
+            if (dialog.ShowDialog() == true)
+                load();
+        }
+
+        private void DeleteByNumber()
+        {
+            if (string.IsNullOrWhiteSpace(DeleteNumber))
+            {
+                ShowMessageBox("Podaj numer faktury do usunięcia.");
+                return;
+            }
+
+            var number = DeleteNumber.Trim().ToLowerInvariant();
+            var faktura = fakturyEntities.FakturaSprzedazy.FirstOrDefault(item =>
+                item.Numer != null
+                && item.Numer.Trim().ToLowerInvariant() == number);
+
+            if (faktura == null)
+            {
+                ShowMessageBox("Nie znaleziono faktury o podanym numerze.");
+                return;
+            }
+
+            fakturyEntities.FakturaSprzedazy.Remove(faktura);
+            fakturyEntities.SaveChanges();
         }
     }
 }

@@ -99,8 +99,10 @@ namespace MVVMFirma.ViewModels
                 return;
             }
 
-            var code = DeleteCode.Trim();
-            var towar = fakturyEntities.Towar.FirstOrDefault(item => item.Kod == code);
+            var code = DeleteCode.Trim().ToLowerInvariant();
+            var towar = fakturyEntities.Towar.FirstOrDefault(item =>
+                item.Kod != null
+                && item.Kod.Trim().ToLowerInvariant() == code);
 
             if (towar == null)
             {
