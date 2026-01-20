@@ -1,17 +1,42 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Windows;
+using System.Windows.Input;
+using MVVMFirma.Helper;
 using MVVMFirma.Models;
 using MVVMFirma.ViewModels.Abstract;
+using MVVMFirma.Views;
 
 namespace MVVMFirma.ViewModels
 {
     public class WszystkiePozycjeFakturySprzedazyViewModel : WszystkieViewModel<PozycjaFakturySprzedazy>
     {
+        private string _deleteNumber;
+
         public WszystkiePozycjeFakturySprzedazyViewModel()
         {
             DisplayName = "Pozycje faktur sprzedaży";
             SetSortOptions(new[] { "Id", "Faktura", "Towar", "Ilość" });
+            AddCommand = new BaseCommand(OpenAddDialog);
+            RefreshCommand = new BaseCommand(load);
+            DeleteByNumberCommand = new BaseCommand(DeleteByNumber);
+        }
+
+        public ICommand AddCommand { get; }
+
+        public ICommand RefreshCommand { get; }
+
+        public ICommand DeleteByNumberCommand { get; }
+
+        public string DeleteNumber
+        {
+            get => _deleteNumber;
+            set
+            {
+                _deleteNumber = value;
+                OnPropertyChanged(() => DeleteNumber);
+            }
         }
 
         protected override IEnumerable<PozycjaFakturySprzedazy> LoadData()
@@ -64,6 +89,47 @@ namespace MVVMFirma.ViewModels
                     ? query.OrderByDescending(p => p.IdPozycjiFakturySprzedazy)
                     : query.OrderBy(p => p.IdPozycjiFakturySprzedazy)
             };
+        }
+
+        private void OpenAddDialog()
+        {
+            var viewModel = new NowaPozycjaFakturySprzedazyViewModel();
+            var dialog = new NowaPozycjaFakturySprzedazyDialog
+            {
+                DataContext = viewModel,
+                Owner = Application.Current?.MainWindow
+            };
+
+            if (dialog.ShowDialog() == true)
+                load();
+        }
+
+        private void DeleteByNumber()
+        {
+            if (string.IsNullOrWhiteSpace(DeleteNumber))
+            {
+                ShowMessageBox("Podaj numer pozycji do usunięcia.");
+                return;
+            }
+
+            if (!int.TryParse(DeleteNumber.Trim(), out var id))
+            {
+                ShowMessageBox("Numer pozycji musi być liczbą.");
+                return;
+            }
+
+            var pozycja = fakturyEntities.PozycjaFakturySprzedazy
+                .FirstOrDefault(item => item.IdPozycjiFakturySprzedazy == id);
+
+            if (pozycja == null)
+            {
+                ShowMessageBox("Nie znaleziono pozycji o podanym numerze.");
+                return;
+            }
+
+            fakturyEntities.PozycjaFakturySprzedazy.Remove(pozycja);
+            fakturyEntities.SaveChanges();
+            load();
         }
     }
 }
