@@ -1,8 +1,21 @@
-﻿<UserControl x:Class="MVVMFirma.Views.WszystkieDokumentyMagazynoweView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+﻿<local:WszystkieViewBase x:Class="MVVMFirma.Views.WszystkieDokumentyMagazynoweView"
+                         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                         xmlns:local="clr-namespace:MVVMFirma.Views"
+                         mc:Ignorable="d"
+                         d:DesignHeight="450"
+                         d:DesignWidth="900">
+    <local:WszystkieViewBase.Template>
+        <ControlTemplate TargetType="{x:Type local:WszystkieViewBase}">
+            <Grid Margin="0,10,0,0">
+                <ContentPresenter Margin="0,5,0,5"/>
+            </Grid>
+        </ControlTemplate>
+    </local:WszystkieViewBase.Template>
 
-    <Grid Margin="10">
+    <Grid Margin="4">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -28,6 +41,7 @@
                       VerticalAlignment="Center"
                       Margin="0,0,12,0"
                       IsChecked="{Binding SortDescending}" />
+
             <Button Content="Zastosuj"
                     Command="{Binding ApplyFilterCommand}"
                     Padding="8,4"
@@ -35,8 +49,40 @@
                     Background="{StaticResource KassAccentBrush}"
                     Foreground="{StaticResource KassLightTextBrush}"
                     BorderBrush="{StaticResource KassPrimaryDarkBrush}" />
+
             <Button Content="Wyczyść"
                     Command="{Binding ClearFilterCommand}"
+                    Padding="8,4"
+                    Background="{StaticResource KassAccentBrush}"
+                    Foreground="{StaticResource KassLightTextBrush}"
+                    BorderBrush="{StaticResource KassPrimaryDarkBrush}" />
+
+            <Button Content="Odśwież"
+                    Command="{Binding RefreshCommand}"
+                    Padding="8,4"
+                    Margin="12,0,6,0"
+                    Background="{StaticResource KassAccentBrush}"
+                    Foreground="{StaticResource KassLightTextBrush}"
+                    BorderBrush="{StaticResource KassPrimaryDarkBrush}" />
+
+            <TextBlock Text="ID do usunięcia:"
+                       VerticalAlignment="Center"
+                       Margin="12,0,6,0" />
+
+            <TextBox Width="140"
+                     Margin="0,0,6,0"
+                     Text="{Binding DeleteId, UpdateSourceTrigger=PropertyChanged}" />
+
+            <Button Content="Usuń"
+                    Command="{Binding DeleteByIdCommand}"
+                    Padding="8,4"
+                    Margin="0,0,6,0"
+                    Background="{StaticResource KassAccentBrush}"
+                    Foreground="{StaticResource KassLightTextBrush}"
+                    BorderBrush="{StaticResource KassPrimaryDarkBrush}" />
+
+            <Button Content="Dodaj"
+                    Command="{Binding AddCommand}"
                     Padding="8,4"
                     Background="{StaticResource KassAccentBrush}"
                     Foreground="{StaticResource KassLightTextBrush}"
@@ -51,6 +97,10 @@
                   CanUserDeleteRows="False">
 
             <DataGrid.Columns>
+                <DataGridTextColumn Header="ID"
+                                    Width="80"
+                                    Binding="{Binding IdDokumentuMagazynowego}" />
+
                 <DataGridTextColumn Header="Nr dokumentu"
                                     Binding="{Binding Numer}" />
 
@@ -69,4 +119,4 @@
 
         </DataGrid>
     </Grid>
-</UserControl>
+</local:WszystkieViewBase>

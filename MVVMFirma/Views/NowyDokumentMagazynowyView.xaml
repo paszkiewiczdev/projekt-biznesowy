@@ -1,0 +1,144 @@
+﻿ <local:JedenViewBase x:Class="MVVMFirma.Views.NowyDokumentMagazynowyView"
+                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:local="clr-namespace:MVVMFirma.Views"
+                     mc:Ignorable="d"
+                     d:DesignHeight="600"
+                     d:DesignWidth="700">
+    <local:JedenViewBase.Template>
+        <ControlTemplate TargetType="{x:Type local:JedenViewBase}">
+            <Grid Margin="0,10,0,0">
+                <ContentPresenter Margin="0,5,0,5"/>
+            </Grid>
+        </ControlTemplate>
+    </local:JedenViewBase.Template>
+
+    <local:JedenViewBase.Resources>
+        <Style TargetType="TextBox">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip"
+                            Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="ComboBox">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip"
+                            Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="DatePicker">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip"
+                            Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </local:JedenViewBase.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Margin="12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="180"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Label Grid.Column="0" Grid.Row="0" Content="Numer" Margin="0,6,8,6"/>
+            <TextBox Grid.Column="1" Grid.Row="0" Margin="0,6,0,6"
+                     Text="{Binding Numer, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+
+            <Label Grid.Column="0" Grid.Row="1" Content="Data dokumentu" Margin="0,6,8,6"/>
+            <DatePicker Grid.Column="1" Grid.Row="1" Margin="0,6,0,6"
+                        SelectedDate="{Binding DataDokumentu, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+
+            <Label Grid.Column="0" Grid.Row="2" Content="Magazyn" Margin="0,6,8,6"/>
+            <ComboBox Grid.Column="1" Grid.Row="2" Margin="0,6,0,6"
+                      ItemsSource="{Binding Magazyny}"
+                      DisplayMemberPath="Nazwa"
+                      SelectedItem="{Binding SelectedMagazyn, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+
+            <Label Grid.Column="0" Grid.Row="3" Content="Typ dokumentu" Margin="0,6,8,6"/>
+            <ComboBox Grid.Column="1" Grid.Row="3" Margin="0,6,0,6"
+                      ItemsSource="{Binding TypyDokumentow}"
+                      DisplayMemberPath="Nazwa"
+                      SelectedItem="{Binding SelectedTypDokumentu, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+
+            <Label Grid.Column="0" Grid.Row="4" Content="Uwagi" Margin="0,6,8,6"/>
+            <TextBox Grid.Column="1" Grid.Row="4" Margin="0,6,0,6"
+                     Height="60"
+                     AcceptsReturn="True"
+                     TextWrapping="Wrap"
+                     Text="{Binding Uwagi, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <TextBlock Grid.Column="0" Grid.Row="5"
+                       Grid.ColumnSpan="2"
+                       Text="Pozycje dokumentu"
+                       FontWeight="Bold"
+                       Margin="0,12,0,6"/>
+
+            <Grid Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="160"/>
+                    <ColumnDefinition Width="120"/>
+                </Grid.ColumnDefinitions>
+
+                <ComboBox Grid.Column="0" Margin="0,0,8,6"
+                          ItemsSource="{Binding Towary}"
+                          DisplayMemberPath="Nazwa"
+                          SelectedItem="{Binding SelectedTowar, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+
+                <TextBox Grid.Column="1" Margin="0,0,8,6"
+                         Text="{Binding IloscText, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+
+                <Button Grid.Column="2" Content="Dodaj pozycję"
+                        Command="{Binding AddPozycjaCommand}"
+                        Padding="8,4"
+                        Margin="0,0,0,6"
+                        Background="{StaticResource KassAccentBrush}"
+                        Foreground="{StaticResource KassLightTextBrush}"
+                        BorderBrush="{StaticResource KassPrimaryDarkBrush}"/>
+            </Grid>
+
+            <DataGrid Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2"
+                      ItemsSource="{Binding Pozycje}"
+                      SelectedItem="{Binding SelectedPozycja}"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"
+                      CanUserAddRows="False"
+                      CanUserDeleteRows="False"
+                      Margin="0,0,0,6">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Towar" Width="*" Binding="{Binding Towar.Nazwa}"/>
+                    <DataGridTextColumn Header="Ilość" Width="120" Binding="{Binding Ilosc}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <Button Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="2"
+                    Content="Usuń wybraną pozycję"
+                    Command="{Binding RemovePozycjaCommand}"
+                    HorizontalAlignment="Right"
+                    Padding="8,4"
+                    Background="{StaticResource KassAccentBrush}"
+                    Foreground="{StaticResource KassLightTextBrush}"
+                    BorderBrush="{StaticResource KassPrimaryDarkBrush}"/>
+        </Grid>
+    </ScrollViewer>
+</local:JedenViewBase>

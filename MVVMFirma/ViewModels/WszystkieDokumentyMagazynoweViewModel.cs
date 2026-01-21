@@ -1,17 +1,43 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Windows;
+using System.Windows.Input;
+using MVVMFirma.Helper;
 using MVVMFirma.Models;
 using MVVMFirma.ViewModels.Abstract;
+using MVVMFirma.Views;
 
 namespace MVVMFirma.ViewModels
 {
     public class WszystkieDokumentyMagazynoweViewModel : WszystkieViewModel<DokumentMagazynowy>
     {
+        private string _deleteId;
+
         public WszystkieDokumentyMagazynoweViewModel()
         {
             DisplayName = "Dokumenty magazynowe";
             SetSortOptions(new[] { "Id", "Numer", "Data", "Magazyn" });
+
+            AddCommand = new BaseCommand(OpenAddDialog);
+            RefreshCommand = new BaseCommand(load);
+            DeleteByIdCommand = new BaseCommand(DeleteById);
+        }
+
+        public ICommand AddCommand { get; }
+
+        public ICommand RefreshCommand { get; }
+
+        public ICommand DeleteByIdCommand { get; }
+
+        public string DeleteId
+        {
+            get => _deleteId;
+            set
+            {
+                _deleteId = value;
+                OnPropertyChanged(() => DeleteId);
+            }
         }
 
         protected override IEnumerable<DokumentMagazynowy> LoadData()
@@ -56,6 +82,54 @@ namespace MVVMFirma.ViewModels
                     ? query.OrderByDescending(d => d.IdDokumentuMagazynowego)
                     : query.OrderBy(d => d.IdDokumentuMagazynowego)
             };
+        }
+
+        private void OpenAddDialog()
+        {
+            var viewModel = new NowyDokumentMagazynowyViewModel();
+            var dialog = new NowyDokumentMagazynowyDialog
+            {
+                DataContext = viewModel,
+                Owner = Application.Current?.MainWindow
+            };
+
+            if (dialog.ShowDialog() == true)
+                load();
+        }
+
+        private void DeleteById()
+        {
+            if (string.IsNullOrWhiteSpace(DeleteId))
+            {
+                MessageBox.Show("Podaj ID dokumentu do usunięcia.");
+                return;
+            }
+
+            if (!int.TryParse(DeleteId.Trim(), out var id))
+            {
+                MessageBox.Show("ID dokumentu musi być liczbą.");
+                return;
+            }
+
+            var dokument = fakturyEntities.DokumentMagazynowy
+                .FirstOrDefault(item => item.IdDokumentuMagazynowego == id);
+
+            if (dokument == null)
+            {
+                MessageBox.Show("Nie znaleziono dokumentu o podanym ID.");
+                return;
+            }
+
+            var pozycjeDoUsuniecia = fakturyEntities.PozycjaDokumentuMagazynowego
+                .Where(p => p.IdDokumentuMagazynowego == dokument.IdDokumentuMagazynowego)
+                .ToList();
+
+            if (pozycjeDoUsuniecia.Any())
+                fakturyEntities.PozycjaDokumentuMagazynowego.RemoveRange(pozycjeDoUsuniecia);
+
+            fakturyEntities.DokumentMagazynowy.Remove(dokument);
+            fakturyEntities.SaveChanges();
+            load();
         }
     }
 }
