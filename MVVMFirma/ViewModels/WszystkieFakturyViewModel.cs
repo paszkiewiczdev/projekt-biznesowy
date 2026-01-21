@@ -42,6 +42,14 @@ namespace MVVMFirma.ViewModels
         {
             return fakturyEntities.FakturaSprzedazy.ToList();
         }
+        public override void load()
+        {
+            if (fakturyEntities != null)
+                fakturyEntities.Dispose();
+
+            fakturyEntities = new FakturyEntities();
+            base.load();
+        }
 
         protected override bool MatchesFilter(FakturaSprzedazy item, string filterText)
         {
