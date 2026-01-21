@@ -79,14 +79,17 @@
 
             <Label Grid.Column="0" Grid.Row="5" Content="Wartość netto" Margin="0,6,8,6"/>
             <TextBox Grid.Column="1" Grid.Row="5" Margin="0,6,0,6"
+                     IsReadOnly="True"
                      Text="{Binding WartoscNettoText, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
 
             <Label Grid.Column="0" Grid.Row="6" Content="Wartość VAT" Margin="0,6,8,6"/>
             <TextBox Grid.Column="1" Grid.Row="6" Margin="0,6,0,6"
+                     IsReadOnly="True"
                      Text="{Binding WartoscVatText, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
 
             <Label Grid.Column="0" Grid.Row="7" Content="Wartość brutto" Margin="0,6,8,6"/>
             <TextBox Grid.Column="1" Grid.Row="7" Margin="0,6,0,6"
+                     IsReadOnly="True"
                      Text="{Binding WartoscBruttoText, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
         </Grid>
     </ScrollViewer>

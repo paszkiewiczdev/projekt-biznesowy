@@ -59,6 +59,8 @@ namespace MVVMFirma.ViewModels
             fakturyEntities.PozycjaFakturySprzedazy.Add(pozycja);
             fakturyEntities.SaveChanges();
 
+            UpdateFakturaTotals(pozycja.IdFakturySprzedazy);
+
             WasSaved = true;
             OnRequestClose();
         }
@@ -99,6 +101,7 @@ namespace MVVMFirma.ViewModels
                 if (_selectedTowar != value)
                 {
                     _selectedTowar = value;
+                    ApplyTowarDefaults();
                     OnPropertyChanged(() => SelectedTowar);
                 }
             }
@@ -112,6 +115,7 @@ namespace MVVMFirma.ViewModels
                 if (_selectedStawkaVat != value)
                 {
                     _selectedStawkaVat = value;
+                    RecalculateTotals();
                     OnPropertyChanged(() => SelectedStawkaVat);
                 }
             }
@@ -125,6 +129,7 @@ namespace MVVMFirma.ViewModels
                 if (_iloscText != value)
                 {
                     _iloscText = value;
+                    RecalculateTotals();
                     OnPropertyChanged(() => IloscText);
                 }
             }
@@ -138,6 +143,7 @@ namespace MVVMFirma.ViewModels
                 if (_cenaNettoText != value)
                 {
                     _cenaNettoText = value;
+                    RecalculateTotals();
                     OnPropertyChanged(() => CenaNettoText);
                 }
             }
@@ -198,7 +204,7 @@ namespace MVVMFirma.ViewModels
                     nameof(IloscText) => Validator.PositiveDecimal(IloscText, "Ilość"),
                     nameof(CenaNettoText) => Validator.PositiveDecimal(CenaNettoText, "Cena netto"),
                     nameof(WartoscNettoText) => Validator.PositiveDecimal(WartoscNettoText, "Wartość netto"),
-                    nameof(WartoscVatText) => Validator.PositiveDecimal(WartoscVatText, "Wartość VAT"),
+                    nameof(WartoscVatText) => Validator.NonNegativeDecimal(WartoscVatText, "Wartość VAT"),
                     nameof(WartoscBruttoText) => Validator.PositiveDecimal(WartoscBruttoText, "Wartość brutto"),
                     _ => null
                 };
@@ -228,5 +234,81 @@ namespace MVVMFirma.ViewModels
                 nameof(WartoscVatText),
                 nameof(WartoscBruttoText)
             };
+
+        private void ApplyTowarDefaults()
+        {
+            if (SelectedTowar == null)
+                return;
+
+            SetFieldValue(ref _cenaNettoText, FormatDecimal(SelectedTowar.Cena), () => CenaNettoText);
+
+            if (SelectedTowar.IdStawkiVatSprzedazy.HasValue)
+            {
+                SelectedStawkaVat = StawkiVat.FirstOrDefault(v =>
+                    v.IdStawkiVat == SelectedTowar.IdStawkiVatSprzedazy.Value);
+            }
+
+            RecalculateTotals();
+        }
+
+        private void RecalculateTotals()
+        {
+            if (!decimal.TryParse(IloscText, NumberStyles.Number, CultureInfo.CurrentCulture, out var ilosc))
+                return;
+
+            if (!decimal.TryParse(CenaNettoText, NumberStyles.Number, CultureInfo.CurrentCulture, out var cenaNetto))
+                return;
+
+            var wartoscNetto = ilosc * cenaNetto;
+            var vatRate = SelectedStawkaVat?.Wartosc ?? 0m;
+            var wartoscVat = wartoscNetto * vatRate / 100m;
+            var wartoscBrutto = wartoscNetto + wartoscVat;
+
+            SetFieldValue(ref _wartoscNettoText, FormatDecimal(wartoscNetto), () => WartoscNettoText);
+            SetFieldValue(ref _wartoscVatText, FormatDecimal(wartoscVat), () => WartoscVatText);
+            SetFieldValue(ref _wartoscBruttoText, FormatDecimal(wartoscBrutto), () => WartoscBruttoText);
+        }
+
+        private void UpdateFakturaTotals(int idFakturySprzedazy)
+        {
+            var totals = fakturyEntities.PozycjaFakturySprzedazy
+                .Where(p => p.IdFakturySprzedazy == idFakturySprzedazy)
+                .GroupBy(p => p.IdFakturySprzedazy)
+                .Select(g => new
+                {
+                    Net = g.Sum(p => p.WartoscNetto) ?? 0m,
+                    Vat = g.Sum(p => p.WartoscVat) ?? 0m,
+                    Brutto = g.Sum(p => p.WartoscBrutto) ?? 0m
+                })
+                .FirstOrDefault();
+
+            if (totals == null)
+                return;
+
+            var faktura = fakturyEntities.FakturaSprzedazy
+                .FirstOrDefault(f => f.IdFakturySprzedazy == idFakturySprzedazy);
+
+            if (faktura == null)
+                return;
+
+            faktura.RazemNetto = totals.Net;
+            faktura.RazemVat = totals.Vat;
+            faktura.RazemBrutto = totals.Brutto;
+            fakturyEntities.SaveChanges();
+        }
+
+        private static string FormatDecimal(decimal value)
+        {
+            return value.ToString("0.00", CultureInfo.CurrentCulture);
+        }
+
+        private void SetFieldValue(ref string field, string value, System.Linq.Expressions.Expression<System.Func<string>> property)
+        {
+            if (field == value)
+                return;
+
+            field = value;
+            OnPropertyChanged(property);
+        }
     }
 }

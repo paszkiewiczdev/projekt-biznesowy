@@ -6,12 +6,16 @@ namespace MVVMFirma.Helper
     {
         public static string Required(string value, string fieldName)
         {
-            return string.IsNullOrWhiteSpace(value) ? $"{fieldName} jest wymagane." : null;
+            return string.IsNullOrWhiteSpace(value)
+                ? $"{fieldName} jest wymagane."
+                : null;
         }
 
         public static string Required(object value, string fieldName)
         {
-            return value == null ? $"{fieldName} jest wymagane." : null;
+            return value == null
+                ? $"{fieldName} jest wymagane."
+                : null;
         }
 
         public static string DecimalInRange(string value, string fieldName, decimal min, decimal max)
@@ -19,7 +23,11 @@ namespace MVVMFirma.Helper
             if (string.IsNullOrWhiteSpace(value))
                 return $"{fieldName} jest wymagane.";
 
-            if (!decimal.TryParse(value, NumberStyles.Number, CultureInfo.CurrentCulture, out var parsed))
+            if (!decimal.TryParse(
+                    value,
+                    NumberStyles.Number,
+                    CultureInfo.CurrentCulture,
+                    out var parsed))
                 return $"{fieldName} ma niepoprawny format.";
 
             if (parsed < min || parsed > max)
@@ -33,7 +41,11 @@ namespace MVVMFirma.Helper
             if (string.IsNullOrWhiteSpace(value))
                 return $"{fieldName} jest wymagane.";
 
-            if (!decimal.TryParse(value, NumberStyles.Number, CultureInfo.CurrentCulture, out var parsed))
+            if (!decimal.TryParse(
+                    value,
+                    NumberStyles.Number,
+                    CultureInfo.CurrentCulture,
+                    out var parsed))
                 return $"{fieldName} ma niepoprawny format.";
 
             if (parsed <= 0)
@@ -41,16 +53,39 @@ namespace MVVMFirma.Helper
 
             return null;
         }
+
+        public static string NonNegativeDecimal(string value, string fieldName)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                return $"{fieldName} jest wymagane.";
+
+            if (!decimal.TryParse(
+                    value,
+                    NumberStyles.Number,
+                    CultureInfo.CurrentCulture,
+                    out var parsed))
+                return $"{fieldName} ma niepoprawny format.";
+
+            if (parsed < 0)
+                return $"{fieldName} nie może być mniejsze od 0.";
+
+            return null;
+        }
     }
 
     public static class StringValidator
     {
-        public static string RequiredAndLength(string value, string fieldName, int minLength, int maxLength)
+        public static string RequiredAndLength(
+            string value,
+            string fieldName,
+            int minLength,
+            int maxLength)
         {
             if (string.IsNullOrWhiteSpace(value))
                 return $"{fieldName} jest wymagane.";
 
             var length = value.Trim().Length;
+
             if (length < minLength)
                 return $"{fieldName} musi mieć min. {minLength} znaki.";
 

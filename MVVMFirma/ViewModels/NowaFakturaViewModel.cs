@@ -21,6 +21,10 @@ namespace MVVMFirma.ViewModels
             SposobyPlatnosci = new ObservableCollection<SposobPlatnosci>(fakturyEntities.SposobPlatnosci.ToList());
             StatusyFaktur = new ObservableCollection<StatusFaktury>(fakturyEntities.StatusFaktury.ToList());
             Waluty = new ObservableCollection<Waluta>(fakturyEntities.Waluta.ToList());
+
+            RazemNettoText = FormatDecimal(0m);
+            RazemVatText = FormatDecimal(0m);
+            RazemBruttoText = FormatDecimal(0m);
         }
 
         public override void Save()
@@ -28,14 +32,9 @@ namespace MVVMFirma.ViewModels
             if (!IsValid())
                 return;
 
-            if (!decimal.TryParse(RazemNettoText, NumberStyles.Number, CultureInfo.CurrentCulture, out var razemNetto))
-                return;
-
-            if (!decimal.TryParse(RazemVatText, NumberStyles.Number, CultureInfo.CurrentCulture, out var razemVat))
-                return;
-
-            if (!decimal.TryParse(RazemBruttoText, NumberStyles.Number, CultureInfo.CurrentCulture, out var razemBrutto))
-                return;
+            var razemNetto = ParseDecimalOrZero(RazemNettoText);
+            var razemVat = ParseDecimalOrZero(RazemVatText);
+            var razemBrutto = ParseDecimalOrZero(RazemBruttoText);
 
             if (!DataWystawienia.HasValue || !DataSprzedazy.HasValue)
                 return;
@@ -243,9 +242,6 @@ namespace MVVMFirma.ViewModels
                     nameof(SelectedSposobPlatnosci) => Validator.Required(SelectedSposobPlatnosci, "Sposób płatności"),
                     nameof(SelectedStatusFaktury) => Validator.Required(SelectedStatusFaktury, "Status faktury"),
                     nameof(SelectedWaluta) => Validator.Required(SelectedWaluta, "Waluta"),
-                    nameof(RazemNettoText) => Validator.PositiveDecimal(RazemNettoText, "Razem netto"),
-                    nameof(RazemVatText) => Validator.PositiveDecimal(RazemVatText, "Razem VAT"),
-                    nameof(RazemBruttoText) => Validator.PositiveDecimal(RazemBruttoText, "Razem brutto"),
                     _ => null
                 };
             }
@@ -272,10 +268,19 @@ namespace MVVMFirma.ViewModels
                 nameof(SelectedKontrahent),
                 nameof(SelectedSposobPlatnosci),
                 nameof(SelectedStatusFaktury),
-                nameof(SelectedWaluta),
-                nameof(RazemNettoText),
-                nameof(RazemVatText),
-                nameof(RazemBruttoText)
+                nameof(SelectedWaluta)
             };
+
+        private static decimal ParseDecimalOrZero(string value)
+        {
+            return decimal.TryParse(value, NumberStyles.Number, CultureInfo.CurrentCulture, out var parsed)
+                ? parsed
+                : 0m;
+        }
+
+        private static string FormatDecimal(decimal value)
+        {
+            return value.ToString("0.00", CultureInfo.CurrentCulture);
+        }
     }
 }

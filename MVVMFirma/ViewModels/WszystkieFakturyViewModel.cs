@@ -106,9 +106,10 @@ namespace MVVMFirma.ViewModels
                 ShowMessageBox("Nie znaleziono faktury o podanym numerze.");
                 return;
             }
+
             var pozycjeDoUsuniecia = fakturyEntities.PozycjaFakturySprzedazy
-    .Where(p => p.IdFakturySprzedazy == faktura.IdFakturySprzedazy)
-    .ToList();
+                .Where(p => p.IdFakturySprzedazy == faktura.IdFakturySprzedazy)
+                .ToList();
 
             if (pozycjeDoUsuniecia.Any())
                 fakturyEntities.PozycjaFakturySprzedazy.RemoveRange(pozycjeDoUsuniecia);
