@@ -17,23 +17,29 @@
         <StackPanel Grid.Row="0"
                     Orientation="Horizontal"
                     Margin="0,0,0,6">
+
             <TextBlock Text="Szukaj:"
                        VerticalAlignment="Center"
                        Margin="0,0,6,0" />
+
             <TextBox Width="200"
                      Margin="0,0,12,0"
                      Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}" />
+
             <TextBlock Text="Sortuj wg:"
                        VerticalAlignment="Center"
                        Margin="0,0,6,0" />
+
             <ComboBox Width="180"
                       Margin="0,0,12,0"
                       ItemsSource="{Binding SortOptions}"
                       SelectedItem="{Binding SelectedSortField}" />
+
             <CheckBox Content="Malejąco"
                       VerticalAlignment="Center"
                       Margin="0,0,12,0"
                       IsChecked="{Binding SortDescending}" />
+
             <Button Content="Zastosuj"
                     Command="{Binding ApplyFilterCommand}"
                     Padding="8,4"
@@ -41,8 +47,40 @@
                     Background="{StaticResource KassAccentBrush}"
                     Foreground="{StaticResource KassLightTextBrush}"
                     BorderBrush="{StaticResource KassPrimaryDarkBrush}" />
+
             <Button Content="Wyczyść"
                     Command="{Binding ClearFilterCommand}"
+                    Padding="8,4"
+                    Background="{StaticResource KassAccentBrush}"
+                    Foreground="{StaticResource KassLightTextBrush}"
+                    BorderBrush="{StaticResource KassPrimaryDarkBrush}" />
+
+            <Button Content="Odśwież"
+                    Command="{Binding RefreshCommand}"
+                    Padding="8,4"
+                    Margin="12,0,6,0"
+                    Background="{StaticResource KassAccentBrush}"
+                    Foreground="{StaticResource KassLightTextBrush}"
+                    BorderBrush="{StaticResource KassPrimaryDarkBrush}" />
+
+            <TextBlock Text="Id do usunięcia:"
+                       VerticalAlignment="Center"
+                       Margin="12,0,6,0" />
+
+            <TextBox Width="120"
+                     Margin="0,0,6,0"
+                     Text="{Binding DeleteId, UpdateSourceTrigger=PropertyChanged}" />
+
+            <Button Content="Usuń"
+                    Command="{Binding DeleteByIdCommand}"
+                    Padding="8,4"
+                    Margin="0,0,6,0"
+                    Background="{StaticResource KassAccentBrush}"
+                    Foreground="{StaticResource KassLightTextBrush}"
+                    BorderBrush="{StaticResource KassPrimaryDarkBrush}" />
+
+            <Button Content="Dodaj"
+                    Command="{Binding AddCommand}"
                     Padding="8,4"
                     Background="{StaticResource KassAccentBrush}"
                     Foreground="{StaticResource KassLightTextBrush}"
@@ -57,19 +95,30 @@
                   CanUserDeleteRows="False"
                   HeadersVisibility="Column"
                   GridLinesVisibility="All">
+
             <DataGrid.Columns>
+
+                <DataGridTextColumn Header="ID"
+                                    Binding="{Binding IdPozycjiZamowieniaSprzedazy}" />
+
                 <DataGridTextColumn Header="Nr zamówienia"
                                     Binding="{Binding ZamowienieSprzedazy.Numer}" />
+
                 <DataGridTextColumn Header="Data zamówienia"
                                     Binding="{Binding ZamowienieSprzedazy.DataZamowienia, StringFormat=d}" />
+
                 <DataGridTextColumn Header="Kontrahent"
                                     Binding="{Binding ZamowienieSprzedazy.Kontrahent.NazwaPelna}" />
+
                 <DataGridTextColumn Header="Towar"
                                     Binding="{Binding Towar.Nazwa}" />
+
                 <DataGridTextColumn Header="Ilość"
                                     Binding="{Binding Ilosc}" />
+
                 <DataGridTextColumn Header="Cena netto"
                                     Binding="{Binding CenaNetto, StringFormat=N2}" />
+
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

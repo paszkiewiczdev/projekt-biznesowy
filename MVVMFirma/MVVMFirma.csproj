@@ -160,6 +160,7 @@
     <Compile Include="ViewModels\Abstract\WszystkieViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\NowaPozycjaFakturySprzedazyViewModel.cs" />
+    <Compile Include="ViewModels\NowaPozycjaZamowieniaSprzedazyViewModel.cs" />
     <Compile Include="ViewModels\NoweZamowienieSprzedazyViewModel.cs" />
     <Compile Include="ViewModels\NowySposobPlatnosciViewModel.cs" />
     <Compile Include="ViewModels\WszystkieAdresyKontrahentowViewModel.cs" />
@@ -203,6 +204,10 @@
     <Compile Include="Views\NowaPozycjaFakturySprzedazyDialog.cs" />
     <Compile Include="Views\NowaPozycjaFakturySprzedazyView.xaml.cs">
       <DependentUpon>NowaPozycjaFakturySprzedazyView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NowaPozycjaZamowieniaSprzedazyDialog.cs" />
+    <Compile Include="Views\NowaPozycjaZamowieniaSprzedazyView.xaml.cs">
+      <DependentUpon>NowaPozycjaZamowieniaSprzedazyView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NoweZamowienieSprzedazyDialog.cs" />
     <Compile Include="Views\NoweZamowienieSprzedazyView.xaml.cs">
@@ -340,6 +345,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\NowaPozycjaFakturySprzedazyView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NowaPozycjaZamowieniaSprzedazyView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
