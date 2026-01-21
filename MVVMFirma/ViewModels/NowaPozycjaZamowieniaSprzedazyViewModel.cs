@@ -79,6 +79,7 @@ namespace MVVMFirma.ViewModels
                 if (_selectedTowar != value)
                 {
                     _selectedTowar = value;
+                    UpdateCenaNettoFromTowarAndIlosc();
                     OnPropertyChanged(() => SelectedTowar);
                 }
             }
@@ -92,6 +93,7 @@ namespace MVVMFirma.ViewModels
                 if (_iloscText != value)
                 {
                     _iloscText = value;
+                    UpdateCenaNettoFromTowarAndIlosc();
                     OnPropertyChanged(() => IloscText);
                 }
             }
@@ -148,5 +150,37 @@ namespace MVVMFirma.ViewModels
                 nameof(IloscText),
                 nameof(CenaNettoText)
             };
+
+        private void UpdateCenaNettoFromTowarAndIlosc()
+        {
+            if (SelectedTowar == null)
+            {
+                SetFieldValue(ref _cenaNettoText, string.Empty, () => CenaNettoText);
+                return;
+            }
+
+            if (decimal.TryParse(IloscText, NumberStyles.Number, CultureInfo.CurrentCulture, out var ilosc))
+            {
+                var cenaNetto = SelectedTowar.Cena * ilosc;
+                SetFieldValue(ref _cenaNettoText, FormatDecimal(cenaNetto), () => CenaNettoText);
+                return;
+            }
+
+            SetFieldValue(ref _cenaNettoText, FormatDecimal(SelectedTowar.Cena), () => CenaNettoText);
+        }
+
+        private static string FormatDecimal(decimal value)
+        {
+            return value.ToString("0.00", CultureInfo.CurrentCulture);
+        }
+
+        private void SetFieldValue(ref string field, string value, System.Linq.Expressions.Expression<System.Func<string>> property)
+        {
+            if (field == value)
+                return;
+
+            field = value;
+            OnPropertyChanged(property);
+        }
     }
 }
