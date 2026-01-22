@@ -163,6 +163,7 @@
     <Compile Include="ViewModels\NowyDokumentMagazynowyViewModel.cs" />
     <Compile Include="ViewModels\NowySposobPlatnosciViewModel.cs" />
     <Compile Include="ViewModels\NowyStanMagazynowyViewModel.cs" />
+    <Compile Include="ViewModels\RaportTopTowaryPieSlice.cs" />
     <Compile Include="ViewModels\WszystkieAdresyKontrahentowViewModel.cs" />
     <Compile Include="ViewModels\WszystkieDokumentyMagazynoweViewModel.cs" />
     <Compile Include="ViewModels\WszystkiePozycjeDokumentuMagazynowegoViewModel.cs" />
@@ -495,9 +496,7 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\Fonts\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Models\ModelFaktury.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

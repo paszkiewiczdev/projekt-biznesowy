@@ -13,8 +13,13 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
 
         <StackPanel Grid.Row="0"
+                    Grid.ColumnSpan="2"
                     Orientation="Horizontal"
                     Margin="0,0,0,6">
             <TextBlock Text="Szukaj:"
@@ -57,6 +62,7 @@
         </StackPanel>
 
         <DataGrid Grid.Row="1"
+                  Grid.Column="0"
                   ItemsSource="{Binding List}"
                   AutoGenerateColumns="False"
                   CanUserAddRows="False"
@@ -93,5 +99,116 @@
                                     Binding="{Binding WartoscBrutto}" />
             </DataGrid.Columns>
         </DataGrid>
+
+        <Border Grid.Row="1"
+                Grid.Column="1"
+                Margin="12,0,0,0"
+                Padding="12"
+                CornerRadius="6"
+                BorderBrush="{StaticResource KassPrimaryDarkBrush}"
+                BorderThickness="1"
+                Background="{StaticResource KassLightBrush}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Udział sprzedaży (ilość)"
+                           FontWeight="Bold"
+                           Foreground="{StaticResource KassPrimaryDarkBrush}"
+                           Margin="0,0,0,8" />
+
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Viewbox Height="220"
+                             HorizontalAlignment="Center"
+                             Margin="0,0,0,8">
+                        <Viewbox.Style>
+                            <Style TargetType="Viewbox">
+                                <Setter Property="Visibility" Value="Visible" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding PieSlices.Count}" Value="0">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Viewbox.Style>
+                        <Grid Width="200" Height="200">
+                            <ItemsControl ItemsSource="{Binding PieSlices}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <Canvas Width="200" Height="200" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Path Data="{Binding Geometry}"
+                                              Fill="{Binding Fill}"
+                                              Stroke="{StaticResource KassPrimaryDarkBrush}"
+                                              StrokeThickness="1" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </Grid>
+                    </Viewbox>
+
+                    <TextBlock Grid.Row="0"
+                               Text="Brak danych do wykresu."
+                               Foreground="{StaticResource KassPrimaryDarkBrush}"
+                               HorizontalAlignment="Center"
+                               Margin="0,12,0,0">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding PieSlices.Count}" Value="0">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+
+                    <ItemsControl Grid.Row="1"
+                                  ItemsSource="{Binding PieSlices}"
+                                  Margin="0,8,0,0">
+                        <ItemsControl.Style>
+                            <Style TargetType="ItemsControl">
+                                <Setter Property="Visibility" Value="Visible" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding PieSlices.Count}" Value="0">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ItemsControl.Style>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" Margin="0,2">
+                                    <Rectangle Width="12"
+                                               Height="12"
+                                               Fill="{Binding Fill}"
+                                               Stroke="{StaticResource KassPrimaryDarkBrush}"
+                                               StrokeThickness="0.5"
+                                               Margin="0,1,6,0" />
+                                    <TextBlock Text="{Binding Name}"
+                                               Foreground="{StaticResource KassPrimaryDarkBrush}" />
+                                    <TextBlock Text="{Binding Value, StringFormat=' ({0:N2})'}"
+                                               Foreground="{StaticResource KassPrimaryDarkBrush}" />
+                                    <TextBlock Text="{Binding Percentage, StringFormat=' • {0:P0}'}"
+                                               Foreground="{StaticResource KassPrimaryDarkBrush}"
+                                               Margin="6,0,0,0" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Grid>
+            </Grid>
+        </Border>
     </Grid>
 </local:WszystkieViewBase>
