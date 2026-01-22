@@ -20,7 +20,6 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>
-
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
@@ -32,7 +31,6 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
-
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
     <DebugType>pdbonly</DebugType>
@@ -43,7 +41,6 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
-
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -62,7 +59,6 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
   </ItemGroup>
-
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -73,18 +69,17 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Helper\BaseCommand.cs" />
+    <Compile Include="Helper\EmbeddedFontResolver.cs" />
     <Compile Include="Helper\InvoicePdfGenerator.cs" />
     <Compile Include="Helper\ParameterizedCommand.cs" />
     <Compile Include="Helper\Validators.cs" />
     <Compile Include="Helper\VatIdToValueConverter.cs" />
-
     <Compile Include="Models\AdresKontrahenta.cs">
       <DependentUpon>ModelFaktury.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\BusinessViews\RaportSprzedazMiesiecznaDto.cs" />
     <Compile Include="Models\BusinessViews\RaportStanMagazynowyDto.cs" />
     <Compile Include="Models\BusinessViews\RaportTopTowaryDto.cs" />
-
     <Compile Include="Models\DokumentMagazynowy.cs">
       <DependentUpon>ModelFaktury.tt</DependentUpon>
     </Compile>
@@ -103,7 +98,6 @@
     <Compile Include="Models\Magazyn.cs">
       <DependentUpon>ModelFaktury.tt</DependentUpon>
     </Compile>
-
     <Compile Include="Models\ModelFaktury.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -119,7 +113,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ModelFaktury.edmx</DependentUpon>
     </Compile>
-
     <Compile Include="Models\PozycjaDokumentuMagazynowego.cs">
       <DependentUpon>ModelFaktury.tt</DependentUpon>
     </Compile>
@@ -159,11 +152,9 @@
     <Compile Include="Models\ZamowienieSprzedazy.cs">
       <DependentUpon>ModelFaktury.tt</DependentUpon>
     </Compile>
-
     <Compile Include="ViewModels\Abstract\JedenViewModel.cs" />
     <Compile Include="ViewModels\Abstract\WszystkieViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
-
     <Compile Include="ViewModels\NowaPozycjaDokumentuMagazynowegoViewModel.cs" />
     <Compile Include="ViewModels\NowaPozycjaFakturySprzedazyViewModel.cs" />
     <Compile Include="ViewModels\NowaPozycjaZamowieniaSprzedazyViewModel.cs" />
@@ -202,161 +193,124 @@
     <Compile Include="ViewModels\WszystkieTypyDokumentuMagazynowegoViewModel.cs" />
     <Compile Include="ViewModels\WszystkieTypyKontrahentowViewModel.cs" />
     <Compile Include="ViewModels\WszystkieWalutyViewModel.cs" />
-
     <Compile Include="Views\JedenViewBase.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-
     <Compile Include="Views\NowaFakturaDialog.cs" />
     <Compile Include="Views\NowaFakturaView.xaml.cs">
       <DependentUpon>NowaFakturaView.xaml</DependentUpon>
     </Compile>
-
     <Compile Include="Views\NowaPozycjaDokumentuMagazynowegoDialog.cs" />
     <Compile Include="Views\NowaPozycjaDokumentuMagazynowegoView.xaml.cs">
       <DependentUpon>NowaPozycjaDokumentuMagazynowegoView.xaml</DependentUpon>
     </Compile>
-
     <Compile Include="Views\NowaPozycjaFakturySprzedazyDialog.cs" />
     <Compile Include="Views\NowaPozycjaFakturySprzedazyView.xaml.cs">
       <DependentUpon>NowaPozycjaFakturySprzedazyView.xaml</DependentUpon>
     </Compile>
-
     <Compile Include="Views\NowaPozycjaZamowieniaSprzedazyDialog.cs" />
     <Compile Include="Views\NowaPozycjaZamowieniaSprzedazyView.xaml.cs">
       <DependentUpon>NowaPozycjaZamowieniaSprzedazyView.xaml</DependentUpon>
     </Compile>
-
     <Compile Include="Views\NoweZamowienieSprzedazyDialog.cs" />
     <Compile Include="Views\NoweZamowienieSprzedazyView.xaml.cs">
       <DependentUpon>NoweZamowienieSprzedazyView.xaml</DependentUpon>
     </Compile>
-
     <Compile Include="Views\NowyAdresKontrahentaDialog.cs" />
     <Compile Include="Views\NowyAdresKontrahentaView.xaml.cs">
       <DependentUpon>NowyAdresKontrahentaView.xaml</DependentUpon>
     </Compile>
-
     <Compile Include="Views\NowyDokumentMagazynowyDialog.cs" />
     <Compile Include="Views\NowyDokumentMagazynowyView.xaml.cs">
       <DependentUpon>NowyDokumentMagazynowyView.xaml</DependentUpon>
     </Compile>
-
     <Compile Include="Views\NowyKontrahentDialog.cs" />
     <Compile Include="Views\NowyKontrahentView.xaml.cs">
       <DependentUpon>NowyKontrahentView.xaml</DependentUpon>
     </Compile>
-
     <Compile Include="Views\NowySposobPlatnosciView.xaml.cs">
       <DependentUpon>NowySposobPlatnosciView.xaml</DependentUpon>
     </Compile>
-
     <Compile Include="Views\NowyStanMagazynowyDialog.cs" />
     <Compile Include="Views\NowyStanMagazynowyView.xaml.cs">
       <DependentUpon>NowyStanMagazynowyView.xaml</DependentUpon>
     </Compile>
-
     <Compile Include="Views\NowyTowarDialog.cs" />
     <Compile Include="Views\NowyTowarView.xaml.cs">
       <DependentUpon>NowyTowarView.xaml</DependentUpon>
     </Compile>
-
     <Compile Include="Views\WszyscyKontrahenciView.xaml.cs">
       <DependentUpon>WszyscyKontrahenciView.xaml</DependentUpon>
     </Compile>
-
     <Compile Include="Views\WszystkieAdresyKontrahentowView.xaml.cs">
       <DependentUpon>WszystkieAdresyKontrahentowView.xaml</DependentUpon>
     </Compile>
-
     <Compile Include="Views\WszystkieDokumentyMagazynoweView.xaml.cs">
       <DependentUpon>WszystkieDokumentyMagazynoweView.xaml</DependentUpon>
     </Compile>
-
     <Compile Include="Views\WszystkieFakturyView.xaml.cs">
       <DependentUpon>WszystkieFakturyView.xaml</DependentUpon>
     </Compile>
-
     <Compile Include="Views\WszystkieJednostkiMiaryView.xaml.cs">
       <DependentUpon>WszystkieJednostkiMiaryView.xaml</DependentUpon>
     </Compile>
-
     <Compile Include="Views\WszystkieKategorieTowaruView.xaml.cs">
       <DependentUpon>WszystkieKategorieTowaruView.xaml</DependentUpon>
     </Compile>
-
     <Compile Include="Views\WszystkieMagazynyView.xaml.cs">
       <DependentUpon>WszystkieMagazynyView.xaml</DependentUpon>
     </Compile>
-
     <Compile Include="Views\WszystkiePozycjeDokumentuMagazynowegoView.xaml.cs">
       <DependentUpon>WszystkiePozycjeDokumentuMagazynowegoView.xaml</DependentUpon>
     </Compile>
-
     <Compile Include="Views\WszystkiePozycjeFakturySprzedazyView.xaml.cs">
       <DependentUpon>WszystkiePozycjeFakturySprzedazyView.xaml</DependentUpon>
     </Compile>
-
     <Compile Include="Views\WszystkiePozycjeZamowieniaView.xaml.cs">
       <DependentUpon>WszystkiePozycjeZamowieniaView.xaml</DependentUpon>
     </Compile>
-
     <Compile Include="Views\WszystkieRaportSprzedazMiesiecznaView.xaml.cs">
       <DependentUpon>WszystkieRaportSprzedazMiesiecznaView.xaml</DependentUpon>
     </Compile>
-
     <Compile Include="Views\WszystkieRaportStanMagazynowyView.xaml.cs">
       <DependentUpon>WszystkieRaportStanMagazynowyView.xaml</DependentUpon>
     </Compile>
-
     <Compile Include="Views\WszystkieRaportTopTowaryView.xaml.cs">
       <DependentUpon>WszystkieRaportTopTowaryView.xaml</DependentUpon>
     </Compile>
-
     <Compile Include="Views\WszystkieSposobyPlatnosciView.xaml.cs">
       <DependentUpon>WszystkieSposobyPlatnosciView.xaml</DependentUpon>
     </Compile>
-
     <Compile Include="Views\WszystkieStanyMagazynoweView.xaml.cs">
       <DependentUpon>WszystkieStanyMagazynoweView.xaml</DependentUpon>
     </Compile>
-
     <Compile Include="Views\WszystkieStatusyFakturView.xaml.cs">
       <DependentUpon>WszystkieStatusyFakturView.xaml</DependentUpon>
     </Compile>
-
     <Compile Include="Views\WszystkieStatusyZamowienView.xaml.cs">
       <DependentUpon>WszystkieStatusyZamowienView.xaml</DependentUpon>
     </Compile>
-
     <Compile Include="Views\WszystkieStawkiVatView.xaml.cs">
       <DependentUpon>WszystkieStawkiVatView.xaml</DependentUpon>
     </Compile>
-
     <Compile Include="Views\WszystkieTowaryView.xaml.cs">
       <DependentUpon>WszystkieTowaryView.xaml</DependentUpon>
     </Compile>
-
     <Compile Include="Views\WszystkieTypyDokumentuMagazynowegoView.xaml.cs">
       <DependentUpon>WszystkieTypyDokumentuMagazynowegoView.xaml</DependentUpon>
     </Compile>
-
     <Compile Include="Views\WszystkieTypyKontrahentowView.xaml.cs">
       <DependentUpon>WszystkieTypyKontrahentowView.xaml</DependentUpon>
     </Compile>
-
     <Compile Include="Views\WszystkieViewBase.cs" />
-
     <Compile Include="Views\WszystkieWalutyView.xaml.cs">
       <DependentUpon>WszystkieWalutyView.xaml</DependentUpon>
     </Compile>
-
     <Compile Include="Views\WszystkieZamowieniaView.xaml.cs">
       <DependentUpon>WszystkieZamowieniaView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
-
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -375,26 +329,22 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-
+    <EmbeddedResource Include="Resources\Fonts\DejaVuSans.ttf" />
+    <EmbeddedResource Include="Resources\Fonts\DejaVuSans-Bold.ttf" />
     <None Include="app.config" />
-
     <EntityDeploy Include="Models\ModelFaktury.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>ModelFaktury.Designer.cs</LastGenOutput>
     </EntityDeploy>
-
     <None Include="Models\ModelFaktury.edmx.diagram">
       <DependentUpon>ModelFaktury.edmx</DependentUpon>
     </None>
-
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-
     <AppDesigner Include="Properties\" />
   </ItemGroup>
-
   <ItemGroup>
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -408,7 +358,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-
     <Page Include="Views\NowaFakturaView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -453,7 +402,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-
     <Page Include="Views\WszyscyKontrahenciView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -547,8 +495,9 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Resources\Fonts\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Models\ModelFaktury.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -561,18 +510,14 @@
       <LastGenOutput>ModelFaktury.cs</LastGenOutput>
     </Content>
   </ItemGroup>
-
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="EntityFramework" Version="6.5.1" />
     <PackageReference Include="PdfSharp" Version="6.2.4" />
   </ItemGroup>
-
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

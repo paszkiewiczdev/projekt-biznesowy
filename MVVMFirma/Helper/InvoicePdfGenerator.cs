@@ -1,5 +1,6 @@
 ﻿using MVVMFirma.Models;
 using PdfSharp.Drawing;
+using PdfSharp.Fonts;
 using PdfSharp.Pdf;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,8 @@ namespace MVVMFirma.Helper
             if (string.IsNullOrWhiteSpace(filePath))
                 throw new ArgumentException("Ścieżka zapisu PDF nie może być pusta.", nameof(filePath));
 
+            GlobalFontSettings.FontResolver ??= new EmbeddedFontResolver();
+
             var culture = CultureInfo.GetCultureInfo("pl-PL");
             using var document = new PdfDocument
             {
@@ -39,6 +42,7 @@ namespace MVVMFirma.Helper
 
             var margin = 40d;
             var y = margin;
+            var tableLinePen = new XPen(XColors.LightGray, 0.5);
 
             void DrawLine(string text, XFont fontToUse)
             {
@@ -54,6 +58,32 @@ namespace MVVMFirma.Helper
                     XStringFormats.TopLeft);
 
                 y += 18;
+            }
+
+            void DrawTableRow(IReadOnlyList<string> cells, IReadOnlyList<double> widths, XFont rowFont, IReadOnlyList<XStringFormat> formats)
+            {
+                var x = margin;
+                var rowHeight = 18d;
+
+                for (var i = 0; i < cells.Count; i++)
+                {
+                    var rect = new XRect(
+                        XUnit.FromPoint(x),
+                        XUnit.FromPoint(y),
+                        XUnit.FromPoint(widths[i]),
+                        XUnit.FromPoint(rowHeight));
+
+                    gfx.DrawString(cells[i], rowFont, XBrushes.Black, rect, formats[i]);
+                    x += widths[i];
+                }
+
+                y += rowHeight;
+                gfx.DrawLine(
+                    tableLinePen,
+                    XUnit.FromPoint(margin),
+                    XUnit.FromPoint(y),
+                    XUnit.FromPoint(margin + widths.Sum()),
+                    XUnit.FromPoint(y));
             }
 
             void EnsureSpace(double requiredSpace)
@@ -83,7 +113,34 @@ namespace MVVMFirma.Helper
             DrawLine(string.Empty, font);
 
             DrawLine("Pozycje faktury", headerFont);
-            DrawLine("Lp | Towar | Ilość | Cena netto | Netto | VAT | Brutto", font);
+
+            var tableWidths = new[] { 30d, 170d, 55d, 70d, 65d, 55d, 70d };
+            var headerFormats = new[]
+            {
+                XStringFormats.TopLeft,
+                XStringFormats.TopLeft,
+                XStringFormats.TopRight,
+                XStringFormats.TopRight,
+                XStringFormats.TopRight,
+                XStringFormats.TopRight,
+                XStringFormats.TopRight
+            };
+            var rowFormats = headerFormats;
+
+            DrawTableRow(
+                new[]
+                {
+                    "Lp",
+                    "Towar",
+                    "Ilość",
+                    "Cena netto",
+                    "Netto",
+                    "VAT",
+                    "Brutto"
+                },
+                tableWidths,
+                headerFont,
+                headerFormats);
 
             var pozycjeList = pozycje?.ToList() ?? new List<PozycjaFakturySprzedazy>();
             var index = 1;
@@ -92,18 +149,20 @@ namespace MVVMFirma.Helper
             {
                 EnsureSpace(20);
 
-                var line = string.Format(
-                    culture,
-                    "{0} | {1} | {2:N2} | {3:N2} | {4:N2} | {5:N2} | {6:N2}",
-                    index,
-                    pozycja.Towar?.Nazwa ?? "-",
-                    pozycja.Ilosc,
-                    pozycja.CenaNetto,
-                    pozycja.WartoscNetto ?? 0m,
-                    pozycja.WartoscVat ?? 0m,
-                    pozycja.WartoscBrutto ?? 0m);
-
-                DrawLine(line, font);
+                DrawTableRow(
+                    new[]
+                    {
+                        index.ToString(culture),
+                        pozycja.Towar?.Nazwa ?? "-",
+                        pozycja.Ilosc.ToString("N2", culture),
+                        pozycja.CenaNetto.ToString("N2", culture),
+                        (pozycja.WartoscNetto ?? 0m).ToString("N2", culture),
+                        (pozycja.WartoscVat ?? 0m).ToString("N2", culture),
+                        (pozycja.WartoscBrutto ?? 0m).ToString("N2", culture)
+                    },
+                    tableWidths,
+                    font,
+                    rowFormats);
                 index++;
             }
 
