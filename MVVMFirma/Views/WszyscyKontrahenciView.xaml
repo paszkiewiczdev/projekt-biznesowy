@@ -8,45 +8,91 @@
                          d:DesignHeight="450"
                          d:DesignWidth="800">
 
+    <local:WszystkieViewBase.Template>
+        <ControlTemplate TargetType="{x:Type local:WszystkieViewBase}">
+            <Grid Margin="0,10,0,0">
+                <ContentPresenter Margin="0,5,0,5"/>
+            </Grid>
+        </ControlTemplate>
+    </local:WszystkieViewBase.Template>
+
     <Grid Margin="4">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0"
                     Orientation="Horizontal"
                     Margin="0,0,0,6">
+
             <TextBlock Text="Szukaj:"
                        VerticalAlignment="Center"
-                       Margin="0,0,6,0" />
+                       Margin="0,0,6,0"/>
+
             <TextBox Width="200"
                      Margin="0,0,12,0"
-                     Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}" />
+                     Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}"/>
+
             <TextBlock Text="Sortuj wg:"
                        VerticalAlignment="Center"
-                       Margin="0,0,6,0" />
+                       Margin="0,0,6,0"/>
+
             <ComboBox Width="180"
                       Margin="0,0,12,0"
                       ItemsSource="{Binding SortOptions}"
-                      SelectedItem="{Binding SelectedSortField}" />
+                      SelectedItem="{Binding SelectedSortField}"/>
+
             <CheckBox Content="Malejąco"
                       VerticalAlignment="Center"
                       Margin="0,0,12,0"
-                      IsChecked="{Binding SortDescending}" />
+                      IsChecked="{Binding SortDescending}"/>
+
             <Button Content="Zastosuj"
                     Command="{Binding ApplyFilterCommand}"
                     Padding="8,4"
                     Margin="0,0,6,0"
                     Background="{StaticResource KassAccentBrush}"
                     Foreground="{StaticResource KassLightTextBrush}"
-                    BorderBrush="{StaticResource KassPrimaryDarkBrush}" />
+                    BorderBrush="{StaticResource KassPrimaryDarkBrush}"/>
+
             <Button Content="Wyczyść"
                     Command="{Binding ClearFilterCommand}"
                     Padding="8,4"
                     Background="{StaticResource KassAccentBrush}"
                     Foreground="{StaticResource KassLightTextBrush}"
-                    BorderBrush="{StaticResource KassPrimaryDarkBrush}" />
+                    BorderBrush="{StaticResource KassPrimaryDarkBrush}"/>
+
+            <Button Content="Odśwież"
+                    Command="{Binding RefreshCommand}"
+                    Padding="8,4"
+                    Margin="12,0,6,0"
+                    Background="{StaticResource KassAccentBrush}"
+                    Foreground="{StaticResource KassLightTextBrush}"
+                    BorderBrush="{StaticResource KassPrimaryDarkBrush}"/>
+
+            <TextBlock Text="Id do usunięcia:"
+                       VerticalAlignment="Center"
+                       Margin="12,0,6,0"/>
+
+            <TextBox Width="120"
+                     Margin="0,0,6,0"
+                     Text="{Binding DeleteId, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <Button Content="Usuń"
+                    Command="{Binding DeleteByIdCommand}"
+                    Padding="8,4"
+                    Margin="0,0,6,0"
+                    Background="{StaticResource KassAccentBrush}"
+                    Foreground="{StaticResource KassLightTextBrush}"
+                    BorderBrush="{StaticResource KassPrimaryDarkBrush}"/>
+
+            <Button Content="Dodaj"
+                    Command="{Binding AddCommand}"
+                    Padding="8,4"
+                    Background="{StaticResource KassAccentBrush}"
+                    Foreground="{StaticResource KassLightTextBrush}"
+                    BorderBrush="{StaticResource KassPrimaryDarkBrush}"/>
         </StackPanel>
 
         <DataGrid Grid.Row="1"
@@ -61,28 +107,36 @@
 
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID"
-                                    Binding="{Binding IdKontrahenta}" />
+                                    Width="70"
+                                    Binding="{Binding IdKontrahenta}"/>
 
                 <DataGridTextColumn Header="NIP"
-                                    Binding="{Binding NIP}" />
+                                    Width="120"
+                                    Binding="{Binding NIP}"/>
 
                 <DataGridTextColumn Header="Nazwa pełna"
-                                    Binding="{Binding NazwaPelna}" />
+                                    Width="220"
+                                    Binding="{Binding NazwaPelna}"/>
 
                 <DataGridTextColumn Header="Nazwa skrócona"
-                                    Binding="{Binding NazwaSkrocona}" />
+                                    Width="160"
+                                    Binding="{Binding NazwaSkrocona}"/>
 
                 <DataGridTextColumn Header="Typ kontrahenta"
-                                    Binding="{Binding TypKontrahenta.Nazwa}" />
+                                    Width="160"
+                                    Binding="{Binding TypKontrahenta.Nazwa}"/>
 
                 <DataGridTextColumn Header="Telefon"
-                                    Binding="{Binding Telefon}" />
+                                    Width="140"
+                                    Binding="{Binding Telefon}"/>
 
                 <DataGridTextColumn Header="Email"
-                                    Binding="{Binding Email}" />
+                                    Width="200"
+                                    Binding="{Binding Email}"/>
 
                 <DataGridCheckBoxColumn Header="Aktywny"
-                                        Binding="{Binding CzyAktywny}" />
+                                        Width="80"
+                                        Binding="{Binding CzyAktywny}"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

@@ -1,12 +1,114 @@
 ﻿<local:JedenViewBase x:Class="MVVMFirma.Views.NowyKontrahentView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:MVVMFirma.Views"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="White">
-        <Label>Tu bedzie dodawanie kontrahenta</Label>
-    </Grid>
+                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:local="clr-namespace:MVVMFirma.Views"
+                     mc:Ignorable="d"
+                     d:DesignHeight="600"
+                     d:DesignWidth="520">
+    <local:JedenViewBase.Template>
+        <ControlTemplate TargetType="{x:Type local:JedenViewBase}">
+            <Grid Margin="0,10,0,0">
+                <ContentPresenter Margin="0,5,0,5"/>
+            </Grid>
+        </ControlTemplate>
+    </local:JedenViewBase.Template>
+
+    <local:JedenViewBase.Resources>
+        <Style TargetType="TextBox">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip"
+                            Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="ComboBox">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip"
+                            Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </local:JedenViewBase.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Margin="12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="180"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Label Grid.Column="0" Grid.Row="0" Content="NIP" Margin="0,6,8,6"/>
+            <TextBox Grid.Column="1" Grid.Row="0" Margin="0,6,0,6"
+                     Text="{Binding NIP, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+
+            <Label Grid.Column="0" Grid.Row="1" Content="Nazwa pełna" Margin="0,6,8,6"/>
+            <TextBox Grid.Column="1" Grid.Row="1" Margin="0,6,0,6"
+                     Text="{Binding NazwaPelna, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+
+            <Label Grid.Column="0" Grid.Row="2" Content="Nazwa skrócona" Margin="0,6,8,6"/>
+            <TextBox Grid.Column="1" Grid.Row="2" Margin="0,6,0,6"
+                     Text="{Binding NazwaSkrocona, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+
+            <Label Grid.Column="0" Grid.Row="3" Content="Typ kontrahenta" Margin="0,6,8,6"/>
+            <ComboBox Grid.Column="1" Grid.Row="3" Margin="0,6,0,6"
+                      ItemsSource="{Binding TypyKontrahentow}"
+                      DisplayMemberPath="Nazwa"
+                      SelectedItem="{Binding SelectedTypKontrahenta, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+
+            <Label Grid.Column="0" Grid.Row="4" Content="Telefon" Margin="0,6,8,6"/>
+            <TextBox Grid.Column="1" Grid.Row="4" Margin="0,6,0,6"
+                     Text="{Binding Telefon, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <Label Grid.Column="0" Grid.Row="5" Content="Email" Margin="0,6,8,6"/>
+            <TextBox Grid.Column="1" Grid.Row="5" Margin="0,6,0,6"
+                     Text="{Binding Email, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+
+            <Label Grid.Column="0" Grid.Row="6" Content="Ulica" Margin="0,6,8,6"/>
+            <TextBox Grid.Column="1" Grid.Row="6" Margin="0,6,0,6"
+                     Text="{Binding Ulica, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+
+            <Label Grid.Column="0" Grid.Row="7" Content="Nr domu" Margin="0,6,8,6"/>
+            <TextBox Grid.Column="1" Grid.Row="7" Margin="0,6,0,6"
+                     Text="{Binding NrDomu, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+
+            <Label Grid.Column="0" Grid.Row="8" Content="Nr lokalu" Margin="0,6,8,6"/>
+            <TextBox Grid.Column="1" Grid.Row="8" Margin="0,6,0,6"
+                     Text="{Binding NrLokalu, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <Label Grid.Column="0" Grid.Row="9" Content="Kod pocztowy" Margin="0,6,8,6"/>
+            <TextBox Grid.Column="1" Grid.Row="9" Margin="0,6,0,6"
+                     Text="{Binding KodPocztowy, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+
+            <Label Grid.Column="0" Grid.Row="10" Content="Miasto" Margin="0,6,8,6"/>
+            <TextBox Grid.Column="1" Grid.Row="10" Margin="0,6,0,6"
+                     Text="{Binding Miasto, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+
+            <Label Grid.Column="0" Grid.Row="11" Content="Kraj" Margin="0,6,8,6"/>
+            <TextBox Grid.Column="1" Grid.Row="11" Margin="0,6,0,6"
+                     Text="{Binding Kraj, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+
+            <CheckBox Grid.Column="1" Grid.Row="12" Margin="0,6,0,6"
+                      Content="Aktywny"
+                      IsChecked="{Binding CzyAktywny}"/>
+        </Grid>
+    </ScrollViewer>
 </local:JedenViewBase>

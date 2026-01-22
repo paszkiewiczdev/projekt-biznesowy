@@ -223,6 +223,7 @@
     <Compile Include="Views\NowyDokumentMagazynowyView.xaml.cs">
       <DependentUpon>NowyDokumentMagazynowyView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\NowyKontrahentDialog.cs" />
     <Compile Include="Views\NowyKontrahentView.xaml.cs">
       <DependentUpon>NowyKontrahentView.xaml</DependentUpon>
     </Compile>
