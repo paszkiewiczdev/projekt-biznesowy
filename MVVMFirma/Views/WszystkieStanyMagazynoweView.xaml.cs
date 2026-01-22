@@ -1,11 +1,9 @@
-﻿using System.Windows.Controls;
-
-namespace MVVMFirma.Views
+﻿namespace MVVMFirma.Views
 {
     /// <summary>
     /// Logika interakcji dla klasy WszystkieStanyMagazynoweView.xaml
     /// </summary>
-    public partial class WszystkieStanyMagazynoweView : JedenViewBase
+    public partial class WszystkieStanyMagazynoweView : WszystkieViewBase
     {
         public WszystkieStanyMagazynoweView()
         {
