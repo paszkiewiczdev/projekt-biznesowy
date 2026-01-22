@@ -43,6 +43,7 @@ namespace MVVMFirma.ViewModels
         protected override IEnumerable<StanMagazynowy> LoadData()
         {
             return fakturyEntities.StanMagazynowy
+                .AsNoTracking()
                 .Include(s => s.Magazyn)
                 .Include(s => s.Towar)
                 .ToList();
