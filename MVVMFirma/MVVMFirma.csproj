@@ -159,6 +159,7 @@
     <Compile Include="ViewModels\Abstract\JedenViewModel.cs" />
     <Compile Include="ViewModels\Abstract\WszystkieViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\NowaPozycjaDokumentuMagazynowegoViewModel.cs" />
     <Compile Include="ViewModels\NowaPozycjaFakturySprzedazyViewModel.cs" />
     <Compile Include="ViewModels\NowaPozycjaZamowieniaSprzedazyViewModel.cs" />
     <Compile Include="ViewModels\NoweZamowienieSprzedazyViewModel.cs" />
@@ -201,6 +202,10 @@
     <Compile Include="Views\NowaFakturaDialog.cs" />
     <Compile Include="Views\NowaFakturaView.xaml.cs">
       <DependentUpon>NowaFakturaView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NowaPozycjaDokumentuMagazynowegoDialog.cs" />
+    <Compile Include="Views\NowaPozycjaDokumentuMagazynowegoView.xaml.cs">
+      <DependentUpon>NowaPozycjaDokumentuMagazynowegoView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NowaPozycjaFakturySprzedazyDialog.cs" />
     <Compile Include="Views\NowaPozycjaFakturySprzedazyView.xaml.cs">
@@ -346,6 +351,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\NowaFakturaView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NowaPozycjaDokumentuMagazynowegoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
