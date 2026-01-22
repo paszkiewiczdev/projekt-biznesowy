@@ -125,6 +125,20 @@
 
                 <DataGridCheckBoxColumn Header="Aktywny"
                                         Binding="{Binding CzyAktywny}" />
+
+                <DataGridTemplateColumn Header="PDF">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="PDF"
+                                    Command="{Binding DataContext.GeneratePdfCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                    CommandParameter="{Binding}"
+                                    Padding="6,2"
+                                    Background="{StaticResource KassAccentBrush}"
+                                    Foreground="{StaticResource KassLightTextBrush}"
+                                    BorderBrush="{StaticResource KassPrimaryDarkBrush}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using Microsoft.Win32;
 using MVVMFirma.Helper;
 using MVVMFirma.Models;
 using MVVMFirma.ViewModels.Abstract;
@@ -20,6 +21,7 @@ namespace MVVMFirma.ViewModels
             AddCommand = new BaseCommand(OpenAddDialog);
             RefreshCommand = new BaseCommand(load);
             DeleteByNumberCommand = new BaseCommand(DeleteByNumber);
+            GeneratePdfCommand = new ParameterizedCommand<FakturaSprzedazy>(GeneratePdf);
         }
 
         public ICommand AddCommand { get; }
@@ -27,6 +29,8 @@ namespace MVVMFirma.ViewModels
         public ICommand RefreshCommand { get; }
 
         public ICommand DeleteByNumberCommand { get; }
+
+        public ICommand GeneratePdfCommand { get; }
 
         public string DeleteNumber
         {
@@ -42,6 +46,7 @@ namespace MVVMFirma.ViewModels
         {
             return fakturyEntities.FakturaSprzedazy.ToList();
         }
+
         public override void load()
         {
             if (fakturyEntities != null)
@@ -125,6 +130,31 @@ namespace MVVMFirma.ViewModels
             fakturyEntities.FakturaSprzedazy.Remove(faktura);
             fakturyEntities.SaveChanges();
             load();
+        }
+
+        private void GeneratePdf(FakturaSprzedazy faktura)
+        {
+            if (faktura == null)
+            {
+                ShowMessageBox("Wybierz fakturę, aby wygenerować PDF.");
+                return;
+            }
+
+            var dialog = new SaveFileDialog
+            {
+                Filter = "Pliki PDF (*.pdf)|*.pdf",
+                FileName = $"Faktura_{faktura.Numer ?? faktura.IdFakturySprzedazy.ToString()}.pdf"
+            };
+
+            if (dialog.ShowDialog() != true)
+                return;
+
+            var pozycje = fakturyEntities.PozycjaFakturySprzedazy
+                .Where(p => p.IdFakturySprzedazy == faktura.IdFakturySprzedazy)
+                .ToList();
+
+            InvoicePdfGenerator.Generate(faktura, pozycje, dialog.FileName);
+            ShowMessageBox($"PDF został zapisany: {dialog.FileName}");
         }
     }
 }

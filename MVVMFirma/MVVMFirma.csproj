@@ -76,6 +76,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Helper\BaseCommand.cs" />
+    <Compile Include="Helper\InvoicePdfGenerator.cs" />
+    <Compile Include="Helper\ParameterizedCommand.cs" />
     <Compile Include="Helper\Validators.cs" />
     <Compile Include="Helper\VatIdToValueConverter.cs" />
     <Compile Include="Models\AdresKontrahenta.cs">
