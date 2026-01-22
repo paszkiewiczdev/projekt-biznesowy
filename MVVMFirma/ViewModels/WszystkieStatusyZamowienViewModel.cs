@@ -18,6 +18,7 @@ namespace MVVMFirma.ViewModels
             DisplayName = "Statusy zamówień";
             SetSortOptions(new[] { "Id", "Nazwa" });
             AddCommand = new BaseCommand(Dodaj, CanDodaj);
+            RefreshCommand = new BaseCommand(load);
         }
 
         public string Nazwa
@@ -47,6 +48,7 @@ namespace MVVMFirma.ViewModels
         }
 
         public ICommand AddCommand { get; }
+        public ICommand RefreshCommand { get; }
 
         protected override IEnumerable<StatusZamowienia> LoadData()
         {

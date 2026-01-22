@@ -95,6 +95,13 @@
                     Background="{StaticResource KassAccentBrush}"
                     Foreground="{StaticResource KassLightTextBrush}"
                     BorderBrush="{StaticResource KassPrimaryDarkBrush}"/>
+            <Button Content="Odśwież"
+                    Command="{Binding RefreshCommand}"
+                    Padding="8,4"
+                    Margin="12,0,6,0"
+                    Background="{StaticResource KassAccentBrush}"
+                    Foreground="{StaticResource KassLightTextBrush}"
+                    BorderBrush="{StaticResource KassPrimaryDarkBrush}"/>
         </StackPanel>
 
         <DataGrid Grid.Row="2"

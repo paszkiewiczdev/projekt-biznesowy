@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Input;
+using MVVMFirma.Helper;
 using MVVMFirma.Models.BusinessViews;
 using MVVMFirma.ViewModels.Abstract;
 
@@ -12,7 +14,9 @@ namespace MVVMFirma.ViewModels
         {
             DisplayName = "Raport: Stan magazynowy";
             SetSortOptions(new[] { "Id", "Magazyn", "Towar", "Ilość" });
+            RefreshCommand = new BaseCommand(load);
         }
+        public ICommand RefreshCommand { get; }
 
         protected override IEnumerable<RaportStanMagazynowyDto> LoadData()
         {

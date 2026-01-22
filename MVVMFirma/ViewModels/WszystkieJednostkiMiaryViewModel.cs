@@ -19,6 +19,7 @@ namespace MVVMFirma.ViewModels
             DisplayName = "Jednostki miary";
             SetSortOptions(new[] { "Id", "Symbol", "Nazwa" });
             AddCommand = new BaseCommand(Dodaj, CanDodaj);
+            RefreshCommand = new BaseCommand(load);
         }
 
         public string Symbol
@@ -61,6 +62,8 @@ namespace MVVMFirma.ViewModels
         }
 
         public ICommand AddCommand { get; }
+        public ICommand RefreshCommand { get; }
+
 
         protected override IEnumerable<JednostkaMiary> LoadData()
         {

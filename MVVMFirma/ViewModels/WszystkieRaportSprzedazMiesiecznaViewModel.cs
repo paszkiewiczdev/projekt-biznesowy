@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Input;
+using MVVMFirma.Helper;
 using MVVMFirma.Models.BusinessViews;
 using MVVMFirma.ViewModels.Abstract;
 
@@ -12,7 +14,9 @@ namespace MVVMFirma.ViewModels
         {
             DisplayName = "Raport: Sprzedaż miesięczna";
             SetSortOptions(new[] { "Rok", "Miesiąc", "Liczba faktur" });
+            RefreshCommand = new BaseCommand(load);
         }
+        public ICommand RefreshCommand { get; }
 
         protected override IEnumerable<RaportSprzedazMiesiecznaDto> LoadData()
         {

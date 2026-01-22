@@ -20,6 +20,7 @@ namespace MVVMFirma.ViewModels
             DisplayName = "Typy dokumentów magazynowych";
             SetSortOptions(new[] { "Id", "Kod", "Nazwa" });
             AddCommand = new BaseCommand(Dodaj, CanDodaj);
+            RefreshCommand = new BaseCommand(load);
         }
 
         public string Kod
@@ -62,6 +63,7 @@ namespace MVVMFirma.ViewModels
         }
 
         public ICommand AddCommand { get; }
+        public ICommand RefreshCommand { get; }
 
         protected override IEnumerable<TypDokumentuMagazynowego> LoadData()
         {
