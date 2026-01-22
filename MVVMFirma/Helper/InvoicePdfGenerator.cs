@@ -33,22 +33,32 @@ namespace MVVMFirma.Helper
 
             var page = document.AddPage();
             var gfx = XGraphics.FromPdfPage(page);
-            var titleFont = new XFont("Arial", 16, XFontStyle.Bold);
-            var headerFont = new XFont("Arial", 12, XFontStyle.Bold);
-            var font = new XFont("Arial", 11, XFontStyle.Regular);
+            var titleFont = new XFont("Arial", 16, XFontStyleEx.Bold);
+            var headerFont = new XFont("Arial", 12, XFontStyleEx.Bold);
+            var font = new XFont("Arial", 11, XFontStyleEx.Regular);
 
             var margin = 40d;
             var y = margin;
 
             void DrawLine(string text, XFont fontToUse)
             {
-                gfx.DrawString(text, fontToUse, XBrushes.Black, new XRect(margin, y, page.Width - margin * 2, 20), XStringFormats.TopLeft);
+                gfx.DrawString(
+                    text,
+                    fontToUse,
+                    XBrushes.Black,
+                    new XRect(
+                        XUnit.FromPoint(margin),
+                        XUnit.FromPoint(y),
+                        XUnit.FromPoint(page.Width.Point - margin * 2),
+                        XUnit.FromPoint(20)),
+                    XStringFormats.TopLeft);
+
                 y += 18;
             }
 
             void EnsureSpace(double requiredSpace)
             {
-                if (y + requiredSpace <= page.Height - margin)
+                if (y + requiredSpace <= page.Height.Point - margin)
                     return;
 
                 page = document.AddPage();
