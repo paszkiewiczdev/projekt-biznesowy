@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Windows;
 using MVVMFirma.Helper;
 using MVVMFirma.Models;
 using MVVMFirma.ViewModels.Abstract;
@@ -42,6 +44,9 @@ namespace MVVMFirma.ViewModels
                 return;
 
             if (SelectedFaktura == null || SelectedTowar == null || SelectedStawkaVat == null)
+                return;
+
+            if (!TryReduceStock(SelectedTowar.IdTowaru, ilosc))
                 return;
 
             var pozycja = new PozycjaFakturySprzedazy
@@ -295,6 +300,42 @@ namespace MVVMFirma.ViewModels
             faktura.RazemVat = totals.Vat;
             faktura.RazemBrutto = totals.Brutto;
             fakturyEntities.SaveChanges();
+        }
+
+        private bool TryReduceStock(int towarId, decimal ilosc)
+        {
+            var stany = fakturyEntities.StanMagazynowy
+                .Where(s => s.IdTowaru == towarId)
+                .OrderByDescending(s => s.Ilosc)
+                .ToList();
+
+            if (!stany.Any())
+            {
+                MessageBox.Show("Brak stanu magazynowego dla wybranego towaru.");
+                return false;
+            }
+
+            var dostepnaIlosc = stany.Sum(s => s.Ilosc);
+
+            if (dostepnaIlosc < ilosc)
+            {
+                MessageBox.Show("Brak wystarczającego stanu magazynowego dla wybranego towaru.");
+                return false;
+            }
+
+            var remaining = ilosc;
+
+            foreach (var stan in stany)
+            {
+                if (remaining <= 0)
+                    break;
+
+                var doOdjecia = Math.Min(stan.Ilosc, remaining);
+                stan.Ilosc -= doOdjecia;
+                remaining -= doOdjecia;
+            }
+
+            return true;
         }
 
         private static string FormatDecimal(decimal value)

@@ -166,6 +166,7 @@
     <Compile Include="ViewModels\NowyAdresKontrahentaViewModel.cs" />
     <Compile Include="ViewModels\NowyDokumentMagazynowyViewModel.cs" />
     <Compile Include="ViewModels\NowySposobPlatnosciViewModel.cs" />
+    <Compile Include="ViewModels\NowyStanMagazynowyViewModel.cs" />
     <Compile Include="ViewModels\WszystkieAdresyKontrahentowViewModel.cs" />
     <Compile Include="ViewModels\WszystkieDokumentyMagazynoweViewModel.cs" />
     <Compile Include="ViewModels\WszystkiePozycjeDokumentuMagazynowegoViewModel.cs" />
@@ -234,6 +235,10 @@
     </Compile>
     <Compile Include="Views\NowySposobPlatnosciView.xaml.cs">
       <DependentUpon>NowySposobPlatnosciView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NowyStanMagazynowyDialog.cs" />
+    <Compile Include="Views\NowyStanMagazynowyView.xaml.cs">
+      <DependentUpon>NowyStanMagazynowyView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NowyTowarDialog.cs" />
     <Compile Include="Views\NowyTowarView.xaml.cs">
@@ -389,6 +394,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\NowySposobPlatnosciView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NowyStanMagazynowyView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
