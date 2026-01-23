@@ -16,94 +16,217 @@
         </ControlTemplate>
     </local:WszystkieViewBase.Template>
 
-    <Grid Margin="4">
+    <local:WszystkieViewBase.Resources>
+        <CollectionViewSource x:Key="KontrahenciViewSource"
+                              Source="{Binding List}" />
+    </local:WszystkieViewBase.Resources>
+
+    <Grid Background="White"
+          Margin="4">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0"
-                    Orientation="Horizontal"
-                    Margin="0,0,0,6">
+        <!-- HEADER / AKCJE -->
+        <Border Grid.Row="0"
+                Background="{StaticResource KassPrimaryDarkBrush}"
+                CornerRadius="6"
+                Margin="2,2,2,6">
+            <Grid Margin="12,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
-            <TextBlock Text="Szukaj:"
-                       VerticalAlignment="Center"
-                       Margin="0,0,6,0"/>
+                <StackPanel>
+                    <TextBlock Text="Karta kontrahenta"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               Foreground="{StaticResource KassLightTextBrush}" />
+                    <TextBlock Text="{Binding Source={StaticResource KontrahenciViewSource}, Path=CurrentItem.NazwaPelna, TargetNullValue=Brak kontrahenta}"
+                               Foreground="{StaticResource KassLightTextBrush}"
+                               Margin="0,4,0,0"
+                               FontWeight="SemiBold" />
+                </StackPanel>
 
-            <TextBox Width="200"
-                     Margin="0,0,12,0"
-                     Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}"/>
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Center">
+                    <Button Content="Dodaj"
+                            Command="{Binding AddCommand}"
+                            Padding="10,4"
+                            Margin="0,0,6,0"
+                            Background="{StaticResource KassAccentBrush}"
+                            Foreground="{StaticResource KassLightTextBrush}"
+                            BorderBrush="{StaticResource KassPrimaryDarkBrush}"/>
+                    <Button Content="Odśwież"
+                            Command="{Binding RefreshCommand}"
+                            Padding="10,4"
+                            Margin="0,0,6,0"
+                            Background="{StaticResource KassAccentBrush}"
+                            Foreground="{StaticResource KassLightTextBrush}"
+                            BorderBrush="{StaticResource KassPrimaryDarkBrush}"/>
+                    <Button Content="Usuń"
+                            Command="{Binding DeleteByIdCommand}"
+                            Padding="10,4"
+                            Background="{StaticResource KassAccentBrush}"
+                            Foreground="{StaticResource KassLightTextBrush}"
+                            BorderBrush="{StaticResource KassPrimaryDarkBrush}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
 
-            <TextBlock Text="Sortuj wg:"
-                       VerticalAlignment="Center"
-                       Margin="0,0,6,0"/>
+        <!-- FILTRY / ID DO USUNIĘCIA -->
+        <Grid Grid.Row="1"
+              Margin="2,0,2,6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
 
-            <ComboBox Width="180"
-                      Margin="0,0,12,0"
-                      ItemsSource="{Binding SortOptions}"
-                      SelectedItem="{Binding SelectedSortField}"/>
+            <WrapPanel Grid.Column="0"
+                       VerticalAlignment="Center">
+                <TextBlock Text="Szukaj:"
+                           VerticalAlignment="Center"
+                           Margin="0,0,6,0"/>
+                <TextBox Width="220"
+                         Margin="0,0,12,0"
+                         Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock Text="Sortuj wg:"
+                           VerticalAlignment="Center"
+                           Margin="0,0,6,0"/>
+                <ComboBox Width="180"
+                          Margin="0,0,12,0"
+                          ItemsSource="{Binding SortOptions}"
+                          SelectedItem="{Binding SelectedSortField}"/>
+                <CheckBox Content="Malejąco"
+                          VerticalAlignment="Center"
+                          Margin="0,0,12,0"
+                          IsChecked="{Binding SortDescending}"/>
+                <Button Content="Zastosuj"
+                        Command="{Binding ApplyFilterCommand}"
+                        Padding="8,4"
+                        Margin="0,0,6,0"
+                        Background="{StaticResource KassAccentBrush}"
+                        Foreground="{StaticResource KassLightTextBrush}"
+                        BorderBrush="{StaticResource KassPrimaryDarkBrush}"/>
+                <Button Content="Wyczyść"
+                        Command="{Binding ClearFilterCommand}"
+                        Padding="8,4"
+                        Background="{StaticResource KassAccentBrush}"
+                        Foreground="{StaticResource KassLightTextBrush}"
+                        BorderBrush="{StaticResource KassPrimaryDarkBrush}"/>
+            </WrapPanel>
 
-            <CheckBox Content="Malejąco"
-                      VerticalAlignment="Center"
-                      Margin="0,0,12,0"
-                      IsChecked="{Binding SortDescending}"/>
+            <StackPanel Grid.Column="1"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Center">
+                <TextBlock Text="Id do usunięcia:"
+                           VerticalAlignment="Center"
+                           Margin="0,0,6,0"/>
+                <TextBox Width="120"
+                         Margin="0,0,6,0"
+                         Text="{Binding DeleteId, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+        </Grid>
 
-            <Button Content="Zastosuj"
-                    Command="{Binding ApplyFilterCommand}"
-                    Padding="8,4"
-                    Margin="0,0,6,0"
-                    Background="{StaticResource KassAccentBrush}"
-                    Foreground="{StaticResource KassLightTextBrush}"
-                    BorderBrush="{StaticResource KassPrimaryDarkBrush}"/>
+        <!-- DETALE ZAZNACZONEGO KONTRAHENTA -->
+        <Grid Grid.Row="2"
+              Margin="2,0,2,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-            <Button Content="Wyczyść"
-                    Command="{Binding ClearFilterCommand}"
-                    Padding="8,4"
-                    Background="{StaticResource KassAccentBrush}"
-                    Foreground="{StaticResource KassLightTextBrush}"
-                    BorderBrush="{StaticResource KassPrimaryDarkBrush}"/>
+            <GroupBox Header="Dane podstawowe"
+                      Margin="0,0,6,0">
+                <Grid Margin="8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
 
-            <Button Content="Odśwież"
-                    Command="{Binding RefreshCommand}"
-                    Padding="8,4"
-                    Margin="12,0,6,0"
-                    Background="{StaticResource KassAccentBrush}"
-                    Foreground="{StaticResource KassLightTextBrush}"
-                    BorderBrush="{StaticResource KassPrimaryDarkBrush}"/>
+                    <TextBlock Text="{Binding Source={StaticResource KontrahenciViewSource}, Path=CurrentItem.NazwaPelna, TargetNullValue=Brak danych}"
+                               FontWeight="SemiBold" />
+                    <TextBlock Grid.Row="1"
+                               Text="{Binding Source={StaticResource KontrahenciViewSource}, Path=CurrentItem.NazwaSkrocona, StringFormat=Nazwa skrócona: {0}, TargetNullValue=Nazwa skrócona: -}"
+                               Margin="0,4,0,0" />
+                    <TextBlock Grid.Row="2"
+                               Text="{Binding Source={StaticResource KontrahenciViewSource}, Path=CurrentItem.NIP, StringFormat=NIP: {0}, TargetNullValue=NIP: -}"
+                               Margin="0,4,0,0" />
+                    <TextBlock Grid.Row="3"
+                               Text="{Binding Source={StaticResource KontrahenciViewSource}, Path=CurrentItem.TypKontrahenta.Nazwa, StringFormat=Typ: {0}, TargetNullValue=Typ: -}"
+                               Margin="0,4,0,0" />
+                    <TextBlock Grid.Row="4"
+                               Text="{Binding Source={StaticResource KontrahenciViewSource}, Path=CurrentItem.CzyAktywny, StringFormat=Aktywny: {0}, TargetNullValue=Aktywny: -}"
+                               Margin="0,4,0,0" />
+                </Grid>
+            </GroupBox>
 
-            <TextBlock Text="Id do usunięcia:"
-                       VerticalAlignment="Center"
-                       Margin="12,0,6,0"/>
+            <GroupBox Header="Kontakt"
+                      Grid.Column="1"
+                      Margin="0,0,6,0">
+                <Grid Margin="8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
 
-            <TextBox Width="120"
-                     Margin="0,0,6,0"
-                     Text="{Binding DeleteId, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Text="{Binding Source={StaticResource KontrahenciViewSource}, Path=CurrentItem.Telefon, StringFormat=Telefon: {0}, TargetNullValue=Telefon: -}" />
+                    <TextBlock Grid.Row="1"
+                               Text="{Binding Source={StaticResource KontrahenciViewSource}, Path=CurrentItem.Email, StringFormat=E-mail: {0}, TargetNullValue=E-mail: -}"
+                               Margin="0,4,0,0" />
+                    <TextBlock Grid.Row="2"
+                               Text="{Binding Source={StaticResource KontrahenciViewSource}, Path=CurrentItem.IdKontrahenta, StringFormat=Id kontrahenta: {0}, TargetNullValue=Id kontrahenta: -}"
+                               Margin="0,4,0,0" />
+                </Grid>
+            </GroupBox>
 
-            <Button Content="Usuń"
-                    Command="{Binding DeleteByIdCommand}"
-                    Padding="8,4"
-                    Margin="0,0,6,0"
-                    Background="{StaticResource KassAccentBrush}"
-                    Foreground="{StaticResource KassLightTextBrush}"
-                    BorderBrush="{StaticResource KassPrimaryDarkBrush}"/>
+            <GroupBox Header="Podsumowanie"
+                      Grid.Column="2">
+                <Grid Margin="8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
 
-            <Button Content="Dodaj"
-                    Command="{Binding AddCommand}"
-                    Padding="8,4"
-                    Background="{StaticResource KassAccentBrush}"
-                    Foreground="{StaticResource KassLightTextBrush}"
-                    BorderBrush="{StaticResource KassPrimaryDarkBrush}"/>
-        </StackPanel>
+                    <TextBlock Text="{Binding Source={StaticResource KontrahenciViewSource}, Path=CurrentItem.FakturaSprzedazy.Count, StringFormat=Liczba faktur: {0}, TargetNullValue=Liczba faktur: -}"
+                               FontWeight="SemiBold" />
+                    <TextBlock Grid.Row="1"
+                               Text="{Binding Source={StaticResource KontrahenciViewSource}, Path=CurrentItem.ZamowienieSprzedazy.Count, StringFormat=Liczba zamówień: {0}, TargetNullValue=Liczba zamówień: -}"
+                               Margin="0,4,0,0" />
+                    <TextBlock Grid.Row="2"
+                               Text="{Binding Source={StaticResource KontrahenciViewSource}, Path=CurrentItem.AdresKontrahenta.Count, StringFormat=Liczba adresów: {0}, TargetNullValue=Liczba adresów: -}"
+                               Margin="0,4,0,0" />
+                    <TextBlock Grid.Row="3"
+                               Text="Status relacji: aktywna"
+                               Margin="0,4,0,0" />
+                </Grid>
+            </GroupBox>
+        </Grid>
 
-        <DataGrid Grid.Row="1"
-                  ItemsSource="{Binding List}"
+        <!-- LISTA KONTRAHENTÓW -->
+        <DataGrid Grid.Row="3"
+                  ItemsSource="{Binding Source={StaticResource KontrahenciViewSource}}"
+                  IsSynchronizedWithCurrentItem="True"
                   AutoGenerateColumns="False"
                   CanUserAddRows="False"
                   CanUserDeleteRows="False"
                   IsReadOnly="True"
                   HorizontalAlignment="Stretch"
                   VerticalAlignment="Stretch"
-                  Margin="0">
+                  Margin="2,0,2,8">
 
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID"
@@ -139,5 +262,96 @@
                                         Binding="{Binding CzyAktywny}"/>
             </DataGrid.Columns>
         </DataGrid>
+
+        <!-- ZAKŁADKI -->
+        <TabControl Grid.Row="4"
+                    Margin="2,0,2,0">
+            <TabItem Header="Adresy">
+                <DataGrid AutoGenerateColumns="False"
+                          ItemsSource="{Binding Source={StaticResource KontrahenciViewSource}, Path=CurrentItem.AdresKontrahenta}"
+                          IsReadOnly="True"
+                          CanUserAddRows="False"
+                          CanUserDeleteRows="False"
+                          Margin="6">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Ulica"
+                                            Binding="{Binding Ulica}" />
+                        <DataGridTextColumn Header="Nr domu"
+                                            Binding="{Binding NrDomu}" />
+                        <DataGridTextColumn Header="Nr lokalu"
+                                            Binding="{Binding NrLokalu}" />
+                        <DataGridTextColumn Header="Kod poczt."
+                                            Binding="{Binding KodPocztowy}" />
+                        <DataGridTextColumn Header="Miasto"
+                                            Binding="{Binding Miasto}" />
+                        <DataGridTextColumn Header="Kraj"
+                                            Binding="{Binding Kraj}" />
+                        <DataGridCheckBoxColumn Header="Domyślny"
+                                                Binding="{Binding CzyDomyslny}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem Header="Faktury sprzedaży">
+                <DataGrid AutoGenerateColumns="False"
+                          ItemsSource="{Binding Source={StaticResource KontrahenciViewSource}, Path=CurrentItem.FakturaSprzedazy}"
+                          IsReadOnly="True"
+                          CanUserAddRows="False"
+                          CanUserDeleteRows="False"
+                          Margin="6">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Numer"
+                                            Binding="{Binding Numer}" />
+                        <DataGridTextColumn Header="Data wystawienia"
+                                            Binding="{Binding DataWystawienia}" />
+                        <DataGridTextColumn Header="Status"
+                                            Binding="{Binding StatusFaktury.Nazwa}" />
+                        <DataGridTextColumn Header="Waluta"
+                                            Binding="{Binding Waluta.Kod}" />
+                        <DataGridTextColumn Header="Razem netto"
+                                            Binding="{Binding RazemNetto}" />
+                        <DataGridTextColumn Header="Razem brutto"
+                                            Binding="{Binding RazemBrutto}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem Header="Zamówienia">
+                <DataGrid AutoGenerateColumns="False"
+                          ItemsSource="{Binding Source={StaticResource KontrahenciViewSource}, Path=CurrentItem.ZamowienieSprzedazy}"
+                          IsReadOnly="True"
+                          CanUserAddRows="False"
+                          CanUserDeleteRows="False"
+                          Margin="6">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Numer"
+                                            Binding="{Binding Numer}" />
+                        <DataGridTextColumn Header="Data zamówienia"
+                                            Binding="{Binding DataZamowienia}" />
+                        <DataGridTextColumn Header="Status"
+                                            Binding="{Binding StatusZamowienia.Nazwa}" />
+                        <DataGridTextColumn Header="Uwagi"
+                                            Binding="{Binding Uwagi}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem Header="Notatki">
+                <StackPanel Margin="12">
+                    <TextBlock Text="Historia współpracy:"
+                               FontWeight="SemiBold" />
+                    <TextBlock Text="Brak notatek w widoku listy."
+                               Margin="0,4,0,0"
+                               Foreground="Gray" />
+                    <TextBlock Text="Preferencje:"
+                               FontWeight="SemiBold"
+                               Margin="0,12,0,0" />
+                    <TextBlock Text="Uzupełnij w edycji kontrahenta."
+                               Margin="0,4,0,0"
+                               Foreground="Gray" />
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+
     </Grid>
 </local:WszystkieViewBase>

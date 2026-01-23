@@ -4,9 +4,11 @@
                          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                          xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                          xmlns:local="clr-namespace:MVVMFirma.Views"
+                         xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
                          mc:Ignorable="d"
                          d:DesignHeight="450"
                          d:DesignWidth="1000">
+
     <local:WszystkieViewBase.Template>
         <ControlTemplate TargetType="{x:Type local:WszystkieViewBase}">
             <Grid Margin="0,10,0,0">
@@ -15,81 +17,222 @@
         </ControlTemplate>
     </local:WszystkieViewBase.Template>
 
+    <local:WszystkieViewBase.Resources>
+        <CollectionViewSource x:Key="FakturyViewSource"
+                              Source="{Binding List}" />
+    </local:WszystkieViewBase.Resources>
+
     <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0"
-                    Orientation="Horizontal"
-                    Margin="4,4,4,6">
-            <TextBlock Text="Szukaj:"
-                       VerticalAlignment="Center"
-                       Margin="0,0,6,0" />
-            <TextBox Width="200"
-                     Margin="0,0,12,0"
-                     Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}" />
-            <TextBlock Text="Sortuj wg:"
-                       VerticalAlignment="Center"
-                       Margin="0,0,6,0" />
-            <ComboBox Width="180"
-                      Margin="0,0,12,0"
-                      ItemsSource="{Binding SortOptions}"
-                      SelectedItem="{Binding SelectedSortField}" />
-            <CheckBox Content="Malejąco"
-                      VerticalAlignment="Center"
-                      Margin="0,0,12,0"
-                      IsChecked="{Binding SortDescending}" />
-            <Button Content="Zastosuj"
-                    Command="{Binding ApplyFilterCommand}"
-                    Padding="8,4"
-                    Margin="0,0,6,0"
-                    Background="{StaticResource KassAccentBrush}"
-                    Foreground="{StaticResource KassLightTextBrush}"
-                    BorderBrush="{StaticResource KassPrimaryDarkBrush}" />
-            <Button Content="Wyczyść"
-                    Command="{Binding ClearFilterCommand}"
-                    Padding="8,4"
-                    Background="{StaticResource KassAccentBrush}"
-                    Foreground="{StaticResource KassLightTextBrush}"
-                    BorderBrush="{StaticResource KassPrimaryDarkBrush}" />
+        <!-- HEADER / AKCJE -->
+        <Border Grid.Row="0"
+                Background="{StaticResource KassPrimaryDarkBrush}"
+                CornerRadius="6"
+                Margin="6">
+            <Grid Margin="12,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
-            <Button Content="Odśwież"
-                    Command="{Binding RefreshCommand}"
-                    Padding="8,4"
-                    Margin="12,0,6,0"
-                    Background="{StaticResource KassAccentBrush}"
-                    Foreground="{StaticResource KassLightTextBrush}"
-                    BorderBrush="{StaticResource KassPrimaryDarkBrush}" />
+                <StackPanel>
+                    <TextBlock Text="Faktura sprzedaży"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               Foreground="{StaticResource KassLightTextBrush}" />
+                    <TextBlock Text="{Binding Source={StaticResource FakturyViewSource}, Path=CurrentItem.Numer, StringFormat=Numer: {0}}"
+                               Foreground="{StaticResource KassLightTextBrush}"
+                               Margin="0,4,0,0"
+                               FontWeight="SemiBold" />
+                </StackPanel>
 
-            <TextBlock Text="Numer do usunięcia:"
-                       VerticalAlignment="Center"
-                       Margin="12,0,6,0" />
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Center">
+                    <Button Content="Dodaj"
+                            Command="{Binding AddCommand}"
+                            Padding="10,4"
+                            Margin="0,0,6,0"
+                            Background="{StaticResource KassAccentBrush}"
+                            Foreground="{StaticResource KassLightTextBrush}"
+                            BorderBrush="{StaticResource KassPrimaryDarkBrush}" />
+                    <Button Content="Odśwież"
+                            Command="{Binding RefreshCommand}"
+                            Padding="10,4"
+                            Margin="0,0,6,0"
+                            Background="{StaticResource KassAccentBrush}"
+                            Foreground="{StaticResource KassLightTextBrush}"
+                            BorderBrush="{StaticResource KassPrimaryDarkBrush}" />
+                    <Button Content="PDF"
+                            Command="{Binding GeneratePdfCommand}"
+                            CommandParameter="{Binding Source={StaticResource FakturyViewSource}, Path=CurrentItem}"
+                            Padding="10,4"
+                            Background="{StaticResource KassAccentBrush}"
+                            Foreground="{StaticResource KassLightTextBrush}"
+                            BorderBrush="{StaticResource KassPrimaryDarkBrush}" />
+                </StackPanel>
+            </Grid>
+        </Border>
 
-            <TextBox Width="140"
-                     Margin="0,0,6,0"
-                     Text="{Binding DeleteNumber, UpdateSourceTrigger=PropertyChanged}" />
+        <!-- FILTRY / USUWANIE -->
+        <Grid Grid.Row="1"
+              Margin="6,0,6,6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
 
-            <Button Content="Usuń"
-                    Command="{Binding DeleteByNumberCommand}"
-                    Padding="8,4"
-                    Margin="0,0,6,0"
-                    Background="{StaticResource KassAccentBrush}"
-                    Foreground="{StaticResource KassLightTextBrush}"
-                    BorderBrush="{StaticResource KassPrimaryDarkBrush}" />
+            <WrapPanel Grid.Column="0"
+                       VerticalAlignment="Center">
+                <TextBlock Text="Szukaj:"
+                           VerticalAlignment="Center"
+                           Margin="0,0,6,0" />
+                <TextBox Width="220"
+                         Margin="0,0,12,0"
+                         Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBlock Text="Sortuj wg:"
+                           VerticalAlignment="Center"
+                           Margin="0,0,6,0" />
+                <ComboBox Width="180"
+                          Margin="0,0,12,0"
+                          ItemsSource="{Binding SortOptions}"
+                          SelectedItem="{Binding SelectedSortField}" />
+                <CheckBox Content="Malejąco"
+                          VerticalAlignment="Center"
+                          Margin="0,0,12,0"
+                          IsChecked="{Binding SortDescending}" />
+                <Button Content="Zastosuj"
+                        Command="{Binding ApplyFilterCommand}"
+                        Padding="8,4"
+                        Margin="0,0,6,0"
+                        Background="{StaticResource KassAccentBrush}"
+                        Foreground="{StaticResource KassLightTextBrush}"
+                        BorderBrush="{StaticResource KassPrimaryDarkBrush}" />
+                <Button Content="Wyczyść"
+                        Command="{Binding ClearFilterCommand}"
+                        Padding="8,4"
+                        Background="{StaticResource KassAccentBrush}"
+                        Foreground="{StaticResource KassLightTextBrush}"
+                        BorderBrush="{StaticResource KassPrimaryDarkBrush}" />
+            </WrapPanel>
 
-            <Button Content="Dodaj"
-                    Command="{Binding AddCommand}"
-                    Padding="8,4"
-                    Background="{StaticResource KassAccentBrush}"
-                    Foreground="{StaticResource KassLightTextBrush}"
-                    BorderBrush="{StaticResource KassPrimaryDarkBrush}" />
-        </StackPanel>
+            <StackPanel Grid.Column="1"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Center">
+                <TextBlock Text="Numer do usunięcia:"
+                           VerticalAlignment="Center"
+                           Margin="0,0,6,0" />
+                <TextBox Width="150"
+                         Margin="0,0,6,0"
+                         Text="{Binding DeleteNumber, UpdateSourceTrigger=PropertyChanged}" />
+                <Button Content="Usuń"
+                        Command="{Binding DeleteByNumberCommand}"
+                        Padding="8,4"
+                        Background="{StaticResource KassAccentBrush}"
+                        Foreground="{StaticResource KassLightTextBrush}"
+                        BorderBrush="{StaticResource KassPrimaryDarkBrush}" />
+            </StackPanel>
+        </Grid>
 
-        <DataGrid Grid.Row="1"
+        <!-- DETALE ZAZNACZONEJ FAKTURY -->
+        <Grid Grid.Row="2"
+              Margin="6,0,6,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <GroupBox Header="Dane kontrahenta"
+                      Margin="0,0,6,0">
+                <Grid Margin="8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="{Binding Source={StaticResource FakturyViewSource}, Path=CurrentItem.Kontrahent.NazwaPelna, TargetNullValue=Brak kontrahenta}"
+                               FontWeight="SemiBold" />
+                    <TextBlock Grid.Row="1"
+                               Text="{Binding Source={StaticResource FakturyViewSource}, Path=CurrentItem.Kontrahent.NIP, StringFormat=NIP: {0}, TargetNullValue=NIP: -}"
+                               Margin="0,4,0,0" />
+                    <TextBlock Grid.Row="2"
+                               Text="{Binding Source={StaticResource FakturyViewSource}, Path=CurrentItem.Kontrahent.Telefon, StringFormat=Tel.: {0}, TargetNullValue=Tel.: -}"
+                               Margin="0,4,0,0" />
+                    <TextBlock Grid.Row="3"
+                               Text="{Binding Source={StaticResource FakturyViewSource}, Path=CurrentItem.Kontrahent.Email, StringFormat=E-mail: {0}, TargetNullValue=E-mail: -}"
+                               Margin="0,4,0,0" />
+                </Grid>
+            </GroupBox>
+
+            <GroupBox Header="Dane dokumentu"
+                      Grid.Column="1"
+                      Margin="0,0,6,0">
+                <Grid Margin="8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="{Binding Source={StaticResource FakturyViewSource}, Path=CurrentItem.DataWystawienia, StringFormat=Data wystawienia: {0:yyyy-MM-dd}, TargetNullValue=Data wystawienia: -}" />
+                    <TextBlock Grid.Row="1"
+                               Text="{Binding Source={StaticResource FakturyViewSource}, Path=CurrentItem.DataSprzedazy, StringFormat=Data sprzedaży: {0:yyyy-MM-dd}, TargetNullValue=Data sprzedaży: -}"
+                               Margin="0,4,0,0" />
+                    <TextBlock Grid.Row="2"
+                               Text="{Binding Source={StaticResource FakturyViewSource}, Path=CurrentItem.TerminPlatnosci, StringFormat=Termin płatności: {0:yyyy-MM-dd}, TargetNullValue=Termin płatności: -}"
+                               Margin="0,4,0,0" />
+                    <TextBlock Grid.Row="3"
+                               Text="{Binding Source={StaticResource FakturyViewSource}, Path=CurrentItem.SposobPlatnosci.Nazwa, StringFormat=Sposób płatności: {0}, TargetNullValue=Sposób płatności: -}"
+                               Margin="0,4,0,0" />
+                    <TextBlock Grid.Row="4"
+                               Text="{Binding Source={StaticResource FakturyViewSource}, Path=CurrentItem.StatusFaktury.Nazwa, StringFormat=Status: {0}, TargetNullValue=Status: -}"
+                               Margin="0,4,0,0" />
+                </Grid>
+            </GroupBox>
+
+            <GroupBox Header="Podsumowanie"
+                      Grid.Column="2">
+                <Grid Margin="8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="{Binding Source={StaticResource FakturyViewSource}, Path=CurrentItem.RazemNetto, StringFormat=Netto: {0:N2}, TargetNullValue=Netto: -}"
+                               FontWeight="SemiBold" />
+                    <TextBlock Grid.Row="1"
+                               Text="{Binding Source={StaticResource FakturyViewSource}, Path=CurrentItem.RazemVat, StringFormat=VAT: {0:N2}, TargetNullValue=VAT: -}"
+                               Margin="0,4,0,0" />
+                    <TextBlock Grid.Row="2"
+                               Text="{Binding Source={StaticResource FakturyViewSource}, Path=CurrentItem.RazemBrutto, StringFormat=Brutto: {0:N2}, TargetNullValue=Brutto: -}"
+                               Margin="0,4,0,0" />
+                    <TextBlock Grid.Row="3"
+                               Text="{Binding Source={StaticResource FakturyViewSource}, Path=CurrentItem.Waluta.Kod, StringFormat=Waluta: {0}, TargetNullValue=Waluta: -}"
+                               Margin="0,4,0,0" />
+                </Grid>
+            </GroupBox>
+        </Grid>
+
+        <!-- LISTA FAKTUR -->
+        <DataGrid Grid.Row="3"
+                  Margin="6,0,6,8"
                   AutoGenerateColumns="False"
-                  ItemsSource="{Binding List}"
+                  ItemsSource="{Binding Source={StaticResource FakturyViewSource}}"
+                  IsSynchronizedWithCurrentItem="True"
                   IsReadOnly="True"
                   CanUserAddRows="False"
                   CanUserDeleteRows="False">
@@ -123,9 +266,6 @@
                 <DataGridTextColumn Header="Razem brutto"
                                     Binding="{Binding RazemBrutto}" />
 
-                <DataGridCheckBoxColumn Header="Aktywny"
-                                        Binding="{Binding CzyAktywny}" />
-
                 <DataGridTemplateColumn Header="PDF">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -141,5 +281,72 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
+
+        <!-- ZAKŁADKI -->
+        <TabControl Grid.Row="4"
+                    Margin="6,0,6,6">
+            <TabItem Header="Pozycje faktury">
+                <DataGrid AutoGenerateColumns="False"
+                          ItemsSource="{Binding Source={StaticResource FakturyViewSource}, Path=CurrentItem.PozycjaFakturySprzedazy}"
+                          IsReadOnly="True"
+                          CanUserAddRows="False"
+                          CanUserDeleteRows="False"
+                          Margin="6">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID"
+                                            Binding="{Binding IdPozycjiFakturySprzedazy}" />
+                        <DataGridTextColumn Header="Towar/Usługa"
+                                            Binding="{Binding Towar.Nazwa}" />
+                        <DataGridTextColumn Header="Ilość"
+                                            Binding="{Binding Ilosc}" />
+                        <DataGridTextColumn Header="Cena netto"
+                                            Binding="{Binding CenaNetto}" />
+                        <DataGridTextColumn Header="VAT"
+                                            Binding="{Binding StawkaVat.Nazwa}" />
+                        <DataGridTextColumn Header="Wartość"
+                                            Binding="{Binding WartoscNetto}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem Header="Płatności">
+                <StackPanel Margin="12">
+                    <TextBlock Text="Sposób płatności:"
+                               FontWeight="SemiBold" />
+                    <TextBlock Text="{Binding Source={StaticResource FakturyViewSource}, Path=CurrentItem.SposobPlatnosci.Nazwa, TargetNullValue=-}"
+                               Margin="0,4,0,0" />
+
+                    <TextBlock Text="Termin płatności:"
+                               FontWeight="SemiBold"
+                               Margin="0,12,0,0" />
+                    <TextBlock Text="{Binding Source={StaticResource FakturyViewSource}, Path=CurrentItem.TerminPlatnosci, StringFormat={}{0:yyyy-MM-dd}, TargetNullValue=-}"
+                               Margin="0,4,0,0" />
+
+                    <TextBlock Text="Status płatności:"
+                               FontWeight="SemiBold"
+                               Margin="0,12,0,0" />
+                    <TextBlock Text="{Binding Source={StaticResource FakturyViewSource}, Path=CurrentItem.StatusFaktury.Nazwa, TargetNullValue=-}"
+                               Margin="0,4,0,0" />
+                </StackPanel>
+            </TabItem>
+
+            <TabItem Header="Dokumenty i uwagi">
+                <StackPanel Margin="12">
+                    <TextBlock Text="Powiązane dokumenty:"
+                               FontWeight="SemiBold" />
+                    <TextBlock Text="Brak powiązanych dokumentów w widoku listy."
+                               Margin="0,4,0,0"
+                               Foreground="Gray" />
+
+                    <TextBlock Text="Uwagi:"
+                               FontWeight="SemiBold"
+                               Margin="0,12,0,0" />
+                    <TextBlock Text="Dodaj komentarz w edycji faktury."
+                               Margin="0,4,0,0"
+                               Foreground="Gray" />
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+
     </Grid>
 </local:WszystkieViewBase>

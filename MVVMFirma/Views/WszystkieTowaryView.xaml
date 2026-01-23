@@ -11,6 +11,8 @@
 
     <local:WszystkieViewBase.Resources>
         <helper:VatIdToValueConverter x:Key="VatIdToValueConverter"/>
+        <CollectionViewSource x:Key="TowaryViewSource"
+                              Source="{Binding List}" />
     </local:WszystkieViewBase.Resources>
 
     <local:WszystkieViewBase.Template>
@@ -21,95 +23,217 @@
         </ControlTemplate>
     </local:WszystkieViewBase.Template>
 
-    <Grid Margin="4">
+    <Grid Background="White"
+          Margin="4">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- PANEL FILTRÓW -->
-        <StackPanel Grid.Row="0"
-                    Orientation="Horizontal"
-                    Margin="0,0,0,6">
+        <!-- HEADER / AKCJE -->
+        <Border Grid.Row="0"
+                Background="{StaticResource KassPrimaryDarkBrush}"
+                CornerRadius="6"
+                Margin="2,2,2,6">
+            <Grid Margin="12,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
-            <TextBlock Text="Szukaj:"
-                       VerticalAlignment="Center"
-                       Margin="0,0,6,0"/>
+                <StackPanel>
+                    <TextBlock Text="Karta towaru"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               Foreground="{StaticResource KassLightTextBrush}" />
+                    <TextBlock Text="{Binding Source={StaticResource TowaryViewSource}, Path=CurrentItem.Nazwa, TargetNullValue=Brak towaru}"
+                               Foreground="{StaticResource KassLightTextBrush}"
+                               Margin="0,4,0,0"
+                               FontWeight="SemiBold" />
+                </StackPanel>
 
-            <TextBox Width="200"
-                     Margin="0,0,12,0"
-                     Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}"/>
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Center">
+                    <Button Content="Dodaj"
+                            Command="{Binding AddCommand}"
+                            Padding="10,4"
+                            Margin="0,0,6,0"
+                            Background="{StaticResource KassAccentBrush}"
+                            Foreground="{StaticResource KassLightTextBrush}"
+                            BorderBrush="{StaticResource KassPrimaryDarkBrush}"/>
+                    <Button Content="Odśwież"
+                            Command="{Binding RefreshCommand}"
+                            Padding="10,4"
+                            Margin="0,0,6,0"
+                            Background="{StaticResource KassAccentBrush}"
+                            Foreground="{StaticResource KassLightTextBrush}"
+                            BorderBrush="{StaticResource KassPrimaryDarkBrush}"/>
+                    <Button Content="Usuń"
+                            Command="{Binding DeleteByCodeCommand}"
+                            Padding="10,4"
+                            Background="{StaticResource KassAccentBrush}"
+                            Foreground="{StaticResource KassLightTextBrush}"
+                            BorderBrush="{StaticResource KassPrimaryDarkBrush}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
 
-            <TextBlock Text="Sortuj wg:"
-                       VerticalAlignment="Center"
-                       Margin="0,0,6,0"/>
+        <!-- FILTRY + KOD DO USUNIĘCIA -->
+        <Grid Grid.Row="1"
+              Margin="2,0,2,6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
 
-            <ComboBox Width="180"
-                      Margin="0,0,12,0"
-                      ItemsSource="{Binding SortOptions}"
-                      SelectedItem="{Binding SelectedSortField}"/>
+            <WrapPanel Grid.Column="0"
+                       VerticalAlignment="Center">
+                <TextBlock Text="Szukaj:"
+                           VerticalAlignment="Center"
+                           Margin="0,0,6,0"/>
+                <TextBox Width="200"
+                         Margin="0,0,12,0"
+                         Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock Text="Sortuj wg:"
+                           VerticalAlignment="Center"
+                           Margin="0,0,6,0"/>
+                <ComboBox Width="180"
+                          Margin="0,0,12,0"
+                          ItemsSource="{Binding SortOptions}"
+                          SelectedItem="{Binding SelectedSortField}"/>
+                <CheckBox Content="Malejąco"
+                          VerticalAlignment="Center"
+                          Margin="0,0,12,0"
+                          IsChecked="{Binding SortDescending}"/>
+                <Button Content="Zastosuj"
+                        Command="{Binding ApplyFilterCommand}"
+                        Padding="8,4"
+                        Margin="0,0,6,0"
+                        Background="{StaticResource KassAccentBrush}"
+                        Foreground="{StaticResource KassLightTextBrush}"
+                        BorderBrush="{StaticResource KassPrimaryDarkBrush}"/>
+                <Button Content="Wyczyść"
+                        Command="{Binding ClearFilterCommand}"
+                        Padding="8,4"
+                        Background="{StaticResource KassAccentBrush}"
+                        Foreground="{StaticResource KassLightTextBrush}"
+                        BorderBrush="{StaticResource KassPrimaryDarkBrush}"/>
+            </WrapPanel>
 
-            <CheckBox Content="Malejąco"
-                      VerticalAlignment="Center"
-                      Margin="0,0,12,0"
-                      IsChecked="{Binding SortDescending}"/>
+            <StackPanel Grid.Column="1"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Center">
+                <TextBlock Text="Kod do usunięcia:"
+                           VerticalAlignment="Center"
+                           Margin="0,0,6,0"/>
+                <TextBox Width="140"
+                         Margin="0,0,6,0"
+                         Text="{Binding DeleteCode, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+        </Grid>
 
-            <Button Content="Zastosuj"
-                    Command="{Binding ApplyFilterCommand}"
-                    Padding="8,4"
-                    Margin="0,0,6,0"
-                    Background="{StaticResource KassAccentBrush}"
-                    Foreground="{StaticResource KassLightTextBrush}"
-                    BorderBrush="{StaticResource KassPrimaryDarkBrush}"/>
+        <!-- DETALE ZAZNACZONEGO TOWARU -->
+        <Grid Grid.Row="2"
+              Margin="2,0,2,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-            <Button Content="Wyczyść"
-                    Command="{Binding ClearFilterCommand}"
-                    Padding="8,4"
-                    Background="{StaticResource KassAccentBrush}"
-                    Foreground="{StaticResource KassLightTextBrush}"
-                    BorderBrush="{StaticResource KassPrimaryDarkBrush}"/>
+            <GroupBox Header="Dane podstawowe"
+                      Margin="0,0,6,0">
+                <Grid Margin="8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
 
-            <Button Content="Odśwież"
-                    Command="{Binding RefreshCommand}"
-                    Padding="8,4"
-                    Margin="12,0,6,0"
-                    Background="{StaticResource KassAccentBrush}"
-                    Foreground="{StaticResource KassLightTextBrush}"
-                    BorderBrush="{StaticResource KassPrimaryDarkBrush}"/>
-            <TextBlock Text="Kod do usunięcia:"
-                       VerticalAlignment="Center"
-                       Margin="12,0,6,0"/>
+                    <TextBlock Text="{Binding Source={StaticResource TowaryViewSource}, Path=CurrentItem.Kod, StringFormat=Kod: {0}, TargetNullValue=Kod: -}"
+                               FontWeight="SemiBold" />
+                    <TextBlock Grid.Row="1"
+                               Text="{Binding Source={StaticResource TowaryViewSource}, Path=CurrentItem.Nazwa, StringFormat=Nazwa: {0}, TargetNullValue=Nazwa: -}"
+                               Margin="0,4,0,0" />
+                    <TextBlock Grid.Row="2"
+                               Text="{Binding Source={StaticResource TowaryViewSource}, Path=CurrentItem.KategoriaTowaru.Nazwa, StringFormat=Kategoria: {0}, TargetNullValue=Kategoria: -}"
+                               Margin="0,4,0,0" />
+                    <TextBlock Grid.Row="3"
+                               Text="{Binding Source={StaticResource TowaryViewSource}, Path=CurrentItem.JednostkaMiary.Nazwa, StringFormat=Jednostka miary: {0}, TargetNullValue=Jednostka miary: -}"
+                               Margin="0,4,0,0" />
+                    <TextBlock Grid.Row="4"
+                               Text="{Binding Source={StaticResource TowaryViewSource}, Path=CurrentItem.CzyAktywny, StringFormat=Aktywny: {0}, TargetNullValue=Aktywny: -}"
+                               Margin="0,4,0,0" />
+                </Grid>
+            </GroupBox>
 
-            <TextBox Width="140"
-                     Margin="0,0,6,0"
-                     Text="{Binding DeleteCode, UpdateSourceTrigger=PropertyChanged}"/>
+            <GroupBox Header="Ceny i VAT"
+                      Grid.Column="1"
+                      Margin="0,0,6,0">
+                <Grid Margin="8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
 
-            <Button Content="Usuń"
-                    Command="{Binding DeleteByCodeCommand}"
-                    Padding="8,4"
-                    Margin="0,0,6,0"
-                    Background="{StaticResource KassAccentBrush}"
-                    Foreground="{StaticResource KassLightTextBrush}"
-                    BorderBrush="{StaticResource KassPrimaryDarkBrush}"/>
+                    <TextBlock Text="{Binding Source={StaticResource TowaryViewSource}, Path=CurrentItem.Cena, StringFormat=Cena sprzedaży: {0:0.00}, TargetNullValue=Cena sprzedaży: -}" />
+                    <TextBlock Grid.Row="1"
+                               Text="{Binding Source={StaticResource TowaryViewSource}, Path=CurrentItem.Marza, StringFormat=Marża: {0:0.##}, TargetNullValue=Marża: -}"
+                               Margin="0,4,0,0" />
+                    <TextBlock Grid.Row="2"
+                               Text="{Binding Source={StaticResource TowaryViewSource}, Path=CurrentItem.StawkaVat.Nazwa, StringFormat=VAT sprzedaży: {0}, TargetNullValue=VAT sprzedaży: -}"
+                               Margin="0,4,0,0" />
+                    <TextBlock Grid.Row="3"
+                               Text="{Binding Source={StaticResource TowaryViewSource}, Path=CurrentItem.StawkaVat1.Nazwa, StringFormat=VAT zakupu: {0}, TargetNullValue=VAT zakupu: -}"
+                               Margin="0,4,0,0" />
+                </Grid>
+            </GroupBox>
 
-            <Button Content="Dodaj"
-                    Command="{Binding AddCommand}"
-                    Padding="8,4"
-                    Background="{StaticResource KassAccentBrush}"
-                    Foreground="{StaticResource KassLightTextBrush}"
-                    BorderBrush="{StaticResource KassPrimaryDarkBrush}"/>
-        </StackPanel>
+            <GroupBox Header="Podsumowanie"
+                      Grid.Column="2">
+                <Grid Margin="8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="{Binding Source={StaticResource TowaryViewSource}, Path=CurrentItem.StanMagazynowy.Count, StringFormat=Stany magazynowe: {0}, TargetNullValue=Stany magazynowe: -}"
+                               FontWeight="SemiBold" />
+                    <TextBlock Grid.Row="1"
+                               Text="{Binding Source={StaticResource TowaryViewSource}, Path=CurrentItem.PozycjaFakturySprzedazy.Count, StringFormat=Pozycje faktur: {0}, TargetNullValue=Pozycje faktur: -}"
+                               Margin="0,4,0,0" />
+                    <TextBlock Grid.Row="2"
+                               Text="{Binding Source={StaticResource TowaryViewSource}, Path=CurrentItem.PozycjaZamowieniaSprzedazy.Count, StringFormat=Pozycje zamówień: {0}, TargetNullValue=Pozycje zamówień: -}"
+                               Margin="0,4,0,0" />
+                    <TextBlock Grid.Row="3"
+                               Text="{Binding Source={StaticResource TowaryViewSource}, Path=CurrentItem.PozycjaDokumentuMagazynowego.Count, StringFormat=Dokumenty magazynowe: {0}, TargetNullValue=Dokumenty magazynowe: -}"
+                               Margin="0,4,0,0" />
+                </Grid>
+            </GroupBox>
+        </Grid>
 
         <!-- LISTA TOWARÓW -->
-        <DataGrid Grid.Row="1"
-                  ItemsSource="{Binding List}"
+        <DataGrid Grid.Row="3"
+                  ItemsSource="{Binding Source={StaticResource TowaryViewSource}}"
+                  IsSynchronizedWithCurrentItem="True"
                   AutoGenerateColumns="False"
                   CanUserAddRows="False"
                   CanUserDeleteRows="False"
                   IsReadOnly="True"
                   HorizontalAlignment="Stretch"
                   VerticalAlignment="Stretch"
-                  HeadersVisibility="Column">
+                  HeadersVisibility="Column"
+                  Margin="2,0,2,8">
 
             <DataGrid.Columns>
 
@@ -133,7 +257,6 @@
                                     Width="80"
                                     Binding="{Binding Marza, StringFormat={}{0:0.##}}"/>
 
-                <!-- VAT: pokazujemy wartosc z tabeli StawkaVat -->
                 <DataGridTextColumn Header="VAT sprz."
                                     Width="90"
                                     Binding="{Binding IdStawkiVatSprzedazy, Converter={StaticResource VatIdToValueConverter}}"/>
@@ -148,5 +271,96 @@
 
             </DataGrid.Columns>
         </DataGrid>
+
+        <!-- ZAKŁADKI -->
+        <TabControl Grid.Row="4"
+                    Margin="2,0,2,0">
+            <TabItem Header="Stany magazynowe">
+                <DataGrid AutoGenerateColumns="False"
+                          ItemsSource="{Binding Source={StaticResource TowaryViewSource}, Path=CurrentItem.StanMagazynowy}"
+                          IsReadOnly="True"
+                          CanUserAddRows="False"
+                          CanUserDeleteRows="False"
+                          Margin="6">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Magazyn"
+                                            Binding="{Binding Magazyn.Nazwa}" />
+                        <DataGridTextColumn Header="Kod magazynu"
+                                            Binding="{Binding Magazyn.Kod}" />
+                        <DataGridTextColumn Header="Ilość"
+                                            Binding="{Binding Ilosc}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem Header="Pozycje faktur">
+                <DataGrid AutoGenerateColumns="False"
+                          ItemsSource="{Binding Source={StaticResource TowaryViewSource}, Path=CurrentItem.PozycjaFakturySprzedazy}"
+                          IsReadOnly="True"
+                          CanUserAddRows="False"
+                          CanUserDeleteRows="False"
+                          Margin="6">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Faktura"
+                                            Binding="{Binding FakturaSprzedazy.Numer}" />
+                        <DataGridTextColumn Header="Data"
+                                            Binding="{Binding FakturaSprzedazy.DataWystawienia}" />
+                        <DataGridTextColumn Header="Ilość"
+                                            Binding="{Binding Ilosc}" />
+                        <DataGridTextColumn Header="Cena netto"
+                                            Binding="{Binding CenaNetto}" />
+                        <DataGridTextColumn Header="Netto"
+                                            Binding="{Binding WartoscNetto}" />
+                        <DataGridTextColumn Header="Brutto"
+                                            Binding="{Binding WartoscBrutto}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem Header="Pozycje zamówień">
+                <DataGrid AutoGenerateColumns="False"
+                          ItemsSource="{Binding Source={StaticResource TowaryViewSource}, Path=CurrentItem.PozycjaZamowieniaSprzedazy}"
+                          IsReadOnly="True"
+                          CanUserAddRows="False"
+                          CanUserDeleteRows="False"
+                          Margin="6">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Zamówienie"
+                                            Binding="{Binding ZamowienieSprzedazy.Numer}" />
+                        <DataGridTextColumn Header="Data"
+                                            Binding="{Binding ZamowienieSprzedazy.DataZamowienia}" />
+                        <DataGridTextColumn Header="Status"
+                                            Binding="{Binding ZamowienieSprzedazy.StatusZamowienia.Nazwa}" />
+                        <DataGridTextColumn Header="Ilość"
+                                            Binding="{Binding Ilosc}" />
+                        <DataGridTextColumn Header="Cena netto"
+                                            Binding="{Binding CenaNetto}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem Header="Dokumenty magazynowe">
+                <DataGrid AutoGenerateColumns="False"
+                          ItemsSource="{Binding Source={StaticResource TowaryViewSource}, Path=CurrentItem.PozycjaDokumentuMagazynowego}"
+                          IsReadOnly="True"
+                          CanUserAddRows="False"
+                          CanUserDeleteRows="False"
+                          Margin="6">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Dokument"
+                                            Binding="{Binding DokumentMagazynowy.Numer}" />
+                        <DataGridTextColumn Header="Typ"
+                                            Binding="{Binding DokumentMagazynowy.TypDokumentuMagazynowego.Nazwa}" />
+                        <DataGridTextColumn Header="Data"
+                                            Binding="{Binding DokumentMagazynowy.DataDokumentu}" />
+                        <DataGridTextColumn Header="Magazyn"
+                                            Binding="{Binding DokumentMagazynowy.Magazyn.Nazwa}" />
+                        <DataGridTextColumn Header="Ilość"
+                                            Binding="{Binding Ilosc}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+        </TabControl>
+
     </Grid>
 </local:WszystkieViewBase>
