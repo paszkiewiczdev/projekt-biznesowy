@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -42,6 +43,13 @@ namespace MVVMFirma.ViewModels
         protected override IEnumerable<Towar> LoadData()
         {
             return fakturyEntities.Towar.ToList();
+        }
+
+        public override void load()
+        {
+            fakturyEntities?.Dispose();
+            fakturyEntities = new FakturyEntities();
+            base.load();
         }
 
         protected override bool MatchesFilter(Towar item, string filterText)
