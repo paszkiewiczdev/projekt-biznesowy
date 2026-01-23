@@ -7,6 +7,7 @@
             <SolidColorBrush x:Key="KassAccentBrush" Color="#FF2D89EF"/>
             <SolidColorBrush x:Key="KassLightTextBrush" Color="White"/>
             <SolidColorBrush x:Key="KassPrimaryDarkBrush" Color="#FF1E1E1E"/>
+            <SolidColorBrush x:Key="KassLightBrush" Color="#FFF7F1E8"/>
 
         </ResourceDictionary>
     </Application.Resources>

@@ -10,6 +10,7 @@
     <SolidColorBrush x:Key="KassAccentBrush" Color="#C58A4B" />
     <SolidColorBrush x:Key="KassLightTextBrush" Color="#FFFFFF" />
     <SolidColorBrush x:Key="KassDarkTextBrush" Color="#202020" />
+    <SolidColorBrush x:Key="KassLightBrush" Color="#FFF7F1E8" />
 
 
     <DataTemplate DataType="{x:Type vm:WszystkieTowaryViewModel}">

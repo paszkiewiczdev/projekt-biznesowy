@@ -23,6 +23,7 @@
             <TextBox Width="200"
                      Margin="0,0,12,0"
                      Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}" />
+
             <TextBlock Text="Sortuj wg:"
                        VerticalAlignment="Center"
                        Margin="0,0,6,0" />
@@ -30,10 +31,12 @@
                       Margin="0,0,12,0"
                       ItemsSource="{Binding SortOptions}"
                       SelectedItem="{Binding SelectedSortField}" />
+
             <CheckBox Content="Malejąco"
                       VerticalAlignment="Center"
                       Margin="0,0,12,0"
                       IsChecked="{Binding SortDescending}" />
+
             <Button Content="Zastosuj"
                     Command="{Binding ApplyFilterCommand}"
                     Padding="8,4"
@@ -41,12 +44,14 @@
                     Background="{StaticResource KassAccentBrush}"
                     Foreground="{StaticResource KassLightTextBrush}"
                     BorderBrush="{StaticResource KassPrimaryDarkBrush}" />
+
             <Button Content="Wyczyść"
                     Command="{Binding ClearFilterCommand}"
                     Padding="8,4"
                     Background="{StaticResource KassAccentBrush}"
                     Foreground="{StaticResource KassLightTextBrush}"
                     BorderBrush="{StaticResource KassPrimaryDarkBrush}" />
+
             <Button Content="Odśwież"
                     Command="{Binding RefreshCommand}"
                     Padding="8,4"
@@ -54,6 +59,18 @@
                     Background="{StaticResource KassAccentBrush}"
                     Foreground="{StaticResource KassLightTextBrush}"
                     BorderBrush="{StaticResource KassPrimaryDarkBrush}" />
+
+            <TextBlock Text="Minimum:"
+                       VerticalAlignment="Center"
+                       Margin="12,0,6,0" />
+
+            <TextBox Width="80"
+                     Margin="0,0,12,0"
+                     Text="{Binding LowStockThreshold, UpdateSourceTrigger=PropertyChanged}" />
+
+            <CheckBox Content="Tylko niskie stany"
+                      VerticalAlignment="Center"
+                      IsChecked="{Binding ShowOnlyLowStock}" />
         </StackPanel>
 
         <DataGrid Grid.Row="1"
@@ -66,6 +83,17 @@
                   VerticalAlignment="Stretch"
                   Margin="0"
                   HeadersVisibility="Column">
+
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsLowStock}" Value="True">
+                            <Setter Property="Background" Value="#FFF8D7DA" />
+                            <Setter Property="Foreground" Value="#FF721C24" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
 
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Kod magazynu"
@@ -87,6 +115,14 @@
                 <DataGridTextColumn Header="Ilość"
                                     Width="90"
                                     Binding="{Binding Ilosc}" />
+
+                <DataGridTextColumn Header="Minimum"
+                                    Width="90"
+                                    Binding="{Binding MinimalnyStan}" />
+
+                <DataGridTextColumn Header="Status"
+                                    Width="80"
+                                    Binding="{Binding StatusLabel}" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

@@ -9,6 +9,9 @@ namespace MVVMFirma.ViewModels
 {
     public class WszystkieRaportStanMagazynowyViewModel : WszystkieViewModel<RaportStanMagazynowyDto>
     {
+        private decimal _lowStockThreshold = 5;
+        private bool _showOnlyLowStock;
+
         public WszystkieRaportStanMagazynowyViewModel()
             : base()
         {
@@ -16,7 +19,37 @@ namespace MVVMFirma.ViewModels
             SetSortOptions(new[] { "Id", "Magazyn", "Towar", "Ilość" });
             RefreshCommand = new BaseCommand(load);
         }
+
         public ICommand RefreshCommand { get; }
+
+        public decimal LowStockThreshold
+        {
+            get => _lowStockThreshold;
+            set
+            {
+                if (_lowStockThreshold != value)
+                {
+                    _lowStockThreshold = value < 0 ? 0 : value;
+                    OnPropertyChanged(() => LowStockThreshold);
+                    UpdateLowStockFlags();
+                    ApplyFilterAndSort();
+                }
+            }
+        }
+
+        public bool ShowOnlyLowStock
+        {
+            get => _showOnlyLowStock;
+            set
+            {
+                if (_showOnlyLowStock != value)
+                {
+                    _showOnlyLowStock = value;
+                    OnPropertyChanged(() => ShowOnlyLowStock);
+                    ApplyFilterAndSort();
+                }
+            }
+        }
 
         protected override IEnumerable<RaportStanMagazynowyDto> LoadData()
         {
@@ -57,6 +90,46 @@ namespace MVVMFirma.ViewModels
                     ? query.OrderByDescending(r => r.IdTowaru)
                     : query.OrderBy(r => r.IdTowaru)
             };
+        }
+
+        protected override void ApplyFilterAndSort()
+        {
+            if (AllItems == null)
+                return;
+
+            UpdateLowStockFlags();
+
+            IEnumerable<RaportStanMagazynowyDto> query = AllItems;
+
+            if (ShowOnlyLowStock)
+            {
+                query = query.Where(item => item.IsLowStock);
+            }
+
+            if (!string.IsNullOrWhiteSpace(FilterText))
+            {
+                var filter = FilterText.Trim();
+                query = query.Where(item => MatchesFilter(item, filter));
+            }
+
+            EnsureDefaultSortField();
+
+            var sorted = ApplySort(query, SelectedSortField, SortDescending) ?? query.OrderBy(x => 0);
+
+            List = new System.Collections.ObjectModel.ObservableCollection<RaportStanMagazynowyDto>(sorted);
+        }
+
+        private void UpdateLowStockFlags()
+        {
+            if (AllItems == null)
+                return;
+
+            foreach (var item in AllItems)
+            {
+                item.MinimalnyStan = LowStockThreshold;
+                item.IsLowStock = item.Ilosc < LowStockThreshold;
+                item.StatusLabel = item.IsLowStock ? "NISKI" : "OK";
+            }
         }
     }
 }

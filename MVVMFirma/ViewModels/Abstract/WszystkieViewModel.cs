@@ -12,7 +12,7 @@ namespace MVVMFirma.ViewModels.Abstract
         #region Fields
 
         private ObservableCollection<T> _List;
-        private List<T> _allItems;
+        protected List<T> AllItems;
 
         private BaseCommand _LoadCommand;
         private BaseCommand _ApplyFilterCommand;
@@ -134,7 +134,7 @@ namespace MVVMFirma.ViewModels.Abstract
         public virtual void load()
         {
             var data = LoadData() ?? Enumerable.Empty<T>();
-            _allItems = data.ToList();
+            AllItems = data.ToList();
             EnsureDefaultSortField();
             ApplyFilterAndSort();
         }
@@ -145,12 +145,12 @@ namespace MVVMFirma.ViewModels.Abstract
 
         protected abstract IOrderedEnumerable<T> ApplySort(IEnumerable<T> query, string sortField, bool descending);
 
-        protected void ApplyFilterAndSort()
+        protected virtual void ApplyFilterAndSort()
         {
-            if (_allItems == null)
+            if (AllItems == null)
                 return;
 
-            IEnumerable<T> query = _allItems;
+            IEnumerable<T> query = AllItems;
 
             if (!string.IsNullOrWhiteSpace(FilterText))
             {
@@ -173,7 +173,7 @@ namespace MVVMFirma.ViewModels.Abstract
             ApplyFilterAndSort();
         }
 
-        private void EnsureDefaultSortField(bool reset = false)
+        protected void EnsureDefaultSortField(bool reset = false)
         {
             if (SortOptions == null || SortOptions.Count == 0)
                 return;
